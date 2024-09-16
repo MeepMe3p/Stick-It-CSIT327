@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm,AuthenticationForm, UsernameField
 from datetime import date
 """
 *🪼Guide🪼*
@@ -124,3 +124,12 @@ class StickItUserCreationFrom(UserCreationForm):
         if(commit):
             user.save()
         return user
+
+
+class StickItLoginForm(AuthenticationForm):
+    print("hello")
+    username = UsernameField(label = "Enter Username")
+    password = forms.CharField(label="Enter Password", widget= forms.PasswordInput())
+    class Meta:
+        model = User
+        fields = ['username','password']

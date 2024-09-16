@@ -1,5 +1,5 @@
 import mysql.connector
-from secret import get_decrypted_password
+# from secret import get_decrypted_password
 def create_database()->None:
     data_base = mysql.connector.connect(
         host = 'localhost',
