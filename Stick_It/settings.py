@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-from secret import get_decrypted_password
+# from secret import get_decrypted_password
+import os #for static not yet researched further
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -79,7 +80,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'Stick-It-Database',
         'USER': 'root',
-        'PASSWORD': get_decrypted_password(),
+        'PASSWORD': '',
+        # 'PASSWORD': get_decrypted_password(),
         'HOST' : 'localhost',
         'PORT' : '3306'        
     }
@@ -119,8 +121,19 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+# more nottes
+# https://www.geeksforgeeks.org/django-static-file/
 
 STATIC_URL = 'static/'
+MEDIA_URL = 'images/'
+
+#https://www.youtube.com/watch?v=Sd-RseDuy-c cuz i cant load the css
+
+STATICFILES_DIR = {
+    os.path.join(BASE_DIR,'static')
+}
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

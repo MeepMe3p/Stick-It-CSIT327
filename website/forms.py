@@ -1,7 +1,9 @@
+from typing import Any
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm, UsernameField
 from datetime import date
+from django.utils.safestring import SafeString
 """
 *🪼Guide🪼*
 Username (Built-in)
@@ -125,11 +127,30 @@ class StickItUserCreationFrom(UserCreationForm):
             user.save()
         return user
 
-
+# widgets: https://docs.djangoproject.com/en/5.1/ref/forms/widgets/
 class StickItLoginForm(AuthenticationForm):
     print("hello")
-    username = UsernameField(label = "Enter Username")
-    password = forms.CharField(label="Enter Password", widget= forms.PasswordInput())
+    username = UsernameField(label = "Username")
+    password = forms.CharField(label="Enter Password", widget= forms.PasswordInput(attrs={
+        # 'placeholder' : "Password", 
+        "height":'40px',        
+    }))
+
+    
+
+    username.widget.attrs.update({
+
+
+    })
+    password.widget.attrs.update({
+
+        "title":"Yourname",
+
+    })
     class Meta:
         model = User
         fields = ['username','password']
+    # https://forum.djangoproject.com/t/styling-form-as-div-or-form-as-p/22645/9 
+    # def as_div(self):
+    #     return SafeString(super().as_div().replace("<div>", "<div class='login_form'>"))
+        

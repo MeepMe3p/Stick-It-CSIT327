@@ -7,7 +7,7 @@ from create_database import create_database
 
 def main():
     """!CREATE DATABASE"""
-    create_database()
+    # create_database()
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Stick_It.settings')
     try:

@@ -4,7 +4,7 @@ def create_database()->None:
     data_base = mysql.connector.connect(
         host = 'localhost',
         user = 'root',
-        password = get_decrypted_password()
+        # password = get_decrypted_password()
     )
     cursor_object = data_base.cursor()
     cursor_object.execute(
