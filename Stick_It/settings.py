@@ -38,8 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'website'
+    
+    'website',
+    'authentication',
+    'board',
+    
 ]
+AUTHENTICATION_BACKENDS = ['website.backends.EmailBackend']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -80,7 +85,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'Stick-It-Database',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'elijahgwapo',
         # 'PASSWORD': get_decrypted_password(),
         'HOST' : 'localhost',
         'PORT' : '3306'        

@@ -2,7 +2,7 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-from create_database import create_database
+# from create_database import create_database
 
 
 def main():

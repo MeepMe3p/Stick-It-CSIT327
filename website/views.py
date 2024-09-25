@@ -1,9 +1,12 @@
+import json
 from django.shortcuts import render, redirect
 from django.views import View
-from django.contrib.auth import login,authenticate
+from django.contrib.auth import login,authenticate,get_user_model
 from django.contrib import messages
-from .forms import StickItUserCreationFrom, StickItLoginForm
+from .forms import StickItUserCreationFrom
 from django.template.context import RequestContext
+
+from django.http import JsonResponse
 # from django.contrib.auth.views import Temp
 
 # Create your views here.
@@ -28,33 +31,13 @@ class LoginService(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'base.html')
 
-# PROGRAMMER NAME: ELIJAH REI SABAY
-# test2user - secondpassword
-class LoginUser(View):
-   
-    def get(self,request):
-        print("rungging")
-        # return render(request, 'login.html',{'form':StickItLoginForm()})
-        return render(request, 'login2.html',{'form':StickItLoginForm()})
     
-    def post(self,request):
-        if request.method == "POST":
-            # username = request.POST['username']
-            # password = request.POST['password']
-            user = authenticate(request,username = request.POST['username'], password = request.POST['password'])
+# class Cat
+    
 
-            if user is not None:
-                login(request,user)
-                messages.success(request,"Successfully logged in")
-                return redirect('home')
-            else:
-                messages.error(request,"Incorrect username or password")
-                return render(request,'login2.html',{'form':StickItLoginForm()})
 
 class HomeView(View):
     # def get()
     print("welcome home")
     def get(self, request, *args, **kwargs):
         return render(request, 'home.html')
-
-    
