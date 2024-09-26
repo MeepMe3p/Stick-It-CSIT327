@@ -1,3 +1,4 @@
+// PROGRAMMER NAME: MARY KARYLLE DELOS REYES
 const formOpenBtn = document.querySelector("#form-open"),
   registration = document.querySelector(".registration"),
   formContainer = document.querySelector(".form_container"),

@@ -3,7 +3,6 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm, UsernameField
 from datetime import date
-from django.utils.safestring import SafeString
 """
 *🪼Guide🪼*
 Username (Built-in)
@@ -13,6 +12,7 @@ Password (Built-in)
 Email (Needs to be implemented)
 Birthdate (Needs to be implemented)
 """
+# Programmer Name: Avril Nigel Chua
 
 class StickItUserCreationFrom(UserCreationForm):
     
@@ -122,35 +122,28 @@ class StickItUserCreationFrom(UserCreationForm):
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
         user.birth_date = self.cleaned_data['birth_date']
-        
+
+        us = user.first_name +' '+ user.last_name
+        print(us)
+        user.username = us
         if(commit):
             user.save()
         return user
-
+# Programmer Name: Elijah Rei Sabay
 # widgets: https://docs.djangoproject.com/en/5.1/ref/forms/widgets/
-class StickItLoginForm(AuthenticationForm):
-    print("hello")
-    username = UsernameField(label = "Username")
-    password = forms.CharField(label="Enter Password", widget= forms.PasswordInput(attrs={
-        # 'placeholder' : "Password", 
-        "height":'40px',        
-    }))
+# class StickItLoginForm(AuthenticationForm):
+#     print("hello")
+#     username = forms.EmailField(label = "Email")
+#     password = forms.CharField(label="Enter Password", widget= forms.PasswordInput(attrs={
+#         "height":'40px',        
+#     }))
 
-    
+#     class Meta:
+#         model = User
+#         fields = ['email','password']
 
-    username.widget.attrs.update({
 
 
-    })
-    password.widget.attrs.update({
 
-        "title":"Yourname",
 
-    })
-    class Meta:
-        model = User
-        fields = ['username','password']
-    # https://forum.djangoproject.com/t/styling-form-as-div-or-form-as-p/22645/9 
-    # def as_div(self):
-    #     return SafeString(super().as_div().replace("<div>", "<div class='login_form'>"))
         
