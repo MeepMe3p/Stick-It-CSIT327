@@ -5,6 +5,7 @@ from .forms import StickItLoginForm
 from django.views import View
 from django.contrib import messages
 from django.shortcuts import redirect
+from .forms import StickItUserCreationFrom
 
 # Create your views here.
 class LoginUser(View):
@@ -31,3 +32,18 @@ class LoginUser(View):
             # return render(request,'login.html',{'form':StickItLoginForm()})
             return render(request,'authentication/login2.html',{'form':StickItLoginForm()})
 
+
+class RegisterService(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'register2.html', {'form': StickItUserCreationFrom()})
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            form = StickItUserCreationFrom(request.POST)
+            if form.is_valid():
+                user = form.save()
+                login(request, user)
+                messages.success(request, 'Account created successfully!')
+                return redirect('home')
+            else:
+                messages.error(request, 'Please correct the error below.')
+        return render(request, 'register2.html', {'form': form})

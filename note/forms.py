@@ -1,22 +1,11 @@
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from typing import Any
 from django import forms
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField
+from datetime import date
+# Programmer Name: Avril Nigel Chua
 
-
-# PROGRAMMER NAME: ELIJAH REI SABAY
-# test2user - secondpassword
-class StickItLoginForm(AuthenticationForm):
-    print("hello")
-    username = forms.EmailField(label = "Email")
-    password = forms.CharField(label="Enter Password", widget= forms.PasswordInput(attrs={
-        "height":'40px',        
-    }))
-
-    class Meta:
-        model = User
-        fields = ['email','password']
-
-class StickItUserCreationFrom(UserCreationForm):
+class StickItUserCreationForm(UserCreationForm):
     
     # Disables the: 
     # https://stackoverflow.com/questions/78850636/what-is-password-based-authentication-in-the-usercreationform-in-django-and-how
@@ -73,7 +62,7 @@ class StickItUserCreationFrom(UserCreationForm):
     
     
     def __init__(self, *args, **kwargs):
-        super(StickItUserCreationFrom, self).__init__(*args, **kwargs)
+        super(StickItUserCreationForm, self).__init__(*args, **kwargs)
 
         for field in self.fields.values():
             field.widget.attrs.update({'class': 'form-control'})
@@ -131,3 +120,21 @@ class StickItUserCreationFrom(UserCreationForm):
         if(commit):
             user.save()
         return user
+# Programmer Name: Elijah Rei Sabay
+# widgets: https://docs.djangoproject.com/en/5.1/ref/forms/widgets/
+# class StickItLoginForm(AuthenticationForm):
+#     print("hello")
+#     username = forms.EmailField(label = "Email")
+#     password = forms.CharField(label="Enter Password", widget= forms.PasswordInput(attrs={
+#         "height":'40px',        
+#     }))
+
+#     class Meta:
+#         model = User
+#         fields = ['email','password']
+
+
+
+
+
+        

@@ -39,12 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    'website',
+    'note',
     'authentication',
     'board',
     
 ]
-AUTHENTICATION_BACKENDS = ['website.backends.EmailBackend']
+
+# AUTHENTICATION_BACKENDS = ['note.backends.EmailBackend']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -80,18 +81,23 @@ WSGI_APPLICATION = 'Stick_It.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'Stick-It-Database',
+#         'USER': 'root',
+#         # 'PASSWORD': 'elijahgwapo',
+#         # 'PASSWORD': get_decrypted_password(),
+#         'HOST' : 'localhost',
+#         'PORT' : '3306'        
+#     }
+# }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Stick-It-Database',
-        'USER': 'root',
-        'PASSWORD': 'elijahgwapo',
-        # 'PASSWORD': get_decrypted_password(),
-        'HOST' : 'localhost',
-        'PORT' : '3306'        
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "mydatabase",
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
