@@ -9,8 +9,8 @@ urlpatterns = [
     path('delete_note/<int:pk>/', NoteDeleteView.as_view(), name='delete_note'),
     path('get_notes/', NoteGetView.as_view(), name='get_notes'),
     # Register Views By Avril Nigel Chua - BOGO
-    # path('', LoginService.as_view(), name = 'base'),
+    path('base/', LoginService.as_view(), name = 'base'),
     # path('register/', RegisterService.as_view(), name='register'),
-    # path('logout/', LogoutView.as_view(next_page = "authentication:login"), name = "logout"),
-    # path('home/', HomeView.as_view() ,name = "home"),
+    path('logout/', LogoutView.as_view(next_page = "authentication:login"), name = "logout"),
+    path('home/', HomeView.as_view() ,name = "home"),
 ]

@@ -26,7 +26,7 @@ class LoginUser(View):
             print("this run3")
 
             messages.success(request,"Successfully logged in")
-            return redirect('stickit:home')
+            return redirect('note:home')
         else:
             messages.error(request,"Incorrect username or password")
             # return render(request,'login.html',{'form':StickItLoginForm()})
@@ -35,7 +35,7 @@ class LoginUser(View):
 
 class RegisterService(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'register2.html', {'form': StickItUserCreationFrom()})
+        return render(request, 'authentication/register2.html', {'form': StickItUserCreationFrom()})
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
             form = StickItUserCreationFrom(request.POST)
@@ -43,7 +43,7 @@ class RegisterService(View):
                 user = form.save()
                 login(request, user)
                 messages.success(request, 'Account created successfully!')
-                return redirect('home')
+                return redirect('note:home')
             else:
                 messages.error(request, 'Please correct the error below.')
-        return render(request, 'register2.html', {'form': form})
+        return render(request, 'authentication/register2.html', {'form': form})
