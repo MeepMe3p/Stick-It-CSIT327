@@ -51,7 +51,7 @@ class CreateBoardView(View):
                 cat.save()
                 cat.users.add(request.user.id)
                 # cat.save
-                return redirect("stickit:home")
+                return redirect("note:home")
             print(form.is_valid(),' I DONT THINK SO')
             return render(request,'board/create_table.html',{'form':TableCreationForm()})
 

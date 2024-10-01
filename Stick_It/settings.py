@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     
 ]
 
-# AUTHENTICATION_BACKENDS = ['note.backends.EmailBackend']
+AUTHENTICATION_BACKENDS = ['authentication.backends.EmailBackend']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -81,23 +81,23 @@ WSGI_APPLICATION = 'Stick_It.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'Stick-It-Database',
-#         'USER': 'root',
-#         # 'PASSWORD': 'elijahgwapo',
-#         # 'PASSWORD': get_decrypted_password(),
-#         'HOST' : 'localhost',
-#         'PORT' : '3306'        
-#     }
-# }
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "mydatabase",
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'Stick-It-Database',
+        'USER': 'root',
+        'PASSWORD': 'elijahgwapo',
+        # 'PASSWORD': get_decrypted_password(),
+        'HOST' : 'localhost',
+        'PORT' : '3306'        
     }
 }
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": "mydatabase",
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -140,9 +140,13 @@ MEDIA_URL = 'images/'
 
 #https://www.youtube.com/watch?v=Sd-RseDuy-c cuz i cant load the css
 
-STATICFILES_DIR = {
-    os.path.join(BASE_DIR,'static')
-}
+# LIST DOWN ALL THE STATIC FILES IN DIS DIRECTORY
+STATICFILES_DIRS = [
+    # os.path.join(BASE_DIR,'static'),
+    ('authentication', os.path.join(BASE_DIR, 'authentication/static')),
+    ('note', os.path.join(BASE_DIR, 'note/static')),
+    ('board',os.path.join(BASE_DIR,'board/static')),
+]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
