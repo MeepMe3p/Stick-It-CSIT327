@@ -86,10 +86,10 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'Stick-It-Database',
         'USER': 'root',
-        'PASSWORD': 'elijahgwapo',
+        'PASSWORD': 'mysqlroot00',
         # 'PASSWORD': get_decrypted_password(),
         'HOST' : 'localhost',
-        'PORT' : '3306'        
+        'PORT' : '3307'        
     }
 }
 # DATABASES = {
@@ -154,3 +154,6 @@ STATIC_ROOT = os.path.join(BASE_DIR,'static')
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_URL = '/media/' 
+MEDIA_ROOT = BASE_DIR / 'media' 
