@@ -20,8 +20,8 @@ from django.conf.urls.static import static
 from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(("authentication.urls",'authentication'), namespace='authentication')),
-    path('note/', include(("note.urls",'note'), namespace='note')),
+    path('', include(("authentication.urls",'authentication'), namespace='authentication')), 
     # path('authentication/',include("authentication.urls")),
+    path('note/', include(("note.urls",'note'), namespace='note')),
     path("board/",include("board.urls")),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

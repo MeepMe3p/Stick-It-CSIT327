@@ -10,17 +10,29 @@ class Category(models.Model):
     category_description = models.TextField(max_length=100)
 
     def __str__(self):
-        return self.category_name;
+        return str(self.category_name)
+    
 class Board(models.Model):
     board_name = models.CharField(max_length=30)
     description = models.TextField(max_length=100)
-    # owner = models.ForeignKey(User,on_delete=models.CASCADE)
     category = models.ForeignKey(Category,on_delete=models.CASCADE)
-    PRIVACY_TYPE = [
-        ("PV" , "Private"),
-        ("PB" , "Public")
-    ]
-    privacy_settings = models.CharField(choices=PRIVACY_TYPE, max_length=2)
+    BOARD_TYPES = (
+        ('simple', 'Simple Board'),
+        ('project', 'Project Board')
+    ) 
+    board_type = models.CharField(max_length=10, choices=BOARD_TYPES, default='simple')
+    THEME = (
+        ('white', 'Default (White)'),
+        ('blue', 'Blue'),
+        ('green', 'Green'),
+        ('pink', 'Pink') 
+    )
+    board_theme = models.CharField(max_length=10, choices=THEME, default='white')
+    VISIBILITY_CHOICES = (
+        ('public', 'Public'),
+        ('private', 'Private'),
+    )
+    visibility = models.CharField(max_length=7, choices=VISIBILITY_CHOICES, default='public')
     date_created = models.DateField(auto_now_add=True)
 
     # according do documentation standard of many to many is plural

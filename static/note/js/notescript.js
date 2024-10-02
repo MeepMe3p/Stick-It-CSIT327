@@ -7,40 +7,37 @@ let last_note_id;
 // createBtn: Refers to a button that, when clicked, creates a new note.
 // list: Refers to a container (like a <div> or <ul>) where the created notes will be appended.
 createBtn.onclick = () => {
-    let newNote = document.createElement('div');
-    newNote.classList.add('note');
-    newNote.innerHTML = `
-    <span class="close">x</span>
-    <textarea placeholder="Write Content..." rows="10" cols="30"></textarea>`;
-    newNote.style.borderColor = color.value;
-    list.appendChild(newNote)
-    //  create a note in database with Ajax and use "GET" to get the new created note
-    fetch('/note/save_note/',{
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrftoken,
-        },
-        body: JSON.stringify({
-            content: newNote.querySelector('textarea').value,
-            borderColor: color.value,
-            coordinates: { x: newNote.style.left, y: newNote.style.top }
-        }),
-    }).then(response => {
-        if (!response.ok) { // Check if the response is OK (status 200-299)
-            // window.location.reload(1);
-            throw new Error('Network response was not ok');
-        }
-        return response.json(); 
-    })
-    .then(data => {
-        console.log('New note created with ID:', data.id); // This should now work
-        newNote.dataset.id = data.id; // Store the ID in the dataset
-        last_note_id = newNote.dataset.id;
-
-        console.log(data); // Log the entire response data
-    })
-    .catch(error => console.error('Error:', error));
+let newNote = document.createElement('div');
+newNote.classList.add('note');
+newNote.innerHTML = `
+<span class="close" data-id="">x</span>
+<textarea placeholder="Write Content..." rows="10" cols="30"></textarea>`;
+newNote.style.borderColor = color.value;
+list.appendChild(newNote)
+//  create a note in database with Ajax and use "GET" to get the new created note
+fetch('/note/save_note/',{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken,
+    },
+    body: JSON.stringify({
+        content: newNote.querySelector('textarea').value,
+        borderColor: color.value,
+        coordinates: { x: newNote.style.left, y: newNote.style.top }
+    }),
+}).then(response => {
+    if (!response.ok) { // Check if the response is OK (status 200-299)
+        throw new Error('Network response was not ok');
+    }
+    return response.json(); // Populates the data below kay gwapa siya! muehuehue
+})
+.then(data => {
+    console.log('New note created with ID:', data.id); // This should now work
+    newNote.dataset.id = data.id; // Store the ID in the dataset
+    console.log(data); // Log the entire response data
+})
+.catch(error => console.error('Error:', error));
 }
 // When the button is clicked, a new <div> is created with the class note.
 // Inside this <div>, a close button (<span class="close">) and a <textarea> for writing content are added.
@@ -53,11 +50,9 @@ createBtn.onclick = () => {
 
 // CAN'T ACCESS THE ID WHEN A NOTE IS LOADED!
 document.addEventListener('click', (event) => {
-    last_note_id = event.target.parentNode.dataset.id;
     if(event.target.classList.contains('close')){
-        console.log("Parent", event.target.parentNode)
-        console.log("Target", event.target)
-        const noteId = event.target.parentNode.dataset.id;
+        const noteId = event.target.dataset.id;
+        console.log(noteId)
         fetch(`/note/delete_note/${noteId}/`,{
             method : 'DELETE',
             headers : {
@@ -69,51 +64,48 @@ document.addEventListener('click', (event) => {
                 console.log(`Note with ID ${noteId} deleted successfully.`);
                 event.target.parentNode.remove();
             } else {
-                // window.location.reload(1);
                 console.error('Failed to delete note');
             }
         }).catch(error=>console.error('Error', error))
     }
-    // last_note_id = event.target.dataset.id;
+    last_note_id = event.target.dataset.id;
 })
 
 let cursor = {
-    x: null,
-    y: null
+x: null,
+y: null
 }
 let note = {
-    dom: null,
-    x: null,
-    y: null
+dom: null,
+x: null,
+y: null
 }
 
 // CAN'T ACCESS THE ID WHEN A NOTE IS LOADED!
 document.addEventListener('mousedown', (event) => {
-    if(event.target.classList.contains('note')){
-        // last_note_id = event.target.querySelector('span').dataset.id;
-        console.log(last_note_id);
-        // console.log(event.target.querySelector('span').dataset.id);
-        cursor = {
-            x: event.clientX,
-            y: event.clientY
-        }
-        note = {
-            dom: event.target,
-            x: event.target.getBoundingClientRect().left,
-            y: event.target.getBoundingClientRect().top
-        }
+if(event.target.classList.contains('note')){
+    console.log("mousedown");
+    // console.log(event.target.querySelector('span').dataset.id);
+    cursor = {
+        x: event.clientX,
+        y: event.clientY
+    }
+    note = {
+        dom: event.target,
+        x: event.target.getBoundingClientRect().left,
+        y: event.target.getBoundingClientRect().top
+    }
 
 
     last_note = event.target;
-    // if(event.target.querySelector('span').dataset.id != null)
-    //     last_note_id = event.target.dataset.id;
+    if(event.target.querySelector('span').dataset.id != null)
+        last_note_id = event.target.dataset.id;
 }
 })
 
 // CAN'T ACCESS THE ID WHEN A NOTE IS LOADED!
 document.addEventListener('mousemove', (event) => {
     if(note.dom == null) return;
-    // last_note_id = event.target.querySelector('span').dataset.id;
     console.log("mousemove")
     // console.log(event.target.querySelector('span').dataset.id)
     let currentCursor = {
@@ -129,11 +121,11 @@ document.addEventListener('mousemove', (event) => {
     note.dom.style.cursor = 'grab';
 
     last_note = event.target;
-    // if(event.target.querySelector('span').dataset.id != null)
+    if(event.target.querySelector('span').dataset.id != null)
+        last_note_id = event.target.querySelector('span').dataset.id;
 })
 
-document.addEventListener('mouseup', (event) => {
-    console.log(event.target)
+document.addEventListener('mouseup', () => {
     if( note.dom == null) return;
     note.dom.style.cursor = 'auto';
     note.dom = null;
@@ -153,7 +145,7 @@ document.addEventListener('mouseup', (event) => {
     // // To access the border color from the style
     // console.log(last_note.style.borderColor); // Logs the border color
 
-    fetch(`/note/update_note/${event.target.dataset.id}/`, {
+    fetch(`/note/update_note/${last_note_id}/`, {
         method : 'POST',
         headers : {
             'Content-Type': 'application/json',
@@ -166,7 +158,6 @@ document.addEventListener('mouseup', (event) => {
         }),
     }).then(response => {
         if (!response.ok) { // Check if the response is OK (status 200-299)
-            // window.location.reload(1);
             throw new Error('Network response was not ok');
         }
         return response.json(); // Populates the data below kay gwapa siya! muehuehue
@@ -219,16 +210,12 @@ window.onload = () => {
         newNote.style.left = note.coordinates.x; // Set the x position
         newNote.style.top = note.coordinates.y; // Set the y position
         newNote.innerHTML = `
-        <span class="close" style="border-color: ${note.border_color};">x</span>
+        <span class="close" style="border-color: ${note.border_color};" data-id="${note.id}">x</span>
         <textarea placeholder="Write Content..." rows="10" cols="30">${note.content}</textarea>`;
-        newNote.dataset.id = note.id;
+        
         list.appendChild(newNote);
         index++;
     });
 })
 .catch(error => console.error('Error fetching notes:', error));
 };
-
-// setTimeout(function(){
-//     window.location.reload(1);
-//  }, 5000);

@@ -100,12 +100,12 @@ def serialize_note(note, data):
 #         return render(request, 'register2.html', {'form': form})
     
 
-# class LoginService(View):
-#     def get(self, request, *args, **kwargs):
-#         return render(request, 'base.html')
+class LoginService(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'base.html')
 
-# class HomeView(View):
-#     # def get()
-#     print("welcome home")
-#     def get(self, request, *args, **kwargs):
-#         return render(request, 'home.html')
+class HomeView(View):
+    # def get()
+    print("welcome home")
+    def get(self, request, *args, **kwargs):
+        return render(request, 'home.html')
