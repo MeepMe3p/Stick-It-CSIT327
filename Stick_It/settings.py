@@ -81,20 +81,6 @@ WSGI_APPLICATION = 'Stick_It.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-<<<<<<< HEAD
-=======
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Stick-It-Database',
-        'USER': 'root',
-        'PASSWORD': 'mysqlroot00',
-        # 'PASSWORD': get_decrypted_password(),
-        'HOST' : 'localhost',
-        'PORT' : '3307'        
-    }
-}
->>>>>>> origin/homepage-with-create-board
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
