@@ -81,6 +81,20 @@ WSGI_APPLICATION = 'Stick_It.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+<<<<<<< HEAD
+=======
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'Stick-It-Database',
+        'USER': 'root',
+        'PASSWORD': 'mysqlroot00',
+        # 'PASSWORD': get_decrypted_password(),
+        'HOST' : 'localhost',
+        'PORT' : '3307'        
+    }
+}
+>>>>>>> origin/homepage-with-create-board
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
@@ -154,3 +168,6 @@ STATIC_ROOT = os.path.join(BASE_DIR,'static')
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_URL = '/media/' 
+MEDIA_ROOT = BASE_DIR / 'media' 

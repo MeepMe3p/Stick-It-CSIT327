@@ -1,12 +1,11 @@
 from django import forms
 from django.contrib.auth.models import User
 from .models import Board,Category
+
 class TableCreationForm(forms.ModelForm):
     class Meta:
         model = Board
-        fields = ["board_name","description","category","privacy_settings"]
-
-
+        fields = ["board_name","description","category","board_type","board_theme","visibility"]
     
 
     
