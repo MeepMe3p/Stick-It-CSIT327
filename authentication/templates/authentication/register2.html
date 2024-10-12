@@ -1,0 +1,73 @@
+<!-- PROGRAMMER NAME: -->
+<!-- Front-end: MARY KARYLLE DELOS REYES  -->
+<!-- Back-end: AVRIL NIGEL CHUAY  -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{%static 'css/style.css'%}" />
+        <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+        
+        <title>Register</title>
+    </head>
+    <body>
+    <section class="registration">
+        <!-- <h1>HWLO</h1> -->
+        <div class="form_container">
+      <!-- <i class="uil uil-times form_close"></i> -->
+      <!-- Login From -->
+      <div class="form login_form">
+        <form method="POST">
+            {%csrf_token%}
+
+          <h2>Register</h2>
+
+          <div class="input_box">
+            <label>First Name</label>
+             {{form.first_name}}
+          </div>
+
+          <div class="input_box"style="margin-top: 40px; margin-bottom:20px">
+            <label>Last Name</label>
+             {{form.last_name}}
+          </div>
+
+          <div class="input_box"style="margin-top: 40px; margin-bottom:20px">
+            <label>Email</label>
+             {{form.email}}
+          </div>   
+
+          <!-- <div class="input_box"style="margin-top: 40px; margin-bottom:20px">
+            <label>Username</label>
+             {{form.username}}
+          </div>    -->
+
+          <div class="input_box" style="margin-top: 40px; margin-bottom:20px">
+            <label>Password</label>
+            {{form.password1}}
+          </div>
+          
+          <div class="input_box" style="margin-top: 40px; margin-bottom:20px">
+            <label>Confirm Password</label>
+            {{form.password2}}
+          </div>
+
+          <!-- <div class="input_box"style="margin-top: 40px;">
+            <label>Birthdate</label>
+             {{form.birth_date}}
+          </div>    -->
+          <button class="button" type = 'submit'>Register Now</button>
+          <div class="login_signup">Already have an account? <a href="{%url 'authentication:login'%}" id="" style="color: #F0EDED;">Login</a></div>
+
+         
+        </form>
+    </div>
+    
+</div>
+</section>
+<script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
+

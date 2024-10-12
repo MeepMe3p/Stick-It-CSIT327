@@ -1,20 +1,3 @@
-// Filtering based on board categories
-const filterButtons = document.querySelectorAll('.filter-btn');
-const boards = document.querySelectorAll('.board-card');
-
-filterButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        const filter = button.textContent.toLowerCase();
-        boards.forEach(board => {
-            if (filter === 'all boards' || board.classList.contains(filter)) {
-                board.style.display = 'block';
-            } else {
-                board.style.display = 'none';
-            }
-        });
-    });
-});
-
 function myFunction() {
     const dropdownMenu = document.getElementById('dropdown-menu');
     dropdownMenu.classList.toggle('show');
