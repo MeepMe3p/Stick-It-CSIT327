@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from board.models import Board
+from boards.models import Board
 
 # Create your views here.
 def home(request):

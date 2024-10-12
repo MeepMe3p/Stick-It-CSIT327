@@ -1,7 +1,0 @@
-# Ignore Python bytecode files
-*.py[cod]
-__pycache__/
-
-# Ignore Django migration files
-*/migrations/*
-!*/migrations/__init__.py  # This ensures you still track the __init__.py file in migrations folder
