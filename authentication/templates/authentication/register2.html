@@ -16,7 +16,7 @@
     <section class="registration">
         <!-- <h1>HWLO</h1> -->
         <div class="form_container">
-      <i class="uil uil-times form_close"></i>
+      <!-- <i class="uil uil-times form_close"></i> -->
       <!-- Login From -->
       <div class="form login_form">
         <form method="POST">
@@ -39,10 +39,10 @@
              {{form.email}}
           </div>   
 
-          <div class="input_box"style="margin-top: 40px; margin-bottom:20px">
+          <!-- <div class="input_box"style="margin-top: 40px; margin-bottom:20px">
             <label>Username</label>
              {{form.username}}
-          </div>   
+          </div>    -->
 
           <div class="input_box" style="margin-top: 40px; margin-bottom:20px">
             <label>Password</label>
@@ -54,10 +54,10 @@
             {{form.password2}}
           </div>
 
-          <div class="input_box"style="margin-top: 40px;">
+          <!-- <div class="input_box"style="margin-top: 40px;">
             <label>Birthdate</label>
              {{form.birth_date}}
-          </div>   
+          </div>    -->
           <button class="button" type = 'submit'>Register Now</button>
           <div class="login_signup">Already have an account? <a href="{%url 'authentication:login'%}" id="" style="color: #F0EDED;">Login</a></div>
 

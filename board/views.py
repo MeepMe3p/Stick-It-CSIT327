@@ -25,7 +25,7 @@ def create_board(request):
             return redirect('success_page')  
     else:
         form = TableCreationForm()
-    return render(request, 'boards/create_table.html',{'forms': form})
+    return render(request, 'board/create_table.html',{'forms': form})
 
 # Create your views here.
 # PROGRAMMER NAME: Elijah Rei Sabay
