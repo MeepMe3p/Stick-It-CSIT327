@@ -98,6 +98,7 @@ WSGI_APPLICATION = 'Stick_It.wsgi.application'
 # }
 DATABASES = {
     "default": {
+# <<<<<<< homepage-with-create-board
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'Stick-It-Database',
         'USER': 'root',
@@ -105,6 +106,10 @@ DATABASES = {
         # 'PASSWORD': get_decrypted_password(),
         'HOST' : 'localhost',
         'PORT' : '3307'
+# =======
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": "mydatabase",
+# >>>>>>> main
     }
 }
 
