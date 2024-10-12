@@ -1,0 +1,235 @@
+/* PROGRAMMER NAME: MARY KARYLLE DELOS REYES */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Aoboshi+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Aoboshi+One&family=Fredoka:wght@300..700&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* font-family: "Aoboshi One", serif; */
+}
+
+a {
+  text-decoration: none;
+}
+.button {
+  padding: 6px 24px;
+  border: 2px solid #625D5D;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: "Aoboshi One", serif;
+  font-size: 16px;
+  color: #F0EDED;
+}
+.button:active {
+  transform: scale(0.98);
+}
+
+/* Home */
+  .registration {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    background-image: url("../images/authenticationBg.png");
+    /* background-image: url("\SignInSignUp\ Page\ Design.png"); */
+    background-size: 100%;
+    background-position: center;
+  }
+.registration::before {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(63, 62, 62, 0.6);
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.5s ease-out;
+}
+.registration.show::before {
+  opacity: 1;
+  pointer-events: auto;
+}
+/* Form */
+.form_container {
+  position: fixed;
+  max-width: 340px;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.2);
+  z-index: 101;
+  background: #292A48;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.4s ease-out;
+}
+.registration.show .form_container {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+.signup_form {
+  display: none;
+}
+.form_container.active .signup_form {
+  display: block;
+}
+.form_container.active .login_form {
+  display: none;
+}
+.form_close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  color: #F0EDED;
+  font-size: 22px;
+  opacity: 0.7;
+  cursor: pointer;
+}
+.form_container h2 {
+  font-family: "Aoboshi One", serif;
+  font-size: 22px;
+  color: #F0EDED;
+  text-align: center;
+}
+
+input {
+  margin-top: 4px;
+  border-radius: 3px;
+}
+
+.input_box {
+  font-family: "Fredoka", sans-serif;
+  font-size: 13px;
+  color: #F0EDED;
+  position: relative;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  height: 40px;
+}
+
+.input_box input {
+  height: 100%;
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 0 30px;
+  color: #333;
+  transition: all 0.2s ease;
+  border-bottom: 1.5px solid #aaaaaa;
+}
+.input_box input:focus {
+  border-color: #F0EDED;
+}
+.input_box i {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: #707070;
+}
+.input_box i.email,
+.input_box i.password {
+  left: 0;
+}
+.input_box input:focus ~ i.email,
+.input_box input:focus ~ i.password {
+  color: #7d2ae8;
+}
+.input_box i.pw_hide {
+  right: 0;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.form_container a {
+  color: #0f172a;
+  font-size: 12px;
+}
+.form_container a:hover {
+  text-decoration: underline;
+}
+.checkbox input {
+  accent-color: #7d2ae8;
+}
+.checkbox label {
+  font-size: 12px;
+  cursor: pointer;
+  user-select: none;
+  color: #F0EDED; 
+}
+.form_container .button {
+  background: #625D5D;
+  margin-top: 30px;
+  width: 100%;
+  padding: 10px 0;
+  border-radius: 10px;
+}
+
+.login_signup {
+  font-family: "Fredoka", sans-serif;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 15px;
+  color: #F0EDED;
+}
+
+.note_div{
+  background-color: #222438;
+  margin: 0;
+  font-family: Poppins;
+}
+
+.div_note_form{
+  background-color: #eee;
+  width: max-content;
+  padding: 5px;
+  margin: 10px;
+  border-radius: 24px;
+  gap: 10px;
+}
+.div_note_form input, button{
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  font-size: large;
+  cursor: pointer;
+}
+.div_note_form input::-webkit-color-swatch-wrapper{
+  padding: 0;
+}
+.div_note_form input::-webkit-color-swatch{
+  border-radius: 50%;
+}
+#list textarea{
+  all: unset;
+  color: #d6d6d6;
+}
+#list .note{
+  background-color: #333;
+  width: max-content;
+  border-top: 30px solid #e6b905;
+  border-radius: 10px;
+  box-shadow: 0 20px 50px #0004;
+  padding: 10px;
+  position: absolute;
+  top: 60px;
+  left: 50px;
+}
+#list .note span{
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  height: 30px;
+  font-family: cursive;
+  font-size: large;
+  padding-right: 10px;
+  cursor: pointer;
+}
