@@ -81,15 +81,16 @@ WSGI_APPLICATION = 'Stick_It.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'Stick-It-Database',
         'USER': 'root',
-        'PASSWORD': 'elijahgwapo',
+        'PASSWORD': 'mysqlroot00',
         # 'PASSWORD': get_decrypted_password(),
         'HOST' : 'localhost',
-        'PORT' : '3306'        
+        'PORT' : '3307'        
     }
 }
 # DATABASES = {
