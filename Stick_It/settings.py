@@ -41,11 +41,15 @@ INSTALLED_APPS = [
     
     'note',
     'authentication',
+    'mainApp',
     'board',
     
 ]
 
-AUTHENTICATION_BACKENDS = ['authentication.backends.EmailBackend']
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'authentication.backends.EmailBackend'
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -94,11 +98,32 @@ DATABASES = {
     }
 }
 # DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": "mydatabase",
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'Stick-It-Database',
+#         'USER': 'root',
+#         'PASSWORD': 'elijahgwapo',
+#         # 'PASSWORD': get_decrypted_password(),
+#         'HOST' : 'localhost',
+#         'PORT' : '3306'        
 #     }
 # }
+DATABASES = {
+    "default": {
+# <<<<<<< homepage-with-create-board
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'Stick-It-Database',
+        'USER': 'root',
+        'PASSWORD': 'mysqlroot00',
+        # 'PASSWORD': get_decrypted_password(),
+        'HOST' : 'localhost',
+        'PORT' : '3307'
+# =======
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": "mydatabase",
+# >>>>>>> main
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

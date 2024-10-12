@@ -18,10 +18,17 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+
+from django.shortcuts import redirect
+
+def redirect_to_login(request):
+    return redirect('authentication:login')
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(("authentication.urls",'authentication'), namespace='authentication')), 
-    # path('authentication/',include("authentication.urls")),
+    path('', redirect_to_login, name='home'),  # Redirect to login
+    path('', include(("authentication.urls",'authentication'), namespace='authentication')),
+    path('mainApp/', include('mainApp.urls')),
     path('note/', include(("note.urls",'note'), namespace='note')),
     path("board/",include("board.urls")),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
