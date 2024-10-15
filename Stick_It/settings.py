@@ -92,10 +92,10 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'Stick-It-Database',
         'USER': 'root',
-        'PASSWORD': 'elijahgwapo',
+        'PASSWORD': '',
         # 'PASSWORD': get_decrypted_password(),
         'HOST' : 'localhost',
-        'PORT' : '3306'        
+        'PORT' : '3307'        
     }
 }
 
