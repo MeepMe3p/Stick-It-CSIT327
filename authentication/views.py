@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse,reverse_lazy
-from django.contrib.auth import login,authenticate,get_user_model
+from django.contrib.auth import login,authenticate,get_user_model,logout
 from .forms import StickItLoginForm
 from django.views import View
 from django.contrib import messages
@@ -18,7 +18,7 @@ class LoginUser(View):
         UserModel = get_user_model()
         
         print(request.POST)
-        user = authenticate(request,username = request.POST['email'], password = request.POST['password'])
+        user = authenticate(request,username = request.POST['username'], password = request.POST['password'])
         print(user)
         if user is not None:
             login(request,user)
@@ -40,11 +40,22 @@ class RegisterService(View):
             form = StickItUserCreationForm(request.POST)
             if form.is_valid():
                 print("Form is valid")
-                user = form.save()
+                user =form.save()
+            user = authenticate(request,username = request.POST['email'], password = request.POST['password1'])
+            print(user)
+            if user is not None:
+                login(request,user)
+                print("this run3")
+
+                # messages.success(request,"Successfully logged in")
                 login(request, user)
                 messages.success(request, 'Account created successfully!')
-                return redirect('authentication:login')
+                return redirect('mainApp:home')
             else:
                 messages.error(request, 'Please correct the error below.')
                 print(form.errors)
         return render(request, 'authentication/register2.html', {'form': form})
+    
+def logout_view(request):
+    logout(request=request)
+    return redirect('authentication:login')
