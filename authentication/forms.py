@@ -1,4 +1,4 @@
-    from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django import forms
 from datetime import date
@@ -18,7 +18,7 @@ class StickItLoginForm(AuthenticationForm):
         model = User
         fields = ['email','password']
 
-class StickItUserCreationFrom(UserCreationForm):
+class StickItUserCreationForm(UserCreationForm):
     
     # Disables the: 
     # https://stackoverflow.com/questions/78850636/what-is-password-based-authentication-in-the-usercreationform-in-django-and-how
@@ -27,14 +27,14 @@ class StickItUserCreationFrom(UserCreationForm):
     email = forms.EmailField(required=True, label="")
     first_name = forms.CharField(max_length=30, required=True, help_text="")
     last_name = forms.CharField(max_length=30, required=True, help_text="")
-    birth_date = forms.DateField(
-        required=True, 
-        widget=forms.SelectDateWidget(years=range(1900, 2024))  # For better UX
-    )
+    # birth_date = forms.DateField(
+    #     required=True, 
+    #     widget=forms.SelectDateWidget(years=range(1900, 2024))  # For better UX
+    # )
     class Meta(UserCreationForm.Meta):
         model = User
         # fields = ('username', 'password1', 'password2', 'email', 'first_name', 'last_name', 'birth_date')
-        fields = ('username', 'password1', 'password2', 'email', 'first_name', 'last_name', 'birth_date')
+        fields = ( 'password1', 'password2', 'email', 'first_name', 'last_name')
         
     # clean_<fieldname> methods allow you to add custom validation logic for specific form fields. 
     
@@ -59,12 +59,12 @@ class StickItUserCreationFrom(UserCreationForm):
             raise forms.ValidationError("Last name should only contain letters.")
         return last_name
     
-    def clean_birth_date(self):
-        birth_date = self.cleaned_data.get('birth_date')  #  Django's initial validation
+    # def clean_birth_date(self):
+    #     birth_date = self.cleaned_data.get('birth_date')  #  Django's initial validation
         
         # Check if birth_date is in the future
-        if birth_date > date.today():
-            raise forms.ValidationError("Birth date cannot be in the future.")
+        # if birth_date > date.today():
+        #     raise forms.ValidationError("Birth date cannot be in the future.")
         
         # # Check if the user is at least 18 years old
         # # RATED SPG, NANI!?
@@ -72,11 +72,11 @@ class StickItUserCreationFrom(UserCreationForm):
         # if age < 18:
         #     raise forms.ValidationError("You must be at least 18 years old to register. Minor Not Allowed!")
         
-        return birth_date
+        # return birth_date
     
     
     def __init__(self, *args, **kwargs):
-        super(StickItUserCreationFrom, self).__init__(*args, **kwargs)
+        super(StickItUserCreationForm, self).__init__(*args, **kwargs)
 
         for field in self.fields.values():
             field.widget.attrs.update({'class': 'form-control'})
@@ -110,8 +110,8 @@ class StickItUserCreationFrom(UserCreationForm):
         self.fields['last_name'].widget.attrs['placeholder'] = 'Last Name'
         self.fields['last_name'].label = ''
         
-        self.fields['birth_date'].label = ''
-        self.fields['birth_date'].help_text = '<span class="form-text text-muted"><small>Please enter your birthdate in YYYY-MM-DD format.</small></span>'	
+        # self.fields['birth_date'].label = ''
+        # self.fields['birth_date'].help_text = '<span class="form-text text-muted"><small>Please enter your birthdate in YYYY-MM-DD format.</small></span>'	
 
     def save(self, commit=True):
 
@@ -126,7 +126,7 @@ class StickItUserCreationFrom(UserCreationForm):
         user.email = self.cleaned_data['email']
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
-        user.birth_date = self.cleaned_data['birth_date']
+        # user.birth_date = self.cleaned_data['birth_date']
 
         us = user.first_name +' '+ user.last_name
         print(us)

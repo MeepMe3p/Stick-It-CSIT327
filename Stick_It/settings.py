@@ -74,6 +74,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -85,33 +86,19 @@ WSGI_APPLICATION = 'Stick_It.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'Stick-It-Database',
-#         'USER': 'root',
-#         'PASSWORD': 'elijahgwapo',
-#         # 'PASSWORD': get_decrypted_password(),
-#         'HOST' : 'localhost',
-#         'PORT' : '3306'        
-#     }
-# }
+
 DATABASES = {
-    "default": {
-# <<<<<<< homepage-with-create-board
+    'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'Stick-It-Database',
         'USER': 'root',
-        'PASSWORD': 'mysqlroot00',
+        'PASSWORD': '',
         # 'PASSWORD': get_decrypted_password(),
         'HOST' : 'localhost',
-        'PORT' : '3307'
-# =======
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": "mydatabase",
-# >>>>>>> main
+        'PORT' : '3307'        
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -150,7 +137,7 @@ USE_TZ = True
 # https://www.geeksforgeeks.org/django-static-file/
 
 STATIC_URL = 'static/'
-MEDIA_URL = 'images/'
+MEDIA_URL = 'media/'
 
 #https://www.youtube.com/watch?v=Sd-RseDuy-c cuz i cant load the css
 
@@ -161,13 +148,11 @@ STATICFILES_DIRS = [
     ('note', os.path.join(BASE_DIR, 'note/static')),
     ('board',os.path.join(BASE_DIR,'board/static')),
 ]
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+# MEDIA REFERENCES:  https://stackoverflow.com/questions/64290228/unable-to-access-media-files-in-django-template 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-MEDIA_URL = '/media/' 
-MEDIA_ROOT = BASE_DIR / 'media' 
