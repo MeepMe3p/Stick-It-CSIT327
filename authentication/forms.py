@@ -77,6 +77,7 @@ class StickItUserCreationForm(UserCreationForm):
     
     def __init__(self, *args, **kwargs):
         super(StickItUserCreationForm, self).__init__(*args, **kwargs)
+        super(StickItUserCreationForm, self).__init__(*args, **kwargs)
 
         for field in self.fields.values():
             field.widget.attrs.update({'class': 'form-control'})
@@ -86,6 +87,9 @@ class StickItUserCreationForm(UserCreationForm):
         e.g. bootstrap design
         """
         # self.fields['username'].widget.attrs['class'] = 'form-control'
+        # self.fields['username'].widget.attrs['placeholder'] = 'Username'
+        # self.fields['username'].label = ''
+        # self.fields['username'].help_text = '<span class="form-text text-muted"><small>Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</small></span>'
         # self.fields['username'].widget.attrs['placeholder'] = 'Username'
         # self.fields['username'].label = ''
         # self.fields['username'].help_text = '<span class="form-text text-muted"><small>Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</small></span>'
