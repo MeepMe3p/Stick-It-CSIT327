@@ -18,7 +18,7 @@ class StickItLoginForm(AuthenticationForm):
         model = User
         fields = ['email','password']
 
-class StickItUserCreationFrom(UserCreationForm):
+class StickItUserCreationForm(UserCreationForm):
     
     # Disables the: 
     # https://stackoverflow.com/questions/78850636/what-is-password-based-authentication-in-the-usercreationform-in-django-and-how
@@ -33,6 +33,7 @@ class StickItUserCreationFrom(UserCreationForm):
     )
     class Meta(UserCreationForm.Meta):
         model = User
+        # fields = ('username', 'password1', 'password2', 'email', 'first_name', 'last_name', 'birth_date')
         fields = ('username', 'password1', 'password2', 'email', 'first_name', 'last_name', 'birth_date')
         
     # clean_<fieldname> methods allow you to add custom validation logic for specific form fields. 
@@ -75,7 +76,7 @@ class StickItUserCreationFrom(UserCreationForm):
     
     
     def __init__(self, *args, **kwargs):
-        super(StickItUserCreationFrom, self).__init__(*args, **kwargs)
+        super(StickItUserCreationForm, self).__init__(*args, **kwargs)
 
         for field in self.fields.values():
             field.widget.attrs.update({'class': 'form-control'})
@@ -85,9 +86,9 @@ class StickItUserCreationFrom(UserCreationForm):
         e.g. bootstrap design
         """
         # self.fields['username'].widget.attrs['class'] = 'form-control'
-        self.fields['username'].widget.attrs['placeholder'] = 'Username'
-        self.fields['username'].label = ''
-        self.fields['username'].help_text = '<span class="form-text text-muted"><small>Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</small></span>'
+        # self.fields['username'].widget.attrs['placeholder'] = 'Username'
+        # self.fields['username'].label = ''
+        # self.fields['username'].help_text = '<span class="form-text text-muted"><small>Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</small></span>'
 
         # self.fields['password1'].widget.attrs['class'] = 'form-control'
         self.fields['password1'].widget.attrs['placeholder'] = 'Password'
