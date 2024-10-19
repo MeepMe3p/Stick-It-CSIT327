@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
 </head>
 <body>
+    {%if user.is_authenticated%}
     <header>
         <div class="logo">STICKIT</div>
         <div class="header-icons">
@@ -19,9 +20,11 @@
                     <span class="user-initials">EN</span>
                 </div>
                 <div class="dropdown-menu" id="dropdown-menu">
+                    <p class = "dropdown-item">Hello {{user.username}}</p>
                     <a href="profile.html" class="dropdown-item">Profile</a>
                     <a href="my_boards.html" class="dropdown-item">My Boards</a>
-                    <a href="#" class="dropdown-item">Logout</a>
+                    <a href="{%url 'authentication:logout'%}" class="dropdown-item">Logout</a>
+                    
                 </div>
             </div>
         </div>
@@ -36,31 +39,31 @@
         <div class="board-categories">
             <div class="category-icon">
                 <button class="category-btn">
-                    <img src="media/stars.svg" alt="Boards Icon" width="20" height="20">
+                    <img src="{%get_media_prefix%}stars.svg" alt="Boards Icon" width="20" height="20">
                 </button>
                 <span>Boards</span>
             </div>
             <div class="category-icon">
                 <button class="category-btn">
-                    <img src="media/window-desktop.svg" alt="Work Icon" width="20" height="20">
+                    <img src="{%get_media_prefix%}window-desktop.svg" alt="Work Icon" width="20" height="20">
                 </button>
                 <span>Work</span>
             </div>
             <div class="category-icon">
                 <button class="category-btn">
-                    <img src="media/person-lock.svg" alt="Personal Icon" width="24" height="21">
+                    <img src="{%get_media_prefix%}person-lock.svg" alt="Personal Icon" width="24" height="21">
                 </button>
                 <span>Personal</span>
             </div>
             <div class="category-icon">
                 <button class="category-btn">
-                    <img src="media/backpack4.svg" alt="Study Icon" width="25" height="20">
+                    <img src="{%get_media_prefix%}backpack4.svg" alt="Study Icon" width="25" height="20">
                 </button>
                 <span>Study</span>
             </div>
             <div class="category-icon">
                 <button class="category-btn create-new">
-                    <img src="media/stars.svg" alt="Create New Icon" width="20" height="20">
+                    <img src="{%get_media_prefix%}/stars.svg" alt="Create New Icon" width="20" height="20">
                 </button>
                 <span>Create New</span>
             </div>
@@ -73,7 +76,7 @@
         <div class="board-placeholder"></div>
         <div class="board-placeholder"></div>
         <div class="board-placeholder"></div>
-        <div class="board-placeholder"></div>0
+        <div class="board-placeholder"></div>
         <div class="board-placeholder"></div>
     </section>
 
@@ -83,74 +86,82 @@
             <span class="close-btn" onclick="closeModal()">&times;</span>
             <h2>Create Board</h2>
             
-            <form method="POST" action="{% url 'boards:create_board' %}"> 
+            <form method = "POST" action=""> 
                 {% csrf_token %}
                 <div class="form-group first-input">
                     <label for="board-namde">Board Name</label>
-                    <input value="{{ form.board_name }}" id="board-name" placeholder="Board Name" >
-                    <!-- <div class="input">
-                        {{forms.board_name}}
-                    </div> -->
+                    <!-- <input value="{{ form.board_name }}" id="board-name" placeholder="Board Name" > -->
+                    {{form.board_name}}
                 </div>
 
                 <div class="form-group">
                     <label for="board-description">Board Description</label>
-                    <textarea value="{{ form.board_description }}" id="board-description" placeholder="Board Description"></textarea>
-                    <!-- <div class="textarea"> -->
-                        <!-- {{ forms.board_description }} -->
-                    <!-- </div> -->
+                    <!-- <textarea value="{{ form.board_description }}" id="board-description" placeholder="Board Description"></textarea> -->
+                    {{form.description}}
                 </div>
 
                 <div class="form-group">
                     <label for="collaborators">Collaborators</label>
-                    <input type="text" id="collaborators" placeholder="Collaborators">
+                    <select id="category" onchange="handleCategoryChange()">
+                        <option value="" selected>Select...</option>
+                        {% for users in users %}
+                        <option value="{{ users.id }}">{{ users.username }}</option>
+                        {% endfor %}
+                    </select>
+                    <!-- <input type="text" id="collaborators" placeholder="Collaborators"> -->
                 </div>
 
                 <div class="form-group">
                     <label for="category">Category</label>
-                    <select id="category" onchange="handleCategoryChange()">
+                    <!-- <select id="category" onchange="handleCategoryChange()">
                         <option value="" selected>Select...</option>
-                        <option value="create-new">Create new...</option>
-                        {% for category in categories %}
-                            <option value="{{ category.id }}">{{ category.category_name }}</option>
+                        {% for category in category %}
+                        <option value="{{ category.id }}">{{ category.category_name }}</option>
                         {% endfor %}
-                    </select>
-                    <input value="{{ category.id }}" id="new-category" placeholder="Enter new category" style="display: none; margin-top: 10px;">
+                    </select> -->
+                    {{form.category}}
+                    <!-- <option value="create-new">Create new...</option> -->
+                    <!-- <input value="{{ category.id }}" id="new-category" placeholder="Enter new category" style="display: none; margin-top: 10px;"> -->
+
+                     <!-- <label for="" id = ''></label> -->
+                     {{form.new_category}}
+                     {{form.new_description}}
                 </div>
 
                 <div class="form-group flex-container">
                     <div class="board-type">
                         <label>Board Type</label>
-                        <select id="board-type">
+                        <!-- <select id="board-type">
                             <option value="" selected>Select...</option>
                             <option value="{{ form.board_type }}">Simple Board</option>
                             <option value="{{ form.board_type }}">Project Board</option>
-                        </select>
+                        </select> -->
+                        {{form.board_type}}
                         <!-- {{ forms.board_type }} -->
                     </div>
     
                     <div class="form-group">
                         <label for="theme">Theme</label>
-                        <select id="theme" name="theme" class="theme-select">
+                        <!-- <select id="theme" name="theme" class="theme-select">
                             <option value="{{ form.board_theme }}">Default (White)</option>
                             <option value="{{ form.board_theme }}">Blue</option>
                             <option value="{{ form.board_theme }}">Green</option>
                             <option value="{{ form.board_theme }}">Pink</option>
-                        </select>
-                        <!-- {{ forms.board_theme }} -->
+                        </select> -->
+                        {{ form.board_theme }}
                     </div>
                 </div>
 
                 <div class="form-group visibility-create-container">
                     <div class="visibility">
                         <label>Visibility</label>
-                        <div class="visibility-options">
+                        <!-- <div class="visibility-options">
                             <input value="{{ form.visibility }}" type="radio" id="public" name="visibility" value="public" checked>
                             <label for="public">Public</label>
                             <input value="{{ form.visibility }}" type="radio" id="private" name="visibility" value="private">
                             <label for="private">Private</label>
-                        </div>
-                        <!-- {{forms.visibility}} -->
+                        </div> -->
+                        {{form.visibility}}
                     </div>
 
                     <button type="submit" class="submit-btn">Create</button>
@@ -159,6 +170,11 @@
         </div>
     </div>
 
+    {%else%}
+    <h1>Please login huhu nice design</h1>
+    <a href="{%url 'authentication:login'%}">login</a>
+        {%endif%}
+  
     <script src="{% static 'mainApp/scripts.js' %}"></script>
 </body>
 </html>

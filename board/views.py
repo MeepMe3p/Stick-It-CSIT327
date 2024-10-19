@@ -8,28 +8,41 @@ from .models import Category,Board
 
 
 # To handle the creation of the new board ---- processes the inout data from modal overlay in mainApp/home.html
+
 def create_board(request):
-    if request.method == 'POST':
-        form = TableCreationForm(request.POST)
-        if form.is_valid():
-            board_name = form.cleaned_data['name']
-            description = form.cleaned_data['description']
-            category = form.cleaned_data['category']
-            board_type = form.cleaned_data['board_type']
-            board_theme = form.cleaned_data['board_theme']
-            visibility = form.cleaned_data['visibility']
-            print("zfvzxvzxvzxvzxvzxv")
-            board = Board.objects.create(board_name=board_name, description=description, board_type=board_type, board_theme=board_theme,category=category,visibility=visibility)
-            board.save()
-            form.save() 
-            return redirect('success_page')  
-    else:
-        form = TableCreationForm()
-    return render(request, 'board/create_table.html',{'forms': form})
+    print("called hereee comeon ")
+    form = TableCreationForm(request.POST)
+    print(request.POST)
+    if form.is_valid():
+        board = form.save(commit=False)
+        print(form.cleaned_data)
+        board.board_name = form.cleaned_data['board_name']
+        board.description = form.cleaned_data['description']
+        board.category = form.cleaned_data['category']
+        board.board_type = form.cleaned_data['board_type']
+        board.board_theme = form.cleaned_data['board_theme']
+        board.visibility = form.cleaned_data['visibility']
+        
+
+        # category = Category.objects.get(pk=1)
+        # print(f"{category.id} aaaaa")
+
+        # board = Board.objects.create(board_name=board_name, description=description, board_type=board_type, board_theme=board_theme,category=category,visibility=visibility)
+        print("it is valid go here")
+        board.save()
+        print(f"name: {board.board_name} board id: {board.id}")
+        userboard = Board.objects.get(pk = board.id)
+        userboard.users.add(request.user.id)
+        userboard.user_count+=1
+        userboard.save()
+        form.save() 
+        # return redirect('board:create_board')  
+    print(form.errors)
 
 # Create your views here.
 # PROGRAMMER NAME: Elijah Rei Sabay
 class CreateBoardView(View):
+        
     def get(self,request):
         print(request)
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -39,11 +52,25 @@ class CreateBoardView(View):
             
             return JsonResponse({'context':data})
         else:
-            print("wa kay uyab")
             choices = Category.objects.all()
-            print(choices)
-            return render(request,'board/create_table.html',{'form':TableCreationForm(),'form2':CategoryCreationForm})
-    
+            # print(choices.count()+'aaa')
+            context = {
+                'form':TableCreationForm(),
+                'form2':CategoryCreationForm,
+                'category':choices,
+            }
+            return render(request,'board/create_table.html',context)
+            # return JsonResponse(context)
+            # return context
+    def get_context():
+        choices = Category.objects.all()
+        print(choices.count())
+        context = {
+            'form':TableCreationForm(),
+            'form2':CategoryCreationForm(),
+            'category':choices
+        }
+        return context
     def post(self,request):
         print(request,"THIS IS THE REQUEST")
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -75,6 +102,9 @@ class CreateBoardView(View):
                 return redirect("note:home")
             print(form.is_valid(),' I DONT THINK SO')
             return render(request,'board/create_table.html',{'form':TableCreationForm()})
+        
+
+    
 
 
 # https://stackoverflow.com/questions/69961299/how-to-return-ajax-response-as-well-as-redirection-in-the-views-py-django : redirecting jsonresponese
