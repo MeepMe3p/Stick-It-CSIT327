@@ -9,31 +9,34 @@ from django.template.context import RequestContext
 from django.http import JsonResponse
 class NoteView(View):
     def get(self, request):
-        return render(request, 'note.html')
-class NoteCreateView(View):
-    def post(self, request, *args, **kwargs):
-        try:
-            print("Furina!")
-            data = json.loads(request.body.decode('utf-8'))
-            content = data.get('content')
-            borderColor = data.get('borderColor')
-            coordinates = data.get('coordinates')
-            is_finished = data.get('is_finished')
-            checkbox_id = data.get('checkbox_id')
-            print(f"Content: {content}, Border Color: {borderColor}, Coordinates: {coordinates}, "
-                f"is_finished: {is_finished}, checkbox_id: {checkbox_id}")
+        # TODO PASS THE BOARD NAME HERE!
+        note_board_name = "JellllyFishMyKamiOOshiiiiiNamBerWanFanHereSupport4Ever"  # This will be the name of your board
+        return render(request, 'note.html', {'note_board_name': note_board_name})
+    
+# class NoteCreateView(View):
+#     def post(self, request, *args, **kwargs):
+#         try:
+#             print("Furina!")
+#             data = json.loads(request.body.decode('utf-8'))
+#             content = data.get('content')
+#             borderColor = data.get('borderColor')
+#             coordinates = data.get('coordinates')
+#             is_finished = data.get('is_finished')
+#             checkbox_id = data.get('checkbox_id')
+#             print(f"Content: {content}, Border Color: {borderColor}, Coordinates: {coordinates}, "
+#                 f"is_finished: {is_finished}, checkbox_id: {checkbox_id}")
 
 
-            note = Note.objects.create(content=content, border_color=borderColor,coordinates=coordinates,
-                                       is_finished=is_finished, checkbox_id=checkbox_id)
+#             note = Note.objects.create(content=content, border_color=borderColor,coordinates=coordinates,
+#                                        is_finished=is_finished, checkbox_id=checkbox_id)
 
-            print(note.id)
+#             print(note.id)
             
-            return JsonResponse({'id': note.id}, status=201)
+#             return JsonResponse({'id': note.id}, status=201)
 
-        except Exception as e:
-            print(f"Error: {e}")  # Print the error message
-            return JsonResponse({'error': str(e)}, status=400)
+#         except Exception as e:
+#             print(f"Error: {e}")  # Print the error message
+#             return JsonResponse({'error': str(e)}, status=400)
         
 class NoteUpdateView(View):
     def post(self, request, pk, *args, **kwargs):
