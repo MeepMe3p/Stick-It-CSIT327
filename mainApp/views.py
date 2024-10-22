@@ -9,19 +9,27 @@ from board.forms import TableCreationForm, CategoryCreationForm
 class Home(View):
     def get(self,request):
         choices = Category.objects.all()
-        users = User.objects.all().filter().exclude(pk=request.user.id)
+        board = Board.objects.filter(owner = request.user.id)
         print(choices.count())
         context = {
-            'form':TableCreationForm(),
+            'form':TableCreationForm(request = request),
             'form2':CategoryCreationForm,
             'category':choices,
-            'users':users,
+            'boards':board,
         }
         return render(request, 'mainApp/home.html',context)
     def post(self,request):
         create_board(request)
+        return redirect('board:update_board')  
 
-        return redirect('board:create_board')  
+    # to access logged in user in forms.. go to forms for le referemce
+    def get_form_kwargs(self):
+        print("shuba shuba")
+        kwargs = super(Home, self).get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
+
+        
 
 
 # def home(request):

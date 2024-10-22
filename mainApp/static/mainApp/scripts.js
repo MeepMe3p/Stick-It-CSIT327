@@ -51,3 +51,4 @@ function handleCategoryChange() {
         newDescInput.value = ''; 
     }
 }
+$('id_users').css('overflow-y','scroll');

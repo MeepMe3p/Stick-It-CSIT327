@@ -341,3 +341,26 @@ textarea {
     font-size: 14px;
     display: none;
 }
+
+
+
+#id_users{
+    /* border: 1px solid #000; */
+    /* font: 1em sans-serif; */
+    overflow-y: scroll;
+    height: 50px;
+}
+#id_users label{
+    /* display: flex; */
+    /* margin-bottom: 8px; */
+    /* font-size: 14px; */
+    /* font-weight: bold; */
+    color: #000;
+}
+#id_users input{
+    /* width: 100%; */
+    /* padding: 10px; */
+    border: 1px solid #000000;
+    /* border-radius: 5px; */
+    /* font-size: 12px; */
+}

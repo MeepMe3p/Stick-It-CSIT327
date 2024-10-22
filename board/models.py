@@ -36,5 +36,9 @@ class Board(models.Model):
     date_created = models.DateField(auto_now_add=True)
 
     # according do documentation standard of many to many is plural
-    users = models.ManyToManyField(User)
+    owner = models.ForeignKey(User,on_delete=models.CASCADE,related_name='owner')
+    users = models.ManyToManyField(User,related_name="users")
     user_count = models.IntegerField(default=1) 
+
+    def __str__(self):
+        return f'Name: {self.board_name} Owner: {self.owner} Users: {self.users.all()}'

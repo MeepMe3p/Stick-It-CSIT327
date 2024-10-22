@@ -45,6 +45,11 @@ INSTALLED_APPS = [
     'authentication',
     'mainApp',
     'board',
+<<<<<<< Updated upstream
+=======
+    'bootstrap5',
+    
+>>>>>>> Stashed changes
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -94,6 +99,7 @@ CHANNEL_LAYERS = {
 
 
 DATABASES = {
+<<<<<<< Updated upstream
     "default": {
 # # <<<<<<< homepage-with-create-board
 #         'ENGINE': 'django.db.backends.mysql',
@@ -107,6 +113,16 @@ DATABASES = {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": "mydatabase",
 # >>>>>>> main
+=======
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'Stick-It-Database',
+        'USER': 'root',
+        'PASSWORD': 'elijahgwapo',
+        # 'PASSWORD': get_decrypted_password(),
+        'HOST' : 'localhost',
+        'PORT' : '3306'        
+>>>>>>> Stashed changes
     }
 }
 

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+</head>
+<body>
+  <p><b>Name:</b>  {{board.board_name}}</p>
+  <p><b>Description:</b>  {{board.description}}</p>
+  <p><b>Category:</b>  {{board.category}}</p>
+  <p><b>Type:</b>  {{board.board_type}} ps plano nako wala ni kay dapat perm</p>
+  <p><b>Theme:</b>  {{board.board_theme}}</p>
+  <p><b>Visibility:</b>  {{board.visibility}}</p>
+  <p><b>Users:</b> </p>
+  {%for users in board.users.all%}
+    <p>{{users.username}}</p>
+  {%endfor%}
+
+    
+
+
+    <form>
+        <!-- <div class="form-row">
+          <div class="col">
+            <input type="text" class="form-control" placeholder="First name">
+          </div>
+          <div class="col">
+            <input type="text" class="form-control" placeholder="Last name">
+          </div>
+        </div>
+      </form> -->
+    <a href="{% url 'mainApp:home'%}">GO HOME</a>
+</body>
+</html>

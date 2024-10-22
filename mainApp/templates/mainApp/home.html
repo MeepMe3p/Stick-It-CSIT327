@@ -72,12 +72,19 @@
 
     <section class="board-list">
         <!-- Boards -->
-        <div class="board-placeholder"></div>
-        <div class="board-placeholder"></div>
-        <div class="board-placeholder"></div>
-        <div class="board-placeholder"></div>
-        <div class="board-placeholder"></div>
-        <div class="board-placeholder"></div>
+        <!-- <div class="board-placeholder"></div> -->
+        <!-- <div class="board-placeholder"></div> -->
+        <!-- <div class="board-placeholder"></div> -->
+        <!-- <div class="board-placeholder"></div> -->
+        <!-- <div class="board-placeholder"></div> -->
+        {%for board in boards%}
+            <div class="board-placeholder">
+                <p>Name: {{board.board_name}}</p>
+                <p>Owner: {{board.user_count}}</p>
+                <a href="{%url 'board:update_board' board.id%}">Update</a>
+            </div>
+
+        {%endfor%}
     </section>
 
     <!-- Modal Overlay -->
@@ -102,28 +109,22 @@
 
                 <div class="form-group">
                     <label for="collaborators">Collaborators</label>
-                    <select id="category" onchange="handleCategoryChange()">
+                    <!-- <select id="category" onchange="handleCategoryChange()">
                         <option value="" selected>Select...</option>
                         {% for users in users %}
                         <option value="{{ users.id }}">{{ users.username }}</option>
                         {% endfor %}
-                    </select>
+                    </select> -->
+
+                    {{form.users}}
                     <!-- <input type="text" id="collaborators" placeholder="Collaborators"> -->
                 </div>
 
                 <div class="form-group">
                     <label for="category">Category</label>
-                    <!-- <select id="category" onchange="handleCategoryChange()">
-                        <option value="" selected>Select...</option>
-                        {% for category in category %}
-                        <option value="{{ category.id }}">{{ category.category_name }}</option>
-                        {% endfor %}
-                    </select> -->
+ 
                     {{form.category}}
-                    <!-- <option value="create-new">Create new...</option> -->
-                    <!-- <input value="{{ category.id }}" id="new-category" placeholder="Enter new category" style="display: none; margin-top: 10px;"> -->
 
-                     <!-- <label for="" id = ''></label> -->
                      {{form.new_category}}
                      {{form.new_description}}
                 </div>

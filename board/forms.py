@@ -17,16 +17,28 @@ class TableCreationForm(forms.ModelForm):
         # "style":'display:none'
 
     }))
+    # https://medium.com/analytics-vidhya/django-how-to-pass-the-user-object-into-form-classes-ee322f02948c  == to filter except user logged in
+    users = forms.ModelMultipleChoiceField(required=False,
+        queryset=None,
+        widget = forms.CheckboxSelectMultiple(attrs={
+
+
+
+        }),
+    )
+    # owner = forms.IntegerField(required=False)
 
 
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        self.request = kwargs.pop('request')
+        super(TableCreationForm,self).__init__(*args, **kwargs)
         # Add custom choices
         self.fields['category'].choices = [
             ('', 'Select...'), 
             ('create-new', 'Create new...'), 
         ] + list(self.fields['category'].choices) 
+        self.fields['users'].queryset = User.objects.filter().exclude(id = self.request.user.id)
         
         
         
@@ -34,7 +46,8 @@ class TableCreationForm(forms.ModelForm):
         model = Board
         # note unfinished dapat naay user diri
         # fields = ["board_name","description","board_type","board_theme","visibility"]
-        fields = ["board_name","description","board_type","board_theme","visibility"]
+        fields = ["board_name","description","board_type","board_theme","visibility","users"]
+        exclude = ['owner']
         print("went here")
         widgets = {
             'board_name':forms.TextInput(attrs = {
@@ -43,7 +56,8 @@ class TableCreationForm(forms.ModelForm):
             }),
             'description':forms.Textarea(attrs={
                 'placeholder':"Enter description"
-            })
+            }),
+
         }
     
 

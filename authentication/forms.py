@@ -8,7 +8,7 @@ from datetime import date
 # PROGRAMMER NAME: ELIJAH REI SABAY
 # test2user - secondpassword
 class StickItLoginForm(AuthenticationForm):
-    print("hello")
+    # print("hello")
     username = forms.EmailField(label = "Email")
     password = forms.CharField(label="Enter Password", widget= forms.PasswordInput(attrs={
         "height":'40px',        
