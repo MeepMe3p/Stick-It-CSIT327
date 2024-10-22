@@ -23,16 +23,59 @@
     
 
 
-    <form>
-        <!-- <div class="form-row">
+  <form>
+    <div class="row">
+     
+      <div class="form-group col-md-4">
+        <div class="col">
+            <div class="col">
+              <label for="inputState">Board Name</label>
+              {{form.board_name}}
+            </div>
+
+            <div class="col">
+              <label for="inputState">Board Name</label>
+              {{form.description}}
+            </div> 
+        </div>
+      </div>
+
+      <div class="form-group col-md-4">
+        <div class="row">
           <div class="col">
-            <input type="text" class="form-control" placeholder="First name">
+            <div class="form-group col-md-4">
+              <label for="inputState">Tyoe</label>
+              {{form.board_type}}
+            </div>
           </div>
+          
           <div class="col">
-            <input type="text" class="form-control" placeholder="Last name">
+            <div class="form-group col-md-4">
+              <label for="inputState">Theme</label>
+              {{form.board_theme}}
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="form-group col-md-4">
+              <label for="inputState">Visibility</label>
+              {{form.visibility}}
+            </div>
           </div>
         </div>
-      </form> -->
+        <div class="row">
+          <h6>Remove Users</h6>
+          {%for users in board.users.all%}
+            <p>{{users.username}}   <input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="{{users.id}}" aria-label="..."></p> 
+            
+          {%endfor%}
+        </div>
+      </div>
+
+    </div>
+    
+
+  </form>
+
     <a href="{% url 'mainApp:home'%}">GO HOME</a>
 </body>
 </html>

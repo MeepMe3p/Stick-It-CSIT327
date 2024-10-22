@@ -20,7 +20,7 @@ class Home(View):
         return render(request, 'mainApp/home.html',context)
     def post(self,request):
         create_board(request)
-        return redirect('board:update_board')  
+        return redirect('mainApp/home.html')  
 
     # to access logged in user in forms.. go to forms for le referemce
     def get_form_kwargs(self):

@@ -72,15 +72,12 @@
 
     <section class="board-list">
         <!-- Boards -->
-        <!-- <div class="board-placeholder"></div> -->
-        <!-- <div class="board-placeholder"></div> -->
-        <!-- <div class="board-placeholder"></div> -->
-        <!-- <div class="board-placeholder"></div> -->
-        <!-- <div class="board-placeholder"></div> -->
+
         {%for board in boards%}
             <div class="board-placeholder">
                 <p>Name: {{board.board_name}}</p>
-                <p>Owner: {{board.user_count}}</p>
+                <p>Owner: {{board.board_type}}</p>
+                <p>{{board.visibility}}</p>
                 <a href="{%url 'board:update_board' board.id%}">Update</a>
             </div>
 
@@ -97,27 +94,19 @@
                 {% csrf_token %}
                 <div class="form-group first-input">
                     <label for="board-namde">Board Name</label>
-                    <!-- <input value="{{ form.board_name }}" id="board-name" placeholder="Board Name" > -->
                     {{form.board_name}}
                 </div>
 
                 <div class="form-group">
                     <label for="board-description">Board Description</label>
-                    <!-- <textarea value="{{ form.board_description }}" id="board-description" placeholder="Board Description"></textarea> -->
                     {{form.description}}
                 </div>
 
                 <div class="form-group">
                     <label for="collaborators">Collaborators</label>
-                    <!-- <select id="category" onchange="handleCategoryChange()">
-                        <option value="" selected>Select...</option>
-                        {% for users in users %}
-                        <option value="{{ users.id }}">{{ users.username }}</option>
-                        {% endfor %}
-                    </select> -->
+
 
                     {{form.users}}
-                    <!-- <input type="text" id="collaborators" placeholder="Collaborators"> -->
                 </div>
 
                 <div class="form-group">
@@ -132,11 +121,7 @@
                 <div class="form-group flex-container">
                     <div class="board-type">
                         <label>Board Type</label>
-                        <!-- <select id="board-type">
-                            <option value="" selected>Select...</option>
-                            <option value="{{ form.board_type }}">Simple Board</option>
-                            <option value="{{ form.board_type }}">Project Board</option>
-                        </select> -->
+
                         {{form.board_type}}
                         <!-- {{ forms.board_type }} -->
                     </div>

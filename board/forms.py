@@ -23,7 +23,6 @@ class TableCreationForm(forms.ModelForm):
         widget = forms.CheckboxSelectMultiple(attrs={
 
 
-
         }),
     )
     # owner = forms.IntegerField(required=False)
@@ -51,13 +50,19 @@ class TableCreationForm(forms.ModelForm):
         print("went here")
         widgets = {
             'board_name':forms.TextInput(attrs = {
-                'class':'myfieldclass',
+                'class':'form-control',
                 'placeholder' : "Enter board name",
+                
             }),
             'description':forms.Textarea(attrs={
-                'placeholder':"Enter description"
+                'placeholder':"Enter description",
+                'class':'form-control',
             }),
-
+            'description':forms.Textarea(attrs={
+                'placeholder':"Enter description",
+                'class':'form-control',
+            }),
+ 
         }
     
 

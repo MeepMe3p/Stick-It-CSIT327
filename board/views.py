@@ -155,7 +155,7 @@ class UpdateBoard(View):
         board = Board.objects.get(pk=pk)
         context = {
             "board":board,
-            # "form": C,
+            "form": TableCreationForm(request=request),
         }
         return render(request,'board/update_table.html',context)
     
