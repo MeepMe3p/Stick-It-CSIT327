@@ -155,11 +155,34 @@ class UpdateBoard(View):
         board = Board.objects.get(pk=pk)
         context = {
             "board":board,
-            "form": TableCreationForm(request=request),
+            "form": TableCreationForm(instance = board,request=request,board = board),
         }
         return render(request,'board/update_table.html',context)
     
     def post(self,request,pk):
-        pass
+        board = Board.objects.get(pk=pk)
+        form = TableCreationForm(request.POST,  instance = board,request=request)
+        
+        if form.is_valid():
+            remove_users = request.POST.getlist("remove_users")
+            print("the users are",remove_users)
+
+            if remove_users:
+                board.users.remove(*remove_users)
+
+            board.board_name = form.cleaned_data['board_name']
+            board.description = form.cleaned_data['description']
+            board.board_type = form.cleaned_data['board_type']
+            board.visibility = form.cleaned_data['visibility']
+            board.board_theme = form.cleaned_data['board_theme']
+            board.category = form.cleaned_data['category']
+
+            board.save()
+
+            
+            # form.save()
+        print(form.errors)
+        return redirect('mainApp:home')
+
 
 

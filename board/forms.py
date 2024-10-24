@@ -25,26 +25,28 @@ class TableCreationForm(forms.ModelForm):
 
         }),
     )
-    # owner = forms.IntegerField(required=False)
 
 
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request')
+        board = kwargs.pop('board',None)
         super(TableCreationForm,self).__init__(*args, **kwargs)
-        # Add custom choices
-        self.fields['category'].choices = [
-            ('', 'Select...'), 
-            ('create-new', 'Create new...'), 
-        ] + list(self.fields['category'].choices) 
-        self.fields['users'].queryset = User.objects.filter().exclude(id = self.request.user.id)
+        category_choices = [('', 'Select...'), ('create-new', 'Create new...')]
+
+        self.fields['category'].choices = category_choices + [
+            (category.pk, category.category_name) for category in self.fields['category'].queryset
+        ]
+        if board:
+            self.fields['users'].queryset = User.objects.filter().exclude(id = self.request.user.id).exclude(id__in=board.users.values_list('id',flat=True))
+        else:
+            self.fields['users'].queryset = User.objects.filter().exclude(id = self.request.user.id)
         
         
         
     class Meta:
         model = Board
-        # note unfinished dapat naay user diri
-        # fields = ["board_name","description","board_type","board_theme","visibility"]
+
         fields = ["board_name","description","board_type","board_theme","visibility","users"]
         exclude = ['owner']
         print("went here")

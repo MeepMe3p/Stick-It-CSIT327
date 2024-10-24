@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+{% load static %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,8 +11,10 @@
     {% bootstrap_javascript %}
 </head>
 <body>
+  
   <p><b>Name:</b>  {{board.board_name}}</p>
   <p><b>Description:</b>  {{board.description}}</p>
+  <p><b>Owner:</b>  {{board.owner}}</p>
   <p><b>Category:</b>  {{board.category}}</p>
   <p><b>Type:</b>  {{board.board_type}} ps plano nako wala ni kay dapat perm</p>
   <p><b>Theme:</b>  {{board.board_theme}}</p>
@@ -23,7 +27,8 @@
     
 
 
-  <form>
+  <form methoD = 'POST'>
+    {%csrf_token%}
     <div class="row">
      
       <div class="form-group col-md-4">
@@ -61,21 +66,42 @@
               {{form.visibility}}
             </div>
           </div>
+          
         </div>
         <div class="row">
           <h6>Remove Users</h6>
-          {%for users in board.users.all%}
-            <p>{{users.username}}   <input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="{{users.id}}" aria-label="..."></p> 
-            
+          {%for users in  board.users.all%}
+            <p>{{users.username}}   <input class="form-check-input position-static" type="checkbox" name = "remove_users" id="blankCheckbox" value="{{users.id}}" aria-label="..."></p> 
+          {%endfor%}
+        </div>
+        
+      </div>
+      <div class="col">
+        <label for="">Enter category</label>
+        <select name="category" id="id_category" >
+          {% for category in form.category.field.queryset %}
+              <option value="{{ category.pk }}" {% if category.pk == board.category.id %}selected{% endif %}>
+                  {{ category.category_name }}
+              </option>
+          {% endfor %}
+      </select>
+        <!-- {{form.new_category}}
+        {{form.new_description}} -->
+        <div class="col">
+          <h6>Add Users</h6>
+          {%for users in  form.users.field.queryset%}
+            <p>{{users.username}}   <input class="form-check-input position-static" type="checkbox" name = "remove_users" id="blankCheckbox" value="{{users.id}}" aria-label="..."></p> 
           {%endfor%}
         </div>
       </div>
 
     </div>
     
-
+    <button type="submit" >Save</button>
   </form>
 
     <a href="{% url 'mainApp:home'%}">GO HOME</a>
+    <script src="{% static 'board/updateTable.js' %}"></script>
+
 </body>
 </html>
