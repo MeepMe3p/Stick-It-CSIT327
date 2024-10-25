@@ -165,10 +165,13 @@ class UpdateBoard(View):
         
         if form.is_valid():
             remove_users = request.POST.getlist("remove_users")
-            print("the users are",remove_users)
+            add_users = request.POST.getlist("add_users")
+            print("the users are",add_users)
 
             if remove_users:
                 board.users.remove(*remove_users)
+            if add_users:
+                board.users.add(*add_users)
 
             board.board_name = form.cleaned_data['board_name']
             board.description = form.cleaned_data['description']

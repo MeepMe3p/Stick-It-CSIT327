@@ -42,3 +42,8 @@ class Board(models.Model):
 
     def __str__(self):
         return f'Name: {self.board_name} Owner: {self.owner} Users: {self.users.all()}'
+    
+class Notificaations (models.Model):
+    user_sender = models.ForeignKey(User, null = True,blank=True, related_name='user_sender', on_delete= models.CASCADE)
+    user_receiver = models.ForeignKey(User, null = True, blank=True,related_name='user_receiver', on_delete=models.CASCADE)
+    notif_detail = models.CharField(max_length=255)

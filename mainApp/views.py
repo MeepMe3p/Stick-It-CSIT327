@@ -16,11 +16,12 @@ class Home(View):
             'form2':CategoryCreationForm,
             'category':choices,
             'boards':board,
+            'loggedIn': request.user,
         }
         return render(request, 'mainApp/home.html',context)
     def post(self,request):
         create_board(request)
-        return redirect('mainApp/home.html')  
+        return redirect('mainApp:home')  
 
     # to access logged in user in forms.. go to forms for le referemce
     def get_form_kwargs(self):

@@ -25,7 +25,7 @@
   {%endfor%}
 
     
-
+  <textarea name="" id="notifs_id"></textarea>
 
   <form methoD = 'POST'>
     {%csrf_token%}
@@ -90,7 +90,7 @@
         <div class="col">
           <h6>Add Users</h6>
           {%for users in  form.users.field.queryset%}
-            <p>{{users.username}}   <input class="form-check-input position-static" type="checkbox" name = "remove_users" id="blankCheckbox" value="{{users.id}}" aria-label="..."></p> 
+            <p>{{users.username}}   <input class="form-check-input position-static" type="checkbox" name = "add_users" id="blankCheckbox" value="{{users.id}}" aria-label="..."></p> 
           {%endfor%}
         </div>
       </div>
@@ -101,7 +101,11 @@
   </form>
 
     <a href="{% url 'mainApp:home'%}">GO HOME</a>
-    <script src="{% static 'board/updateTable.js' %}"></script>
+    <!-- <script src="{% static 'board/updateTable.js' %}"></script> -->
+     <script>
+        const loggedIn = "{{request.user.id}}";
+     </script>
+    <script src="{% static 'js/notifications.js' %}"></script>
 
 </body>
 </html>
