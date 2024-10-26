@@ -1,24 +1,34 @@
     from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth import login,logout,authenticate
 from django import forms
 from datetime import date
 
 
-
 # PROGRAMMER NAME: ELIJAH REI SABAY
 # test2user - secondpassword
-class StickItLoginForm(AuthenticationForm):
-    print("hello")
-    username = forms.EmailField(label = "Email")
-    password = forms.CharField(label="Enter Password", widget= forms.PasswordInput(attrs={
-        "height":'40px',        
-    }))
+class StickItLoginForm(forms.Form):
+    email = forms.EmailField(
+        label = "Email",
+        widget=forms.EmailInput(attrs={
+            'placeholder': 'Enter email',
+            'class': 'form-control',
+        })
+    )
+    password = forms.CharField(
+        label="Enter Password", 
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'Enter password',
+            'class': 'form-control',
+            'height': '40px',
+        })
+    )
 
     class Meta:
         model = User
         fields = ['email','password']
 
-class StickItUserCreationFrom(UserCreationForm):
+class StickItUserCreationForm(UserCreationForm):
     
     # Disables the: 
     # https://stackoverflow.com/questions/78850636/what-is-password-based-authentication-in-the-usercreationform-in-django-and-how
@@ -27,16 +37,17 @@ class StickItUserCreationFrom(UserCreationForm):
     email = forms.EmailField(required=True, label="")
     first_name = forms.CharField(max_length=30, required=True, help_text="")
     last_name = forms.CharField(max_length=30, required=True, help_text="")
-    birth_date = forms.DateField(
-        required=True, 
-        widget=forms.SelectDateWidget(years=range(1900, 2024))  # For better UX
-    )
+
     class Meta(UserCreationForm.Meta):
         model = User
         # fields = ('username', 'password1', 'password2', 'email', 'first_name', 'last_name', 'birth_date')
+<<<<<<< Updated upstream
         fields = ('username', 'password1', 'password2', 'email', 'first_name', 'last_name', 'birth_date')
         
     # clean_<fieldname> methods allow you to add custom validation logic for specific form fields. 
+=======
+        fields = ('password1', 'password2', 'email', 'first_name', 'last_name')
+>>>>>>> Stashed changes
     
     # This method checks if the email entered by the user already exists in the database.
     def clean_email(self):
@@ -59,24 +70,9 @@ class StickItUserCreationFrom(UserCreationForm):
             raise forms.ValidationError("Last name should only contain letters.")
         return last_name
     
-    def clean_birth_date(self):
-        birth_date = self.cleaned_data.get('birth_date')  #  Django's initial validation
-        
-        # Check if birth_date is in the future
-        if birth_date > date.today():
-            raise forms.ValidationError("Birth date cannot be in the future.")
-        
-        # # Check if the user is at least 18 years old
-        # # RATED SPG, NANI!?
-        # age = (date.today() - birth_date).days // 365
-        # if age < 18:
-        #     raise forms.ValidationError("You must be at least 18 years old to register. Minor Not Allowed!")
-        
-        return birth_date
-    
     
     def __init__(self, *args, **kwargs):
-        super(StickItUserCreationFrom, self).__init__(*args, **kwargs)
+        super(StickItUserCreationForm, self).__init__(*args, **kwargs)
 
         for field in self.fields.values():
             field.widget.attrs.update({'class': 'form-control'})
@@ -85,10 +81,13 @@ class StickItUserCreationFrom(UserCreationForm):
         so you typically don’t need to manually set them unless you have specific requirements.
         e.g. bootstrap design
         """
+<<<<<<< Updated upstream
         # self.fields['username'].widget.attrs['class'] = 'form-control'
         # self.fields['username'].widget.attrs['placeholder'] = 'Username'
         # self.fields['username'].label = ''
         # self.fields['username'].help_text = '<span class="form-text text-muted"><small>Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</small></span>'
+=======
+>>>>>>> Stashed changes
 
         # self.fields['password1'].widget.attrs['class'] = 'form-control'
         self.fields['password1'].widget.attrs['placeholder'] = 'Password'
@@ -110,9 +109,6 @@ class StickItUserCreationFrom(UserCreationForm):
         self.fields['last_name'].widget.attrs['placeholder'] = 'Last Name'
         self.fields['last_name'].label = ''
         
-        self.fields['birth_date'].label = ''
-        self.fields['birth_date'].help_text = '<span class="form-text text-muted"><small>Please enter your birthdate in YYYY-MM-DD format.</small></span>'	
-
     def save(self, commit=True):
 
         """
@@ -123,14 +119,23 @@ class StickItUserCreationFrom(UserCreationForm):
         # Create a new user instance but do not save it yet
         user = super().save(commit=False)
         # Access validated data from cleaned_data
-        user.email = self.cleaned_data['email']
-        user.first_name = self.cleaned_data['first_name']
-        user.last_name = self.cleaned_data['last_name']
-        user.birth_date = self.cleaned_data['birth_date']
+        email = self.cleaned_data['email']
+        first_name = self.cleaned_data['first_name']
+        last_name = self.cleaned_data['last_name']
+        password = self.cleaned_data['password2']
 
-        us = user.first_name +' '+ user.last_name
-        print(us)
-        user.username = us
+        username = f"{user.first_name} {user.last_name}"
         if(commit):
+            print("Saving user to database")
+            user = User.objects.create_user(username=username, email=email, first_name=first_name, last_name=last_name)
+            user.set_password(password)
             user.save()
+            # UserProfile.objects.create(
+            #     user=user,
+            #     # email=self.cleaned_data['email'],
+            #     # first_name=self.cleaned_data['first_name'],
+            #     # last_name=self.cleaned_data['last_name'],
+            #     # birth_date=self.cleaned_data.get('birth_date', None),
+            #     # phone_number=self.cleaned_data.get('phone_number', None)
+            # )
         return user

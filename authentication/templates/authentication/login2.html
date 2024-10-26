@@ -22,21 +22,26 @@
             <form method="POST">
                 {%csrf_token%}
               <h2>Login</h2>
-  
               <div class="input_box">
                 <label>Email</label>
+<<<<<<< Updated upstream
                 <!-- <input type="email" required /> -->
+=======
+>>>>>>> Stashed changes
                  {{form.email}}
               </div>
               
               <div class="input_box" style="margin-top: 40px; margin-bottom:20px">
                 <label>Password</label>
-                <!-- <input type="password" required /> -->
                 {{form.password}}
               </div>
   
               <button class="button">Login Now</button>
   
+              {% for message in messages %} 
+                <p>{{message}}</p>
+              {% endfor %}
+
               <div class="login_signup">Don't have an account? <a href="{%url 'authentication:register'%}" id="" style="color: #F0EDED;">Signup</a></div>
             </form>
           </div>
@@ -44,6 +49,15 @@
         </div>
       </section>
       <script src="{% static 'js/script.js' %}"></script>
+      <script>
+        var form_fieds = document.getElementsByTagName('input')
+        form_fields[0].placeholder = 'Enter email'
+        form_fields[1].placeholder = 'Enter password'
+
+        for (var field in form_fields) {
+          form_fields[field].className += ' form-control '
+        }
+      </script>
     </body>
   </html>
   

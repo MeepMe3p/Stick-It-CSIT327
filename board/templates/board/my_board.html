@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STICKIT Board</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <div class="toolbar">
+        <div class="left-controls">
+            <div class="logo">STICKIT</div>
+            <button class="back-button"><a href="{% url 'mainApp:home' %}" style="color: black; text-decoration: none;">Back to files</a></button>
+        </div>
+        <div class="right-controls">
+            <div class="circle-indicators">
+                <div class="circle active"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <span class="plus-circle">{{ board.user_count }}</span>
+            </div>
+            <div class="profile-btn">{{ user_initials }}</div>
+            <button class="share-btn">Share</button>
+        </div>
+    </div>
+
+    <div class="board-container">
+        <div class="note blue-note"></div>
+        <div class="note pink-note"></div>
+    </div>
+
+    <div class="side-toolbar">
+        <div class="edit-note-controls">
+            <button class="tool-btn create-note">
+                <img src="/media/sticky-note.png" alt="Create-note">
+            </button>
+            <button class="tool-btn text-icon">
+                <img src="/media/text.png" alt="Text">
+            </button>
+            <button class="tool-btn arrow-di">
+                <img src="/media/arrow_di.png" alt="Arrow">
+            </button>
+            <button class="tool-btn undo-icon">
+                <img src="/media/circular-arrow.png" alt="Undo">
+            </button>
+            <button class="tool-btn redo-icon">
+                <img src="/media/circular-arrow.png" alt="Redo">
+            </button>
+        </div>
+        <div class="zoom-controls">
+            <button class="zoom-out-btn zoom-btn">-</button>
+            <span class="zoom-display">100%</span>
+            <button class="zoom-in-btn zoom-btn">+</button>
+        </div>
+    </div>
+    
+
+    <script src="{% static 'scripts.js' %}"></script>
+</body>
+</html>

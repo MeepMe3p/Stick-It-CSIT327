@@ -48,7 +48,12 @@ INSTALLED_APPS = [
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
+<<<<<<< Updated upstream
     'authentication.backends.EmailBackend'
+=======
+    'authentication.backends.EmailBackend',
+    # 'authentication.module.EmailBackend',
+>>>>>>> Stashed changes
 ]
 
 MIDDLEWARE = [
@@ -98,7 +103,10 @@ WSGI_APPLICATION = 'Stick_It.wsgi.application'
 # }
 DATABASES = {
     "default": {
+<<<<<<< Updated upstream
 # <<<<<<< homepage-with-create-board
+=======
+>>>>>>> Stashed changes
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'Stick-It-Database',
         'USER': 'root',
@@ -106,10 +114,13 @@ DATABASES = {
         # 'PASSWORD': get_decrypted_password(),
         'HOST' : 'localhost',
         'PORT' : '3307'
+<<<<<<< Updated upstream
 # =======
 #         "ENGINE": "django.db.backends.sqlite3",
 #         "NAME": "mydatabase",
 # >>>>>>> main
+=======
+>>>>>>> Stashed changes
     }
 }
 
@@ -158,7 +169,8 @@ MEDIA_URL = 'images/'
 STATICFILES_DIRS = [
     # os.path.join(BASE_DIR,'static'),
     ('authentication', os.path.join(BASE_DIR, 'authentication/static')),
-    ('note', os.path.join(BASE_DIR, 'note/static')),
+    ('mainApp', os.path.join(BASE_DIR, 'note/static')),
+    ('note', os.path.join(BASE_DIR, 'mainApp/static')),
     ('board',os.path.join(BASE_DIR,'board/static')),
 ]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
@@ -171,3 +183,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/' 
 MEDIA_ROOT = BASE_DIR / 'media' 
+
+LOGIN_REDIRECT_URL = 'home'

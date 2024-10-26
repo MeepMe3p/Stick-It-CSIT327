@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}StickIt Board{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'mainApp/styles.css' %}">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+</head>
+<body>
+    <header>
+        <div class="logo">STICKIT</div>
+        <div class="header-icons">
+            <button class="create-board-btn" onclick="openModal()">Create Board</button>
+            <div class="user-dropdown">
+                <div class="user-icon" id="user-icon" onclick="myFunction()">
+                    <span class="user-initials">EN</span>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu">
+                    <!-- <a href="#" class="dropdown-item" onclick="openProfileModal()">Profile</a> -->
+                    <a href="#" class="dropdown-item">My Space</a>
+                    <a href="{% url 'authentication:logout' %}" class="dropdown-item">Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container"> 
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Modal Overlay -->
+    <div id="createBoardModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create Board</h2>
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+            </div>
+            
+            <form method="POST" action="{% url 'board:create_board' %}"> 
+                {% csrf_token %}
+                <div class="form-group first-input">
+                    <label for="board-namde">Board Name</label>
+                    <input value="{{ form.board_name }}" id="board-name" placeholder="Board Name" >
+                    <!-- <div class="input">
+                        {{forms.board_name}}
+                    </div> -->
+                </div>
+
+                <div class="form-group">
+                    <label for="board-description">Board Description</label>
+                    <textarea value="{{ form.board_description }}" id="board-description" placeholder="Board Description"></textarea>
+                    <!-- <div class="textarea"> -->
+                        <!-- {{ forms.board_description }} -->
+                    <!-- </div> -->
+                </div>
+
+                <div class="form-group">
+                    <label for="collaborators">Collaborators</label>
+                    <input type="text" id="collaborators" placeholder="Collaborators">
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" onchange="handleCategoryChange()">
+                        <option value="" selected>Select...</option>
+                        <option value="create-new">Create new...</option>
+                        <option value="create-new">Work</option>
+                        <option value="create-new">Study</option>
+                        <option value="create-new">Personal</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.category_name }}</option>
+                        {% endfor %}
+                    </select>
+                    <input value="{{ category.id }}" id="new-category" placeholder="Enter new category" style="display: none; margin-top: 10px;">
+                </div>
+
+                <div class="form-group flex-container">
+                    <div class="board-type">
+                        <label>Board Type</label>
+                        <select id="board-type">
+                            <option value="" selected>Select...</option>
+                            <option value="{{ form.board_type }}">Simple Board</option>
+                            <option value="{{ form.board_type }}">Project Board</option>
+                        </select>
+                        <!-- {{ forms.board_type }} -->
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="theme">Theme</label>
+                        <select id="theme" name="theme" class="theme-select">
+                            <option value="{{ form.board_theme }}">Default (White)</option>
+                            <option value="{{ form.board_theme }}">Blue</option>
+                            <option value="{{ form.board_theme }}">Green</option>
+                            <option value="{{ form.board_theme }}">Pink</option>
+                        </select>
+                        <!-- {{ forms.board_theme }} -->
+                    </div>
+                </div>
+
+                <div class="form-group visibility-create-container">
+                    <div class="visibility">
+                        <label>Visibility</label>
+                        <div class="visibility-options">
+                            <input value="{{ form.visibility }}" type="radio" id="public" name="visibility" value="public" checked>
+                            <label for="public">Public</label>
+                            <input value="{{ form.visibility }}" type="radio" id="private" name="visibility" value="private">
+                            <label for="private">Private</label>
+                        </div>
+                        <!-- {{forms.visibility}} -->
+                    </div>
+
+                    <button type="submit" class="submit-btn">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Profile Modal Overlay -->
+    <!-- <div id="profileModal" class="profile-modal-overlay">
+        <div class="modal-content profile-view">
+            <div class="profile-header">
+                <div class="user-icon">
+                    <span class="user-initials">EN</span>
+                </div>
+                <div class="name-and-email">
+                    <h2>Elijah Nigel D. Chu</h2>
+                    <p>nigelchu@gmail.com</p>
+                </div>
+                <span class="close-btn" onclick="closeProfileModal()">&times;</span>
+            </div>
+            <div class="profile-tabs">
+                <button class="tab-btn active" onclick="showTab('about')">ABOUT ME</button>
+                <button class="tab-btn" onclick="showTab('social')">SOCIAL LINKS</button>
+            </div>
+            <div id="about" class="tab-content">
+                <p>A collaborative board enthusiast and productivity-driven individual passionate about organizing tasks and projects efficiently.</p>
+                <p>Joined last September 02, 2024</p>
+                <a href="#" class="profile-link">Go to my boards</a><br>
+                <a href="#" class="profile-link edit-profile" onclick="openEditProfileModal()" style="margin-top:10px;">Edit profile info</a>
+            </div>
+            
+            <div id="social" class="tab-content" style="display: none;">
+                 Social links content goes here -->
+                <!-- <p>Add your social links here</p>
+            </div>  
+        </div>
+    </div>  -->
+
+
+    <!-- Edit Profile Modal -->
+    <!-- <div id="editProfileModal" class="profile-modal-overlay">
+        <div class="modal-content">
+            <div class="edit-profile-header">
+                <h2>Edit Profile</h2>
+                <span class="close-btn" onclick="closeEditProfileModal()">Cancel &rarr;</span>
+            </div>
+            <form>
+                <div class="form-group">
+                    <label for="first-name">First Name</label>
+                    <input type="text" id="first-name" placeholder="First Name">
+                </div>
+                <div class="form-group">
+                    <label for="last-name">Last Name</label>
+                    <input type="text" id="last-name" placeholder="Last Name">
+                </div>
+                <div class="form-group">
+                    <label for="short-bio">Short Bio</label>
+                    <textarea id="short-bio" placeholder="Short Bio"></textarea>
+                </div>
+                <button type="submit" class="confirm-btn">Confirm Edit</button>
+            </form>
+        </div>
+    </div> -->
+
+
+    <script src="{% static 'mainApp/scripts.js' %}"></script>
+</body>
+</html>

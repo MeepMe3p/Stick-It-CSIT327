@@ -1,0 +1,142 @@
+@media (max-width: 768px) {
+    .board-preview {
+        width: 100%;
+        margin: 10px 0;
+    }
+}
+
+/* Board List */
+.board-list {
+    width: 100%;
+    /* max-width: 1000px; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 0 100px;
+}
+
+.board-preview {
+    position: fixed;
+    width: 300px;
+    background-color: #F3F3F3;
+    border-radius: 15px;
+    padding: 15px;
+    margin: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    font-family: 'Arial', sans-serif;
+}
+
+.board-preview:hover {
+    transform: scale(1.02);
+}
+
+.board-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* .circle-container {
+    position: absolute;
+    top: 35%;
+    left: 80%;
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #666;
+    border: 2px solid #ccc;
+} */
+
+.circle-container {
+    position: absolute;
+    width: 50px; 
+    height: 50px;
+    top: 32%;
+    left: 77%;
+}
+
+.progress-circle-main {
+    width: 38px;
+    height: 38px;
+    top: 4px;  
+    left: 4px;
+    background-color: transparent;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #666;
+    border: 2px solid #ccc;
+    position: relative;
+    z-index: 2;
+}
+
+.progress-circle-offset {
+    width: 46px;
+    height: 46px;
+    background-color: transparent; 
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;  
+    left: 0;
+    z-index: 1;
+}
+
+
+.board-header .ellipsis {
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.board-content h2 {
+    font-size: 16px;
+    margin: 0;
+    font-weight: bold;
+    color: #333;
+}
+
+.board-content .creator {
+    color: #666;
+    font-size: 11px;
+}
+
+.board-content .updated-time {
+    color: #666;
+    font-size: 11px;
+}
+
+.board-content .collaborator {
+    font-size: 10px;
+    color: #55a1e6;
+    margin-top: 10px;
+}
+
+.board-preview:nth-child(1) {
+    background-color: #e0ecf8; 
+}
+
+.board-preview:nth-child(2) {
+    background-color: #dddcd7;
+}
+
+.board-preview:nth-child(3) {
+    background-color: #dbeed5; /* Light green */
+}
+
+.board-preview:nth-child(4) {
+    background-color: #fde4e4; /* Light pink */
+}
+
+.board-preview:nth-child(5) {
+    background-color: #eaf3d0; /* Light yellow */
+}
