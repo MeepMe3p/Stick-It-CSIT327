@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
 </head>
 <body>
+    {%if user.is_authenticated%}
     <header>
         <div class="logo">STICKIT</div>
         <div class="header-icons">
@@ -140,9 +141,8 @@
                     <label for="category">Category</label>
                     <select name="category" id="category" onchange="handleCategoryChange()" required>
                         <option value="" selected>Select...</option>
-                        <option value="create-new">Create new...</option>
-                        {% for category in categories %}
-                            <option value="{{ category.id }}">{{ category.category_name }}</option>
+                        {% for category in category %}
+                        <option value="{{ category.id }}">{{ category.category_name }}</option>
                         {% endfor %}
                     </select>
                     <input type="text" id="new-category" name="new-category" placeholder="Enter new category" style="display: none; margin-top: 10px;">
@@ -186,7 +186,7 @@
             </form>
         </div>
     </div>
-
+  
     <script src="{% static 'mainApp/scripts.js' %}"></script>
 </body>
 </html>

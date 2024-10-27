@@ -3,6 +3,8 @@ function myFunction() {
     dropdownMenu.classList.toggle('show');
 }
 
+
+
 window.addEventListener('click', function (event) {
     const userIcon = document.getElementById('user-icon');
     const dropdownMenu = document.getElementById('dropdown-menu');
@@ -31,16 +33,23 @@ window.onclick = function(event) {
 
 
 function handleCategoryChange() {
-    const categorySelect = document.getElementById('category');
+    const categorySelect = document.getElementById('id_category');
+    console.log(categorySelect+"safafasfa");
     const newCategoryInput = document.getElementById('new-category');
-    
+    const newDescInput = document.getElementById("new-desc");
+     
     if (categorySelect.value === 'create-new') {
         // categorySelect.get
         newCategoryInput.style.display = 'block';
+        newDescInput.style.display = 'block';
         newCategoryInput.focus();
-    } else {
+        newDescInput.focus();
+    } 
+    else {
         newCategoryInput.style.display = 'none';
         newCategoryInput.value = ''; 
+        newDescInput.style.display = 'none';
+        newDescInput.value = ''; 
     }
 }
 

@@ -32,18 +32,19 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+    'channels',
+    'django_bootstrap5',
     'note',
     'authentication',
     'mainApp',
     'board',
-    
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -75,23 +76,28 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'Stick_It.wsgi.application'
-
-
+ASGI_APPLICATION = 'Stick_It.asgi.application'
+CHANNEL_LAYERS = {
+    "default": {"BACKEND": "channels.layers.InMemoryChannelLayer"},
+}
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+
 # DATABASES = {
-#     'default': {
+#     "default": {
+# # <<<<<<< homepage-with-create-board
 #         'ENGINE': 'django.db.backends.mysql',
 #         'NAME': 'Stick-It-Database',
 #         'USER': 'root',
-#         'PASSWORD': 'elijahgwapo',
+#         'PASSWORD': 'mysqlroot00',
 #         # 'PASSWORD': get_decrypted_password(),
 #         'HOST' : 'localhost',
 #         'PORT' : '3306'        
@@ -108,6 +114,7 @@ DATABASES = {
         'PORT' : '3307'
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -146,7 +153,7 @@ USE_TZ = True
 # https://www.geeksforgeeks.org/django-static-file/
 
 STATIC_URL = 'static/'
-MEDIA_URL = 'images/'
+MEDIA_URL = 'media/'
 
 #https://www.youtube.com/watch?v=Sd-RseDuy-c cuz i cant load the css
 
@@ -158,7 +165,8 @@ STATICFILES_DIRS = [
     ('note', os.path.join(BASE_DIR, 'mainApp/static')),
     ('board',os.path.join(BASE_DIR,'board/static')),
 ]
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+# MEDIA REFERENCES:  https://stackoverflow.com/questions/64290228/unable-to-access-media-files-in-django-template 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
 # Default primary key field type
