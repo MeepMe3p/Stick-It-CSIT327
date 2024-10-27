@@ -1,4 +1,4 @@
-    from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login,logout,authenticate
 from django import forms
@@ -41,13 +41,7 @@ class StickItUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
         # fields = ('username', 'password1', 'password2', 'email', 'first_name', 'last_name', 'birth_date')
-<<<<<<< Updated upstream
-        fields = ('username', 'password1', 'password2', 'email', 'first_name', 'last_name', 'birth_date')
-        
-    # clean_<fieldname> methods allow you to add custom validation logic for specific form fields. 
-=======
         fields = ('password1', 'password2', 'email', 'first_name', 'last_name')
->>>>>>> Stashed changes
     
     # This method checks if the email entered by the user already exists in the database.
     def clean_email(self):
@@ -81,13 +75,6 @@ class StickItUserCreationForm(UserCreationForm):
         so you typically don’t need to manually set them unless you have specific requirements.
         e.g. bootstrap design
         """
-<<<<<<< Updated upstream
-        # self.fields['username'].widget.attrs['class'] = 'form-control'
-        # self.fields['username'].widget.attrs['placeholder'] = 'Username'
-        # self.fields['username'].label = ''
-        # self.fields['username'].help_text = '<span class="form-text text-muted"><small>Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</small></span>'
-=======
->>>>>>> Stashed changes
 
         # self.fields['password1'].widget.attrs['class'] = 'form-control'
         self.fields['password1'].widget.attrs['placeholder'] = 'Password'

@@ -48,12 +48,8 @@ INSTALLED_APPS = [
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-<<<<<<< Updated upstream
-    'authentication.backends.EmailBackend'
-=======
     'authentication.backends.EmailBackend',
     # 'authentication.module.EmailBackend',
->>>>>>> Stashed changes
 ]
 
 MIDDLEWARE = [
@@ -103,10 +99,6 @@ WSGI_APPLICATION = 'Stick_It.wsgi.application'
 # }
 DATABASES = {
     "default": {
-<<<<<<< Updated upstream
-# <<<<<<< homepage-with-create-board
-=======
->>>>>>> Stashed changes
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'Stick-It-Database',
         'USER': 'root',
@@ -114,13 +106,6 @@ DATABASES = {
         # 'PASSWORD': get_decrypted_password(),
         'HOST' : 'localhost',
         'PORT' : '3307'
-<<<<<<< Updated upstream
-# =======
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": "mydatabase",
-# >>>>>>> main
-=======
->>>>>>> Stashed changes
     }
 }
 

@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .utils import get_user_initials
 from board.models import Category
 from authentication.models import UserProfile
+from .forms import ProfileEditForm
 
 
 @login_required(login_url='authentication:login')
@@ -30,7 +31,7 @@ def home(request):
     return render(request, 'mainApp/home.html', context)
 
 @login_required(login_url='authentication:login')
-def mySpace(request):
+def my_space(request):
     initials = get_user_initials(request.user)
     user = request.user
     try:
@@ -42,3 +43,14 @@ def mySpace(request):
         'user_profile': user_profile
     }
     return render(request, 'mainApp/my_space.html', context)
+
+def edit_profile(request):
+    profile = UserProfile.objects.get(user=request.user)
+    if request.method == 'POST':
+        form = ProfileEditForm(request.POST, instance=profile, user=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('mainApp:my_space')
+    else:
+        form = ProfileEditForm(instance=profile, user=request.user)
+    return render(request, 'mainApp/my_space.html', {'form': form})

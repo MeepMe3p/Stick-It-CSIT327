@@ -3,12 +3,7 @@ from . import views
 
 app_name = "authentication"
 urlpatterns = [
-<<<<<<< Updated upstream
-    path('login/', LoginUser.as_view(), name = "login"),
-    path('register/', RegisterService.as_view(), name='register'),
-=======
-    path('register/', views.registerPage, name='register'),
-    path('login/', views.loginPage, name = "login"),
-    path('logout/', views.logoutPage , name = "logout"),
->>>>>>> Stashed changes
+    path('register/', views.register_page, name='register'),
+    path('login/', views.login_page, name = "login"),
+    path('logout/', views.logout_page , name = "logout"),
 ]

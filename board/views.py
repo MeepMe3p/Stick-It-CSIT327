@@ -76,13 +76,9 @@ def create_board(request):
             print("Form errors:", form.errors) 
     else:
         form = TableCreationForm()
-<<<<<<< Updated upstream
-    return render(request, 'board/create_table.html',{'forms': form})
-=======
         form.fields['category'].queryset = categories
     
     return render(request, 'board/my_board.html', {'form': form, 'categories': categories})
->>>>>>> Stashed changes
 
 # Create your views here.
 # PROGRAMMER NAME: Elijah Rei Sabay
@@ -146,3 +142,8 @@ def filter_boards_by_category(request, category_id):
         'categories': categories,
         'selected_category': category,
     })
+
+def all_boards(request):
+    boards = Board.objects.all()
+    categories = Category.objects.all()
+    return render(request, 'board/board_home.html', {'boards': boards, 'categories': categories})

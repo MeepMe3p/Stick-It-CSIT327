@@ -519,7 +519,7 @@ textarea {
     box-shadow: 0 2px 5px rgba(81, 81, 81, 0.1);
     border-radius: 10px;
     border-top-left-radius: 0;
-    padding: 30px 25px;
+    padding: 35px 25px;
     background-color: #fff;
     /* overflow-y: scroll; */
 }
@@ -574,7 +574,8 @@ textarea {
 }
 
 #profile-section {
-    padding-left: 35px;
+    /* padding-left: 35px; */
+    padding-inline: 45px;
 }
 
 .profile-header {
@@ -627,7 +628,7 @@ textarea {
     margin-bottom: 20px;
     padding: 10px 0;
     color: #555;
-    cursor: pointer;
+    /* cursor: pointer; */
     outline: none;
     font-weight: bold;
 }
