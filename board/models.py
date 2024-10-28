@@ -43,7 +43,11 @@ class Board(models.Model):
     def __str__(self):
         return f'Name: {self.board_name} Owner: {self.owner} Users: {self.users.all()}'
     
-class Notificaations (models.Model):
+class Notifications (models.Model):
     user_sender = models.ForeignKey(User, null = True,blank=True, related_name='user_sender', on_delete= models.CASCADE)
     user_receiver = models.ForeignKey(User, null = True, blank=True,related_name='user_receiver', on_delete=models.CASCADE)
     notif_detail = models.CharField(max_length=255)
+    notif_time = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f'Sender: {self.user_sender} Reciever: {self.user_receiver} Notif: {self.notif_detail} Time:{self.notif_time}'

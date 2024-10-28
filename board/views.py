@@ -180,12 +180,13 @@ class UpdateBoard(View):
             board.board_theme = form.cleaned_data['board_theme']
             board.category = form.cleaned_data['category']
 
-            board.save()
+            # board.save()
 
             
             # form.save()
         print(form.errors)
-        return redirect('mainApp:home')
+        # return redirect('mainApp:home')
+        return redirect(self.request.path_info)
 
 
 
