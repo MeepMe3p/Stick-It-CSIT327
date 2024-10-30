@@ -227,6 +227,9 @@ header {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    padding-bottom: 100px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1;
     /* max-width: 1000px; */
 }
 
@@ -312,8 +315,19 @@ header {
     margin-top: 30px; 
 }
 
+.edit-name {
+    display: flex;
+    flex-direction: row;
+}
+
+.edit-name .form-group {
+    width: 100%;
+    margin-right: 0;
+    padding: 0;
+}
+
 .form-group {
-    margin-bottom: 15px;
+    margin: 12px 0;
 }
 
 .form-group label {
@@ -332,7 +346,7 @@ header {
 }
 
 textarea {
-    height: 60px;
+    height: 85px;
 }
 
 .flex-container {
@@ -521,6 +535,7 @@ textarea {
     border-top-left-radius: 0;
     padding: 35px 25px;
     background-color: #fff;
+    min-height: 550px;
     /* overflow-y: scroll; */
 }
 
@@ -540,7 +555,7 @@ textarea {
 .board-categories-v2 {
     display: flex;
     justify-content: left;
-    margin-bottom: 30px;
+    /* margin-bottom: 30px; */
     margin-left: 20px;
     gap: 10px;
 }
@@ -603,11 +618,11 @@ textarea {
 }
 
 .name-and-email h2 {
-    font-size: 20px;
+    font-size: 24px;
 }
 
 .name-and-email p {
-    font-size: 15px;
+    font-size: 16px;
     margin: 0 0;
 }
 
@@ -671,25 +686,30 @@ textarea {
     gap: 12px;
 }
 
-/*
-#about .edit-profile {
-    margin-top: 10px;
-}
+/* Footer */
+ footer {
+    background-color: white;
+    height: 15%;
+    /* margin: 100px  0; */
+    /* margin: 50px 0; */
+    padding: 60px; 
+    text-align: center; 
+    width: 100%;
+ }
 
-.profile-link {
-    color: #333;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.profile-link:hover {
-    text-decoration: underline;
-}
-*/
-
+ .footer-container {
+    padding: 100px 0;
+ }
 
 .my-space-main-container {
     background-image: url("/media/MySpace_Background.png");
     /* background-image: url("/images/MySpace_Background.png"); */
 }
+
+
+.my-space-footer {
+    /* margin-top: 50px; */
+    background-color: transparent;
+}
+
 /* C:\Users\Karylle\Documents\Documents\BSCS-3\Information Management 2\Python\Stick-It-CSIT327\Stick-It-CSIT327\media\MySpace_Background.png */

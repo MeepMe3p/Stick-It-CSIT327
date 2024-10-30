@@ -7,6 +7,7 @@ from .forms import TableCreationForm,CategoryCreationForm
 from .models import Category,Board, ProjectBoard, SimpleBoard
 from django.contrib.auth.decorators import login_required
 from mainApp.utils import get_user_initials
+from authentication.models import UserProfile
 
 
 # To handle the creation of the new board ---- processes the inout data from modal overlay in mainApp/home.html
@@ -80,49 +81,6 @@ def create_board(request):
     
     return render(request, 'board/my_board.html', {'form': form, 'categories': categories})
 
-# Create your views here.
-# PROGRAMMER NAME: Elijah Rei Sabay
-# class CreateBoardView(View):
-    # def get(self,request):
-    #     print(request)
-    #     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-    #         data = list(Category.objects.all().values())
-    #         print(data)
-    #         return JsonResponse({'context':data})
-    #     else:
-    #         choices = Category.objects.all()
-    #         print(choices)
-    #         return render(request,'board/my_board.html',{'form':TableCreationForm(),'form2':CategoryCreationForm})
-    
-    # def post(self,request):
-    #     print(request,"THIS IS THE REQUEST")
-    #     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-    #         data = request.body
-    #         data = data.decode('utf-8')
-    #         data = json.loads(data)
-
-    #         name = data['category_name']
-    #         desc = data['category_description']
-
-    #         print(f"name : {name} desc: {desc}")
-    #         Category.objects.create(category_name = name,category_description = desc)
-            
-    #         return JsonResponse(data, safe = False)
-
-    #     else:
-    #         form = TableCreationForm(request.POST)
-    #         if form.is_valid():
-    #             board_name = form.cleaned_data['board_name']
-    #             description = form.cleaned_data['description']
-    #             category = form.cleaned_data['category']
-    #             privacy_settings = form.cleaned_data['privacy_settings']
-            
-    #             cat = Board.objects.create(board_name = board_name, description = description, category = category,privacy_settings=privacy_settings)
-    #             cat.save()
-    #             cat.users.add(request.user.id)
-    #             return redirect("note:home")
-    #         return render(request,'board/my_board.html',{'form':TableCreationForm()})
-
 
 @login_required(login_url='authentication:login')
 def render_board(request):
@@ -130,20 +88,40 @@ def render_board(request):
     return render(request, 'board/my_board.html', {'user_initials': user_initials})
 
 @login_required(login_url='authentication:login')
-def filter_boards_by_category(request, category_id):
+def filter_boards_by_category(request, category_id, template_name='mainApp/home.html'):
+    user = request.user 
+    try:
+        user_profile = UserProfile.objects.get(user=user)  
+    except UserProfile.DoesNotExist:
+        user_profile = None 
+    
+    # all_categories = Category.objects.all()
     category = get_object_or_404(Category, id=category_id)
-    boards = Board.objects.filter(category=category)
-    categories = Category.objects.all()  
+    if template_name == 'mainApp/home.html':
+        boards = Board.objects.filter(category=category)
+        categories = Category.objects.all()
+        count = boards.count()
+    else:
+        boards = Board.objects.filter(creator=user, category=category)
+        categories = Category.objects.filter(board__creator=user).distinct()
+        count = boards.count()
     initials = get_user_initials(request.user)
 
-    return render(request, 'mainApp/home.html', {
+    return render(request, template_name, {
         'initials' : initials,
+        'user_profile': user_profile,
         'boards': boards,
+        'count' : count,
+        # 'all_categories' : all_categories,
         'categories': categories,
         'selected_category': category,
+        'show_my_boards_section': True if request.GET.get('show') == 'my-boards' else False
     })
 
 def all_boards(request):
     boards = Board.objects.all()
     categories = Category.objects.all()
-    return render(request, 'board/board_home.html', {'boards': boards, 'categories': categories})
+    return render(request, 'board/board_home.html', {
+        'boards': boards, 
+        'categories': categories,
+    })

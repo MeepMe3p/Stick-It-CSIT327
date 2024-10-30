@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
 </head>
 <body>
-    {%if user.is_authenticated%}
     <header>
         <div class="logo">STICKIT</div>
         <div class="header-icons">
@@ -56,18 +55,6 @@
                         <img src="media/window-desktop.svg" alt="Work Icon" width="20" height="20">
                     </button>
                     <span>Work</span>
-                </div>
-                <div class="category-icon">
-                    <button class="category-btn">
-                        <img src="media/person-lock.svg" alt="Personal Icon" width="24" height="21">
-                    </button>
-                    <span>Personal</span>
-                </div>
-                <div class="category-icon">
-                    <button class="category-btn">
-                        <img src="media/backpack4.svg" alt="Study Icon" width="25" height="20">
-                    </button>
-                    <span>Study</span>
                 </div> -->
                 <div class="category-icon" onclick="openModal()">
                     <button class="category-btn create-new">
@@ -78,7 +65,7 @@
             </div>
         </section>    
 
-        <section class="board-list">
+        <section class="board-list home-boards">
             {% for board in boards %}
                 <div class="board-preview">
                     <div class="board-header">
@@ -98,14 +85,37 @@
                     <div class="board-content">
                         <h2>{{ board.board_name }}</h2>
                         <p class="creator">Created by {{ board.creator.username }}</p>
-                        <p class="updated-time">Last updated 2 hours ago</p>
-                        <p class="collaborator">{{ board.visibility }}</p>
+                        <p class="updated-time">Last updated {{ board.timestamp }}</p>
+                        {% if board.visibility == 'public' %}
+                        <p class="collaborator">Public</p>
+                        {% else %}
+                        <p class="collaborator">Private</p>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}
         </section>
     </div>
 
+    <footer>
+        <div class="footer-container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <div style="margin-bottom: 15px;">
+                <a href="/" style="text-decoration: none; font-weight: bold; font-size: 1.2em; color: #333;">STICKIT</a>
+            </div>
+            
+            <nav style="margin-bottom: 15px;">
+                <a href="/about" style="margin: 0 10px; color: #666; text-decoration: none;">About Us</a>
+                <a href="/contact" style="margin: 0 10px; color: #666; text-decoration: none;">Contact</a>
+                <a href="/privacy" style="margin: 0 10px; color: #666; text-decoration: none;">Privacy Policy</a>
+                <a href="/terms" style="margin: 0 10px; color: #666; text-decoration: none;">Terms of Service</a>
+            </nav>
+            
+            <div style="font-size: 0.9em; color: #888;">
+                © 2024 STICKIT. All rights reserved.
+            </div>
+        </div>
+    </footer>
+    
     <!-- Modal Overlay -->
     <div id="createBoardModal" class="modal-overlay">
         <div class="modal-content">
@@ -141,8 +151,9 @@
                     <label for="category">Category</label>
                     <select name="category" id="category" onchange="handleCategoryChange()" required>
                         <option value="" selected>Select...</option>
-                        {% for category in category %}
-                        <option value="{{ category.id }}">{{ category.category_name }}</option>
+                        <option value="create-new">Create new...</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.category_name }}</option>
                         {% endfor %}
                     </select>
                     <input type="text" id="new-category" name="new-category" placeholder="Enter new category" style="display: none; margin-top: 10px;">
@@ -160,10 +171,10 @@
                         <!-- {{ forms.board_type }} -->
                     </div>
     
-                    <div class="form-group">
+                    <div class="form-group" style="margin: 0;">
                         <label for="theme">Theme</label>
                         <select name="board_theme" id="theme" class="theme-select">
-                            <option value="white">Default (White)</option>
+                            <option value="white">Default (Gray)</option>
                             <option value="blue">Blue</option>
                             <option value="green">Green</option>
                             <option value="pink">Pink</option>
@@ -186,7 +197,7 @@
             </form>
         </div>
     </div>
-  
+
     <script src="{% static 'mainApp/scripts.js' %}"></script>
 </body>
 </html>

@@ -9,6 +9,10 @@ class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['description']
+
+    # class Meta:
+    #     model = UserProfile
+    #     fields = ["first_name", "last_name"]
     
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
@@ -26,3 +30,19 @@ class ProfileEditForm(forms.ModelForm):
             user.save()
             profile.save()
         return profile
+    
+
+class SocialLinksEditForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ["facebook_link","linkedin_link","twitter_link"]
+    
+    def save(self, commit=True):
+        profile = super().save(commit=False)
+        if commit:
+            profile.save()
+        return profile
+
+    # facebook_link = forms.CharField(max_length=100)
+    # linkedin_link = forms.CharField(max_length=100)
+    # twitter_link = forms.CharField(max_length=100)

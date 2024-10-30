@@ -7,6 +7,7 @@ urlpatterns = [
      path('home/', views.home, name='home'),
      path('my_space/', views.my_space, name='my_space'),
      path('my_space/edit_profile', views.edit_profile, name='edit_profile'),
+     path('my_space/edit_social_links', views.edit_social_links, name='edit_social_links'),
      # path('logout/', views.logoutPage , name = "logout"),
      path('board/', include('board.urls', namespace='board')),
 ]

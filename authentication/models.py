@@ -18,8 +18,8 @@ class UserProfile(models.Model):
     twitter_link = models.TextField(max_length=250, null=True, blank=True)
     twitter_link_hidden = models.BooleanField(null=True, default=True)
     
-    def __str__(self):
-        return self.user.username
+    # def __str__(self):
+    #     return self.user.username
 
     # @property
     # def username(self):

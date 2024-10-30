@@ -5,15 +5,21 @@
     }
 }
 
+a {
+    text-decoration: none;
+}
+
 /* Board List */
 .board-list {
     width: 100%;
     /* max-width: 1000px; */
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: start;
+    align-items: center;
     margin-top: 20px;
-    padding: 0 100px;
+    /* padding: 0 100px; */
 }
 
 .board-preview {
@@ -22,10 +28,12 @@
     background-color: #F3F3F3;
     border-radius: 15px;
     padding: 15px;
-    margin: 15px;
+    /* padding-right: 75px; */
+    margin: 16px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     position: relative;
     font-family: 'Arial', sans-serif;
+    transition: 0.3s;
 }
 
 .board-preview:hover {
@@ -139,4 +147,16 @@
 
 .board-preview:nth-child(5) {
     background-color: #eaf3d0; /* Light yellow */
+}
+
+.home-boards {
+    padding: 0 100px;
+}
+
+.my-space-boards {
+    margin-top: 0;
+}
+
+.my-space-boards .board-preview {
+    margin: 24px;
 }

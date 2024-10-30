@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STICKIT|My Space</title>
     <link rel="stylesheet" href="{% static 'mainApp/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'mainApp/style.css' %}">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
 </head>
 <body class="my-space-main-container">
@@ -35,8 +36,8 @@
         </div>
         <div class="space-content-container">
            <div class="tab-wrapper">
-                <button class="tab-btn active profile-tab" onclick="showProfile()">Profile</button>
-                <button class="tab-btn my-boards-tab" onclick="showMyBoards()">My Boards</button>
+                <button id="profile-btn" class="tab-btn active profile-tab" onclick="showProfile()">Profile</button>
+                <button id="my-boards-btn" class="tab-btn my-boards-tab" onclick="showMyBoards()">My Boards</button>
             </div> 
             <!-- Profile Section -->
             <section id="profile-section" class="content-section">
@@ -48,9 +49,6 @@
                         {% if user.is_authenticated %}
                         <h2>{{ user.get_username }}</h2>
                         <p>{{ user.email }}</p>
-                        {% else %}
-                        <h2>Unknown User</h2>
-                        <p>unknown@gmail.com</p>
                         {% endif %}
                     </div>
                 </div>
@@ -61,8 +59,12 @@
                             <button class="tab active">ABOUT ME</button>
                             <img src="/media/edit-text.png" width="16" height="16" alt="edit-text-icon" onclick="openEditProfileModal()" style="cursor: pointer;">
                         </div>
+                        {% if user_profile.description == '' or user_profile.description == None %}
+                        <p><i>Add short bio.</i></p>
+                        {% else %}
                         <p>{{ user_profile.description }}</p>
-                        <p>Joined last September 02, 2024</p>
+                        {% endif %}
+                        <p>Joined last {{ user.date_joined }}</p>
                         <!-- <a href="#" class="profile-link" onclick="openEditProfileModal()">Edit profile info</a> -->
                     </div>
                     <div id="social" class="tab-content">
@@ -70,36 +72,117 @@
                             <button class="tab active">SOCIAL LINKS</button>
                             <img src="/media/edit-text.png" width="16" height="16" alt="edit-text-icon" onclick="openEditSocialsModal()" style="cursor: pointer;">
                         </div>
-                        <div class="social-links">
-                            <img src="/media/facebook.png" width="25" height="25" alt="facebook-icon">
-                            <p>{{ user_profile.facebook_link }}</p>
-                        </div>
-                        <div class="social-links">
-                            <img src="/media/linkedin.png" width="25" height="25" alt="facebook-icon">
-                            <p>{{ user_profile.linkedin_link }}</p>
-                        </div>
-                        <div class="social-links">
-                            <img src="/media/twitter.png" width="25" height="25" alt="facebook-icon">
-                            <p>{{ user_profile.twitter_link }}</p>
-                        </div>
+                        {% if user_profile.facebook_link == '' and user_profile.linkedin_link == '' and user_profile.twitter_link == ''%}
+                            <div class="social-links">
+                                <p><i>Add social media links.</i></p>
+                            </div>
+                        {% elif user_profile.facebook_link == None and user_profile.linkedin_link == None and user_profile.twitter_link == None %}
+                            <div class="social-links">
+                                <p><i>Add social media links.</i></p>
+                            </div>
+                        {% else %}
+                            {% if user_profile.facebook_link == '' %}
+                            <div class="social-links">
+                            </div>
+                            {% else %}
+                            <div class="social-links">
+                                <img src="/media/facebook.png" width="25" height="25" alt="facebook-icon">
+                                <p>{{ user_profile.facebook_link }}</p>
+                            </div>
+                            {% endif %}
+
+                            {% if user_profile.linkedin_link == '' %}
+                            <div class="social-links">
+                            </div>
+                            {% else %}
+                            <div class="social-links">
+                                <img src="/media/linkedin.png" width="25" height="25" alt="facebook-icon">
+                                <p>{{ user_profile.linkedin_link }}</p>
+                            </div>
+                            {% endif %}
+
+                            {% if user_profile.twitter_link == '' %}
+                            <div class="social-links">
+                            </div>
+                            {% else %}
+                            <div class="social-links">
+                                <img src="/media/twitter.png" width="25" height="25" alt="facebook-icon">
+                                <p>{{ user_profile.twitter_link }}</p>
+                            </div>
+                            {% endif %}
+                        {% endif %}
                     </div>
                 </div>
             </section>
 
             <!-- My Boards Section -->
             <section id="my-boards-section" class="content-section" style="display: none;">
+                {% if count >= 1 %}
                 <div class="search-bar v2-search">
+                    <i class="uil uil-search-alt search-icon"></i>
                     <input type="text" placeholder="Search your board">
                 </div>
                 <div class="board-categories-v2">
-                    <button class="tab active">All Boards</button>
-                    <button class="tab">Work</button>
-                    <button class="tab">Personal</button>
-                    <button class="tab">Study</button>
+                    <a href="{% url 'mainApp:my_space' %}?show=my-boards#my-boards-section" class="tab active">All Boards</a>
+                    {% for category in categories %}
+                        <a href="{% url 'board:filter_boards_by_category_my_space' category.id %}?show=my-boards#my-boards-section" class="tab">{{ category.category_name }}</a>
+                    {% endfor %}
                 </div>
+                <section class="board-list my-space-boards">
+                    {% for board in boards %}
+                        <div class="board-preview">
+                            <div class="board-header">
+                                {% if board.board_type == 'project' %}
+                                <div class="circle-container">
+                                    <div class="progress-circle-main">
+                                        <span>{{ projectboard.progress }}</span>
+                                    </div>
+                                    <div class="progress-circle-offset"></div>
+                                </div>
+                                {% endif %}
+                                <!-- <div class="progress-circle">
+                                    <span>75%</span>
+                                </div> -->
+                                <div class="ellipsis">...</div>
+                            </div>
+                            <div class="board-content">
+                                <h2>{{ board.board_name }}</h2>
+                                <p class="creator">Created by {{ board.creator.username }}</p>
+                                <p class="updated-time">Last updated 2 hours ago</p>
+                                <p class="collaborator">{{ board.visibility }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </section>
+                {% else %}
+                <div class="board-categories-v2" style="justify-self: center;">
+                    <span><i>No boards created.</i></span>
+                </div>
+                {% endif %}
             </section>
+
+            
         </div>
     </main>
+
+    <footer class="my-space-footer">
+        <div class="footer-container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <div style="margin-bottom: 15px;">
+                <a href="/" style="text-decoration: none; font-weight: bold; font-size: 1.2em; color: #333;">STICKIT</a>
+            </div>
+            
+            <nav style="margin-bottom: 15px;">
+                <a href="/about" style="margin: 0 10px; color: #666; text-decoration: none;">About Us</a>
+                <a href="/contact" style="margin: 0 10px; color: #666; text-decoration: none;">Contact</a>
+                <a href="/privacy" style="margin: 0 10px; color: #666; text-decoration: none;">Privacy Policy</a>
+                <a href="/terms" style="margin: 0 10px; color: #666; text-decoration: none;">Terms of Service</a>
+            </nav>
+            
+            <div style="font-size: 0.9em; color: #888;">
+                © 2024 STICKIT. All rights reserved.
+            </div>
+        </div>
+    </footer>
 
     <!-- Modal Overlay -->
     <div id="createBoardModal" class="modal-overlay">
@@ -191,15 +274,17 @@
                 <span class="close-btn" onclick="closeEditProfileModal()">Cancel</span>
             </div>
             <!-- {% url 'board:create_board' %} -->
-            <form method="POST" action=""> 
+            <form method="POST" action="{% url 'mainApp:edit_profile' %}"> 
                 {% csrf_token %}
-                <div class="form-group">
-                    <label for="first-name">First Name</label>
-                    <input value="{{ user.first_name }}" name="first_name" type="text" id="first-name" placeholder="First Name">
-                </div>
-                <div class="form-group">
-                    <label for="last-name">Last Name</label>
-                    <input value="{{ user.last_name }}" name="last_name" type="text" id="last-name" placeholder="Last Name">
+                <div class="edit-name">
+                    <div class="form-group">
+                        <label for="first-name">First Name</label>
+                        <input value="{{ user.first_name }}" name="first_name" type="text" id="first-name" placeholder="First Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="last-name">Last Name</label>
+                        <input value="{{ user.last_name }}" name="last_name" type="text" id="last-name" placeholder="Last Name">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="short-bio">Short Bio</label>
@@ -218,19 +303,19 @@
                 <span class="close-btn" onclick="closeEditSocialsModal()">Cancel</span>
             </div>
             <!-- {% url 'board:create_board' %} -->
-            <form method="POST" action=""> 
+            <form method="POST" action="{% url 'mainApp:edit_social_links' %}"> 
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="first-name">Facebook Link</label>
-                    <input value="{{ user_profile.facebook_link }}" name="first_name" type="text" id="first-name" placeholder="First Name">
+                    <input value="{{ user_profile.facebook_link }}" name="facebook_link" type="text" id="first-name" placeholder="First Name">
                 </div>
                 <div class="form-group">
                     <label for="last-name">LinkedIn Link</label>
-                    <input value="{{ user_profile.linkedin_link }}" name="last_name" type="text" id="last-name" placeholder="Last Name">
+                    <input value="{{ user_profile.linkedin_link }}" name="linkedin_link" type="text" id="last-name" placeholder="Last Name">
                 </div>
                 <div class="form-group">
                     <label for="short-bio">Twitter Link</label>
-                    <input value="{{ user_profile.twitter_link }}" name="last_name" type="text" id="last-name" placeholder="Last Name">
+                    <input value="{{ user_profile.twitter_link }}" name="twitter_link" type="text" id="last-name" placeholder="Last Name">
                 </div>
                 <button type="submit" class="confirm-btn">Confirm Edit</button>
             </form>

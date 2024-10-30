@@ -3,8 +3,6 @@ function myFunction() {
     dropdownMenu.classList.toggle('show');
 }
 
-
-
 window.addEventListener('click', function (event) {
     const userIcon = document.getElementById('user-icon');
     const dropdownMenu = document.getElementById('dropdown-menu');
@@ -33,27 +31,18 @@ window.onclick = function(event) {
 
 
 function handleCategoryChange() {
-    const categorySelect = document.getElementById('id_category');
-    console.log(categorySelect+"safafasfa");
+    const categorySelect = document.getElementById('category');
     const newCategoryInput = document.getElementById('new-category');
-    const newDescInput = document.getElementById("new-desc");
-     
+    
     if (categorySelect.value === 'create-new') {
         // categorySelect.get
         newCategoryInput.style.display = 'block';
-        newDescInput.style.display = 'block';
         newCategoryInput.focus();
-        newDescInput.focus();
-    } 
-    else {
+    } else {
         newCategoryInput.style.display = 'none';
         newCategoryInput.value = ''; 
-        newDescInput.style.display = 'none';
-        newDescInput.value = ''; 
     }
 }
-
-
 
 function openEditProfileModal() {
     // document.getElementsByClassName('about-me-modal')[0].style.display = 'flex';
@@ -67,13 +56,11 @@ function closeEditProfileModal() {
 }
 
 function openEditSocialsModal() {
-    document.querySelector('.social-links-modal').style.display = 'flex;'
-    // document.getElementById('editProfileModal').style.display = 'flex';
+    document.querySelector('.social-links-modal').style.display = 'flex';
 }
 
 function closeEditSocialsModal() {
     document.querySelector('.social-links-modal').style.display = 'none';
-    // document.getElementById('editProfileModal').style.display = 'none';
 }
 
 // window.onclick = function(event) {
@@ -128,9 +115,39 @@ function showMyBoards() {
     document.querySelectorAll('.tab-btn')[1].classList.add('active');
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const showMyBoards = urlParams.get('show') === 'my-boards';
+
+    if (showMyBoards) {
+        document.getElementById('my-boards-section').style.display = 'block';
+        document.getElementById('profile-section').style.display = 'none';
+    }
+});
+
 // function showTab(tabId) {
 //     document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
 //     document.getElementById(tabId).style.display = 'block';
 //     document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
 //     document.querySelector(`[onclick="showTab('${tabId}')"]`).classList.add('active');
 // }
+
+function showSection(sectionId) {
+    // Hide all sections
+    document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active');
+    });
+
+    // Show the selected section with animation
+    const selectedSection = document.getElementById(sectionId);
+    selectedSection.classList.add('active');
+}
+
+// Example usage for button clicks
+document.getElementById('profile-btn').addEventListener('click', () => {
+    showSection('profile-section');
+});
+
+document.getElementById('my-boards-btn').addEventListener('click', () => {
+    showSection('my-boards-section');
+});
