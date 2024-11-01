@@ -5,13 +5,8 @@ from . import views
 app_name = 'mainApp'
 urlpatterns = [
      path('home/', views.home, name='home'),
-<<<<<<< Updated upstream
-     path('', views.myBoards, name='my_boards'),
-     path('', views.profile, name='profile'),
-     path('board/', include('board.urls', namespace='board'))
-=======
-     path('my_space/', views.mySpace, name='my_space'),
+     path('my_space/', views.my_space, name='my_space'),
+     path('my_space/edit_profile', views.edit_profile, name='edit_profile'),
      # path('logout/', views.logoutPage , name = "logout"),
      path('board/', include('board.urls', namespace='board')),
->>>>>>> Stashed changes
 ]

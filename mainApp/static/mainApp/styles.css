@@ -312,8 +312,19 @@ header {
     margin-top: 30px; 
 }
 
+.edit-name {
+    display: flex;
+    flex-direction: row;
+}
+
+.edit-name .form-group {
+    width: 100%;
+    margin-right: 0;
+    padding: 0;
+}
+
 .form-group {
-    margin-bottom: 15px;
+    margin: 12px 0;
 }
 
 .form-group label {
@@ -332,7 +343,7 @@ header {
 }
 
 textarea {
-    height: 60px;
+    height: 85px;
 }
 
 .flex-container {
@@ -519,7 +530,7 @@ textarea {
     box-shadow: 0 2px 5px rgba(81, 81, 81, 0.1);
     border-radius: 10px;
     border-top-left-radius: 0;
-    padding: 30px 25px;
+    padding: 35px 25px;
     background-color: #fff;
     /* overflow-y: scroll; */
 }
@@ -574,7 +585,8 @@ textarea {
 }
 
 #profile-section {
-    padding-left: 35px;
+    /* padding-left: 35px; */
+    padding-inline: 45px;
 }
 
 .profile-header {
@@ -602,11 +614,11 @@ textarea {
 }
 
 .name-and-email h2 {
-    font-size: 20px;
+    font-size: 24px;
 }
 
 .name-and-email p {
-    font-size: 15px;
+    font-size: 16px;
     margin: 0 0;
 }
 
@@ -627,7 +639,7 @@ textarea {
     margin-bottom: 20px;
     padding: 10px 0;
     color: #555;
-    cursor: pointer;
+    /* cursor: pointer; */
     outline: none;
     font-weight: bold;
 }
@@ -692,3 +704,21 @@ textarea {
     /* background-image: url("/images/MySpace_Background.png"); */
 }
 /* C:\Users\Karylle\Documents\Documents\BSCS-3\Information Management 2\Python\Stick-It-CSIT327\Stick-It-CSIT327\media\MySpace_Background.png */
+
+.users-checkbox-label {
+    display:flex;
+    align-items: center;
+    height:40px;
+}
+
+.users-checkbox-label input {
+    width: 80px;
+    color:red;
+
+}
+.users-scrollable {
+    max-height: 40px; 
+    overflow-y: auto;  
+    border: 1px solid #ccc; 
+    padding: 10px; 
+}

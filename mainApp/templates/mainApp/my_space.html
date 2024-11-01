@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STICKIT|My Space</title>
     <link rel="stylesheet" href="{% static 'mainApp/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'mainApp/style.css' %}">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
 </head>
 <body class="my-space-main-container">
@@ -68,7 +69,7 @@
                     <div id="social" class="tab-content">
                         <div class="profile-sect">
                             <button class="tab active">SOCIAL LINKS</button>
-                            <img src="/media/edit-text.png" width="16" height="16" alt="edit-text-icon" onclick="openEditProfileModal()" style="cursor: pointer;">
+                            <img src="/media/edit-text.png" width="16" height="16" alt="edit-text-icon" onclick="openEditSocialsModal()" style="cursor: pointer;">
                         </div>
                         <div class="social-links">
                             <img src="/media/facebook.png" width="25" height="25" alt="facebook-icon">
@@ -93,11 +94,42 @@
                 </div>
                 <div class="board-categories-v2">
                     <button class="tab active">All Boards</button>
-                    <button class="tab">Work</button>
+                    {% for category in categories %}
+                        <a href="" class="tab">{{ category.category_name }}</a>
+                    {% endfor %}
+                    <!-- <button class="tab">Work</button>
                     <button class="tab">Personal</button>
-                    <button class="tab">Study</button>
+                    <button class="tab">Study</button> -->
                 </div>
+                <section class="board-list">
+                    {% for board in boards %}
+                        <div class="board-preview">
+                            <div class="board-header">
+                                {% if board.board_type == 'project' %}
+                                <div class="circle-container">
+                                    <div class="progress-circle-main">
+                                        <span>{{ projectboard.progress }}</span>
+                                    </div>
+                                    <div class="progress-circle-offset"></div>
+                                </div>
+                                {% endif %}
+                                <!-- <div class="progress-circle">
+                                    <span>75%</span>
+                                </div> -->
+                                <div class="ellipsis">...</div>
+                            </div>
+                            <div class="board-content">
+                                <h2>{{ board.board_name }}</h2>
+                                <p class="creator">Created by {{ board.creator.username }}</p>
+                                <p class="updated-time">Last updated 2 hours ago</p>
+                                <p class="collaborator">{{ board.visibility }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </section>
             </section>
+
+            
         </div>
     </main>
 
@@ -113,7 +145,7 @@
                 {% csrf_token %}
                 <div class="form-group first-input">
                     <label for="board-namde">Board Name</label>
-                    <input value="{{ form.board_name }}" id="board-name" placeholder="Board Name" >
+                    <input type="text" name="board_name" id="board-name" placeholder="Board Name" required>
                     <!-- <div class="input">
                         {{forms.board_name}}
                     </div> -->
@@ -121,7 +153,7 @@
 
                 <div class="form-group">
                     <label for="board-description">Board Description</label>
-                    <textarea value="{{ form.board_description }}" id="board-description" placeholder="Board Description"></textarea>
+                    <textarea name="description" id="board-description" placeholder="Board Description" required></textarea>
                     <!-- <div class="textarea"> -->
                         <!-- {{ forms.board_description }} -->
                     <!-- </div> -->
@@ -129,42 +161,40 @@
 
                 <div class="form-group">
                     <label for="collaborators">Collaborators</label>
-                    <input type="text" id="collaborators" placeholder="Collaborators">
+                    <input type="text" name="collaborators" id="collaborators" placeholder="Collaborators">
                 </div>
 
                 <div class="form-group">
                     <label for="category">Category</label>
-                    <select id="category" onchange="handleCategoryChange()">
+                    <select name="category" id="category" onchange="handleCategoryChange()" required>
                         <option value="" selected>Select...</option>
                         <option value="create-new">Create new...</option>
-                        <option value="work">Work</option>
-                        <option value="study">Study</option>
-                        <option value="personal">Personal</option>
                         {% for category in categories %}
                             <option value="{{ category.id }}">{{ category.category_name }}</option>
                         {% endfor %}
                     </select>
-                    <input value="{{ category.id }}" id="new-category" placeholder="Enter new category" style="display: none; margin-top: 10px;">
+                    <input type="text" id="new-category" name="new-category" placeholder="Enter new category" style="display: none; margin-top: 10px;">
+                    <!-- <input value="{{ category.id }}" id="new-category" placeholder="Enter new category" style="display: none; margin-top: 10px;"> -->
                 </div>
 
                 <div class="form-group flex-container" style="margin-bottom: 0;">
                     <div class="board-type">
                         <label>Board Type</label>
-                        <select id="board-type">
+                        <select name="board_type" id="board-type" required>
                             <option value="" selected>Select...</option>
-                            <option value="{{ form.board_type }}">Simple Board</option>
-                            <option value="{{ form.board_type }}">Project Board</option>
+                            <option value="simple">Simple Board</option>
+                            <option value="project">Project Board</option>
                         </select>
                         <!-- {{ forms.board_type }} -->
                     </div>
     
                     <div class="form-group">
                         <label for="theme">Theme</label>
-                        <select id="theme" name="theme" class="theme-select">
-                            <option value="{{ form.board_theme }}">Default (White)</option>
-                            <option value="{{ form.board_theme }}">Blue</option>
-                            <option value="{{ form.board_theme }}">Green</option>
-                            <option value="{{ form.board_theme }}">Pink</option>
+                        <select name="board_theme" id="theme" class="theme-select">
+                            <option value="white">Default (White)</option>
+                            <option value="blue">Blue</option>
+                            <option value="green">Green</option>
+                            <option value="pink">Pink</option>
                         </select>
                         <!-- {{ forms.board_theme }} -->
                     </div>
@@ -174,8 +204,8 @@
                     <div class="visibility">
                         <label for="visibility">Visibility</label>
                         <select id="visibility" name="visibility" class="visibility-select">
-                            <option value="{{ form.visibility }}">Public</option>
-                            <option value="{{ form.visibility }}">Private</option>
+                            <option value="public">Public</option>
+                            <option value="private">Private</option>
                         </select>
                     </div>
 
@@ -186,24 +216,55 @@
     </div>
 
     <!-- Edit Profile Modal -->
-    <div id="editProfileModal" class="profile-modal-overlay">
+    <div id="editProfileModal" class="profile-modal-overlay about-me-modal">
         <div class="modal-content">
             <div class="edit-profile-header">
                 <h2>Edit Profile</h2>
                 <span class="close-btn" onclick="closeEditProfileModal()">Cancel</span>
             </div>
-            <form>
-                <div class="form-group">
-                    <label for="first-name">First Name</label>
-                    <input type="text" id="first-name" placeholder="First Name">
-                </div>
-                <div class="form-group">
-                    <label for="last-name">Last Name</label>
-                    <input type="text" id="last-name" placeholder="Last Name">
+            <!-- {% url 'board:create_board' %} -->
+            <form method="POST" action=""> 
+                {% csrf_token %}
+                <div class="edit-name">
+                    <div class="form-group">
+                        <label for="first-name">First Name</label>
+                        <input value="{{ user.first_name }}" name="first_name" type="text" id="first-name" placeholder="First Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="last-name">Last Name</label>
+                        <input value="{{ user.last_name }}" name="last_name" type="text" id="last-name" placeholder="Last Name">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="short-bio">Short Bio</label>
-                    <textarea id="short-bio" placeholder="Short Bio"></textarea>
+                    <textarea name="description" id="short-bio" placeholder="Short Bio">{{ user_profile.description }}</textarea>
+                </div>
+                <button type="submit" class="confirm-btn">Confirm Edit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Social Links Modal -->
+    <div id="editProfileModal" class="profile-modal-overlay social-links-modal">
+        <div class="modal-content">
+            <div class="edit-profile-header">
+                <h2>Edit Social Links</h2>
+                <span class="close-btn" onclick="closeEditSocialsModal()">Cancel</span>
+            </div>
+            <!-- {% url 'board:create_board' %} -->
+            <form method="POST" action=""> 
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="first-name">Facebook Link</label>
+                    <input value="{{ user_profile.facebook_link }}" name="first_name" type="text" id="first-name" placeholder="First Name">
+                </div>
+                <div class="form-group">
+                    <label for="last-name">LinkedIn Link</label>
+                    <input value="{{ user_profile.linkedin_link }}" name="last_name" type="text" id="last-name" placeholder="Last Name">
+                </div>
+                <div class="form-group">
+                    <label for="short-bio">Twitter Link</label>
+                    <input value="{{ user_profile.twitter_link }}" name="last_name" type="text" id="last-name" placeholder="Last Name">
                 </div>
                 <button type="submit" class="confirm-btn">Confirm Edit</button>
             </form>

@@ -48,12 +48,8 @@ INSTALLED_APPS = [
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-<<<<<<< Updated upstream
-    'authentication.backends.EmailBackend'
-=======
     'authentication.backends.EmailBackend',
     # 'authentication.module.EmailBackend',
->>>>>>> Stashed changes
 ]
 
 MIDDLEWARE = [
@@ -90,40 +86,14 @@ WSGI_APPLICATION = 'Stick_It.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'Stick-It-Database',
-#         'USER': 'root',
-#         'PASSWORD': 'elijahgwapo',
-#         # 'PASSWORD': get_decrypted_password(),
-#         'HOST' : 'localhost',
-#         'PORT' : '3306'        
-#     }
-# }
 DATABASES = {
     "default": {
-<<<<<<< Updated upstream
-# <<<<<<< homepage-with-create-board
-=======
->>>>>>> Stashed changes
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Stick-It-Database',
-        'USER': 'root',
-        'PASSWORD': 'mysqlroot00',
-        # 'PASSWORD': get_decrypted_password(),
-        'HOST' : 'localhost',
-        'PORT' : '3307'
-<<<<<<< Updated upstream
-# =======
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": "mydatabase",
-# >>>>>>> main
-=======
->>>>>>> Stashed changes
+
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "mydatabase",
+
     }
 }
-
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -161,7 +131,7 @@ USE_TZ = True
 # https://www.geeksforgeeks.org/django-static-file/
 
 STATIC_URL = 'static/'
-MEDIA_URL = 'images/'
+MEDIA_URL = 'media/'
 
 #https://www.youtube.com/watch?v=Sd-RseDuy-c cuz i cant load the css
 

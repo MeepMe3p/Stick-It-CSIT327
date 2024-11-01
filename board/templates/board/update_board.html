@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STICKIT|My Space</title>
+    <link rel="stylesheet" href="{% static 'mainApp/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'mainApp/style.css' %}">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+</head>
+<body class="my-space-main-container">
+    <header>
+        <div class="logo">STICKIT</div>
+        <div class="header-icons">
+            <button class="create-board-btn">Hello {{request.user}}</button>
+            <div class="user-dropdown">
+                <div class="user-icon" id="user-icon" onclick="myFunction()">
+                    <span class="user-initials">{{ initials }}</span>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu">
+                    <!-- <a href="#" class="dropdown-item" onclick="openProfileModal()">Profile</a> -->
+                    <a href="#" class="dropdown-item">My Space</a>
+                    <a href="{% url 'authentication:logout' %}" class="dropdown-item">Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="my-space">
+        <div class="heading-container">
+            <!-- <a href="{% url 'mainApp:home' %}"><img src="/media/arrow.png" alt="back-arrow-icon" height="23px" width="23px"></a> -->
+            <a href="{% url 'mainApp:home' %}" style="font-size: 15px;">Back to home</a>
+            <h1>Update {{board.board_name}}</h1>
+        </div>
+        <div class="space-content-container">
+
+
+            <section id="profile-section" class="content-section">
+                <!-- {% url 'board:update_board' board.id %} -->
+                <form action="" method = "POST">
+                    {%csrf_token%}
+                    <div class="form-group first-input">
+                        <label for="board-namde">Board Name</label>
+                        <input type="text" name="board_name" id="board-name" value = "{{board.board_name}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select name="category" id="category" onchange="handleCategoryChange()" required>
+                            <option value="create-new">Create new...</option>
+                            {% for category in categories %}
+
+                                <option value="{{ category.id }}" {%if category.name == board.category_name%} 
+                                    selected  {%endif%}>{{ category.category_name }} </option>
+                            {% endfor %}
+                        </select>
+                        <input type="text" id="new-category" name="new-category" placeholder="Enter new category" style="display: none; margin-top: 10px;">
+                    </div>
+                    <div class="form-group">
+                        <label for="board-description">Board Description</label>
+                        <textarea name="description" id="board-description" placeholder="Board Description" required></textarea>
+                    </div>
+                    <div class="form-group flex-container" style="margin-bottom: 0;">
+                        <div class="form-group">
+                            <label for="visibility">Visibility</label>
+                            <select id="visibility" name="visibility" class="visibility-select">
+                                <option value="public">Public</option>
+                                <option value="private">Private</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="theme">Theme</label>
+                            <select name="board_theme" id="theme" class="theme-select">
+                                <option value="white">Default (White)</option>
+                                <option value="blue">Blue</option>
+                                <option value="green">Green</option>
+                                <option value="pink">Pink</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="submit-btn">Update</button>
+
+                    </div>
+                </form>
+            </section>
+            
+        </div>
+    </main>
+
+    
+
+    <script src="{% static 'mainApp/scripts.js' %}"></script>
+</body>
+</html>

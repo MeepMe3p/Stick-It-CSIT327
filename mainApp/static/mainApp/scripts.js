@@ -47,11 +47,22 @@ function handleCategoryChange() {
 
 
 function openEditProfileModal() {
-    document.getElementById('editProfileModal').style.display = 'flex';
+    // document.getElementsByClassName('about-me-modal')[0].style.display = 'flex';
+    document.querySelector('.about-me-modal').style.display = 'flex';
+    // document.getElementById('editProfileModal').style.display = 'flex';
 }
 
 function closeEditProfileModal() {
-    document.getElementById('editProfileModal').style.display = 'none';
+    document.querySelector('.about-me-modal').style.display = 'none';
+    // document.getElementById('editProfileModal').style.display = 'none';
+}
+
+function openEditSocialsModal() {
+    document.querySelector('.social-links-modal').style.display = 'flex';
+}
+
+function closeEditSocialsModal() {
+    document.querySelector('.social-links-modal').style.display = 'none';
 }
 
 // window.onclick = function(event) {

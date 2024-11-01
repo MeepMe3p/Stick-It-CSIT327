@@ -6,6 +6,9 @@ class TableCreationForm(forms.ModelForm):
     class Meta:
         model = Board
         fields = ["board_name","description","category","board_type","board_theme","visibility"]
+
+
+        
     
 
     

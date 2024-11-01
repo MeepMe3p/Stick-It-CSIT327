@@ -5,14 +5,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< Updated upstream
-    <title>StickIt Board</title>
-    <link rel="stylesheet" href="{% static 'mainApp/styles.css' %}">
-=======
     <title>STICKIT|Home</title>
     <link rel="stylesheet" href="{% static 'mainApp/styles.css' %}">
     <link rel="stylesheet" href="{% static 'mainApp/style.css' %}">
->>>>>>> Stashed changes
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
 </head>
 <body>
@@ -22,77 +17,16 @@
             <button class="create-board-btn" onclick="openModal()">Create Board</button>
             <div class="user-dropdown">
                 <div class="user-icon" id="user-icon" onclick="myFunction()">
-<<<<<<< Updated upstream
-                    <span class="user-initials">EN</span>
-                </div>
-                <div class="dropdown-menu" id="dropdown-menu">
-                    <a href="profile.html" class="dropdown-item">Profile</a>
-                    <a href="my_boards.html" class="dropdown-item">My Boards</a>
-                    <a href="#" class="dropdown-item">Logout</a>
-=======
                     <span class="user-initials">{{ initials }}</span>
                 </div>
                 <div class="dropdown-menu" id="dropdown-menu">
                     <!-- <a href="#" class="dropdown-item" onclick="openProfileModal()">Profile</a> -->
                     <a href="{% url 'mainApp:my_space' %}" class="dropdown-item">My Space</a>
                     <a href="{% url 'authentication:logout' %}" class="dropdown-item">Logout</a>
->>>>>>> Stashed changes
                 </div>
             </div>
         </div>
     </header>
-<<<<<<< Updated upstream
-    
-    <section class="search-section">
-        <h1>What do you want to work on?</h1>
-        <div class="search-bar">
-            <i class="uil uil-search-alt search-icon"></i>
-            <input type="text" placeholder="Search your board" />
-        </div>
-        <div class="board-categories">
-            <div class="category-icon">
-                <button class="category-btn">
-                    <img src="media/stars.svg" alt="Boards Icon" width="20" height="20">
-                </button>
-                <span>Boards</span>
-            </div>
-            <div class="category-icon">
-                <button class="category-btn">
-                    <img src="media/window-desktop.svg" alt="Work Icon" width="20" height="20">
-                </button>
-                <span>Work</span>
-            </div>
-            <div class="category-icon">
-                <button class="category-btn">
-                    <img src="media/person-lock.svg" alt="Personal Icon" width="24" height="21">
-                </button>
-                <span>Personal</span>
-            </div>
-            <div class="category-icon">
-                <button class="category-btn">
-                    <img src="media/backpack4.svg" alt="Study Icon" width="25" height="20">
-                </button>
-                <span>Study</span>
-            </div>
-            <div class="category-icon">
-                <button class="category-btn create-new">
-                    <img src="media/stars.svg" alt="Create New Icon" width="20" height="20">
-                </button>
-                <span>Create New</span>
-            </div>
-        </div>
-    </section>    
-
-    <section class="board-list">
-        <!-- Boards -->
-        <div class="board-placeholder"></div>
-        <div class="board-placeholder"></div>
-        <div class="board-placeholder"></div>
-        <div class="board-placeholder"></div>
-        <div class="board-placeholder"></div>0
-        <div class="board-placeholder"></div>
-    </section>
-=======
 
     <div class="main-container"> 
         <section class="search-section"> 
@@ -103,14 +37,22 @@
             </div>
             <div class="board-categories">
                 <div class="category-icon">
-                    <button class="category-btn">
+                    <a href="{% url 'board:filter_by_owner' %}" class="category-btn">
                         <img src="/media/stars.svg" alt="Boards Icon" width="20" height="16">
-                    </button>
+                    </a>
+                    <span>My Boards</span>
+                </div>
+            
+                <div class="category-icon">
+                    <a href="{% url 'mainApp:home' %}" class="category-btn">
+                        <img src="/media/stars.svg" alt="Boards Icon" width="20" height="16">
+                    </a>
                     <span>Boards</span>
                 </div>
+                
                 {% for category in categories %}
                 <div class="category-icon">
-                    <a href="{% url 'board:filter_boards_by_category' category.id %}" class="category-btn">
+                    <a href="{% url 'board:filter_boards_by_category' category.category_slug %}" class="category-btn">
                         <img src="/media/stars.svg" alt="Boards Icon" width="20" height="16">
                     </a>
                     <span>{{ category.category_name }}</span>
@@ -136,7 +78,7 @@
                 </div> -->
                 <div class="category-icon" onclick="openModal()">
                     <button class="category-btn create-new">
-                        <img src="media/stars.svg" alt="Create New Icon" width="20" height="20">
+                        <img src="/media/stars.svg" alt="Create New Icon" width="20" height="20">
                     </button>
                     <span>Create New</span>
                 </div>
@@ -144,6 +86,7 @@
         </section>    
 
         <section class="board-list">
+            {%if boards%}
             {% for board in boards %}
                 <div class="board-preview">
                     <div class="board-header">
@@ -158,7 +101,26 @@
                         <!-- <div class="progress-circle">
                             <span>75%</span>
                         </div> -->
-                        <div class="ellipsis">...</div>
+                        {%if request.user in board.users.all%}
+                            {%if request.user == board.creator%}
+                            <div class="ellipsis">
+                                <a href="{%url 'board:update_board' board.id%}">Update</a>
+                                <a href="">...</a>
+                            </div>
+                            {%else%}
+                            <div class="ellipsis">
+                                <a href="">Open</a>
+                                <a href="">...</a>
+                            </div>
+                            {%endif%}
+
+                        
+                        {%else%}
+                        <div class="ellipsis">
+                            <a href="">Join</a>
+                            <p>board oener: {{board.creator}}</p>
+                        </div>
+                        {%endif%}
                     </div>
                     <div class="board-content">
                         <h2>{{ board.board_name }}</h2>
@@ -168,26 +130,23 @@
                     </div>
                 </div>
             {% endfor %}
+            {%else%}
+            <div style="display: block; align-items: center; margin-left: 40%;">
+                <img src="/media/Character_Hu_Tao_Thumb.png" style="max-width:256 ;" alt="">
+                <p>NO BOARDS</p>
+            </div>
+      
+
+            {%endif%}
         </section>
     </div>
->>>>>>> Stashed changes
 
     <!-- Modal Overlay -->
     <div id="createBoardModal" class="modal-overlay">
         <div class="modal-content">
-<<<<<<< Updated upstream
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h2>Create Board</h2>
-            
-            <form method="POST" action="{% url 'boards:create_board' %}"> 
-                {% csrf_token %}
-                <div class="form-group first-input">
-                    <label for="board-namde">Board Name</label>
-                    <input value="{{ form.board_name }}" id="board-name" placeholder="Board Name" >
-=======
             <div class="modal-header">
                 <h2>Create Board</h2>
-                <span class="close-btn" onclick="closeModal()">&times;</span>
+                <span class="close-btn" style="font-size: 28px;" onclick="closeModal()">&times;</span>
             </div>
             
             <form method="POST" action="{% url 'board:create_board' %}"> 
@@ -195,61 +154,38 @@
                 <div class="form-group first-input">
                     <label for="board-namde">Board Name</label>
                     <input type="text" name="board_name" id="board-name" placeholder="Board Name" required>
->>>>>>> Stashed changes
-                    <!-- <div class="input">
-                        {{forms.board_name}}
-                    </div> -->
+                    
                 </div>
 
                 <div class="form-group">
                     <label for="board-description">Board Description</label>
-<<<<<<< Updated upstream
-                    <textarea value="{{ form.board_description }}" id="board-description" placeholder="Board Description"></textarea>
-=======
                     <textarea name="description" id="board-description" placeholder="Board Description" required></textarea>
->>>>>>> Stashed changes
-                    <!-- <div class="textarea"> -->
-                        <!-- {{ forms.board_description }} -->
-                    <!-- </div> -->
                 </div>
 
                 <div class="form-group">
                     <label for="collaborators">Collaborators</label>
-<<<<<<< Updated upstream
-                    <input type="text" id="collaborators" placeholder="Collaborators">
-=======
-                    <input type="text" name="collaborators" id="collaborators" placeholder="Collaborators">
->>>>>>> Stashed changes
-                </div>
+                    <div class = "users-scrollable">
+                        {%for user in users%}
+                        <div class="users-checkbox-label">
+                            <input type="checkbox" id="{{ user.id }}" value="{{ user.id }}" name = "collaborators">
+                            <label for="{{ user.id }}">{{ user.username }}</label>
+                        </div>
+                    {%endfor%}
 
-                <div class="form-group">
-                    <label for="category">Category</label>
-<<<<<<< Updated upstream
-                    <select id="category" onchange="handleCategoryChange()">
-=======
-                    <select name="category" id="category" onchange="handleCategoryChange()" required>
->>>>>>> Stashed changes
-                        <option value="" selected>Select...</option>
-                        <option value="create-new">Create new...</option>
-                        {% for category in categories %}
-                            <option value="{{ category.id }}">{{ category.category_name }}</option>
-                        {% endfor %}
-                    </select>
-<<<<<<< Updated upstream
-                    <input value="{{ category.id }}" id="new-category" placeholder="Enter new category" style="display: none; margin-top: 10px;">
-                </div>
-
-                <div class="form-group flex-container">
-                    <div class="board-type">
-                        <label>Board Type</label>
-                        <select id="board-type">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select name="category" id="category" onchange="handleCategoryChange()" required>
                             <option value="" selected>Select...</option>
-                            <option value="{{ form.board_type }}">Simple Board</option>
-                            <option value="{{ form.board_type }}">Project Board</option>
-=======
-                    <input type="text" id="new-category" name="new-category" placeholder="Enter new category" style="display: none; margin-top: 10px;">
-                    <!-- <input value="{{ category.id }}" id="new-category" placeholder="Enter new category" style="display: none; margin-top: 10px;"> -->
-                </div>
+                            <!-- <option value="create-new">Create new...</option> -->
+                            <option value="create-new">Create new...</option>
+                            {% for category in categories %}
+                                <option value="{{ category.id }}">{{ category.category_name }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="text" id="new-category" name="new-category" placeholder="Enter new category" style="display: none; margin-top: 10px;">
+                    </div>
 
                 <div class="form-group flex-container" style="margin-bottom: 0;">
                     <div class="board-type">
@@ -258,49 +194,27 @@
                             <option value="" selected>Select...</option>
                             <option value="simple">Simple Board</option>
                             <option value="project">Project Board</option>
->>>>>>> Stashed changes
                         </select>
-                        <!-- {{ forms.board_type }} -->
                     </div>
     
                     <div class="form-group">
                         <label for="theme">Theme</label>
-<<<<<<< Updated upstream
-                        <select id="theme" name="theme" class="theme-select">
-                            <option value="{{ form.board_theme }}">Default (White)</option>
-                            <option value="{{ form.board_theme }}">Blue</option>
-                            <option value="{{ form.board_theme }}">Green</option>
-                            <option value="{{ form.board_theme }}">Pink</option>
-=======
                         <select name="board_theme" id="theme" class="theme-select">
                             <option value="white">Default (White)</option>
                             <option value="blue">Blue</option>
                             <option value="green">Green</option>
                             <option value="pink">Pink</option>
->>>>>>> Stashed changes
                         </select>
-                        <!-- {{ forms.board_theme }} -->
                     </div>
                 </div>
 
                 <div class="form-group visibility-create-container">
                     <div class="visibility">
-<<<<<<< Updated upstream
-                        <label>Visibility</label>
-                        <div class="visibility-options">
-                            <input value="{{ form.visibility }}" type="radio" id="public" name="visibility" value="public" checked>
-                            <label for="public">Public</label>
-                            <input value="{{ form.visibility }}" type="radio" id="private" name="visibility" value="private">
-                            <label for="private">Private</label>
-                        </div>
-                        <!-- {{forms.visibility}} -->
-=======
                         <label for="visibility">Visibility</label>
                         <select id="visibility" name="visibility" class="visibility-select">
                             <option value="public">Public</option>
                             <option value="private">Private</option>
                         </select>
->>>>>>> Stashed changes
                     </div>
 
                     <button type="submit" class="submit-btn">Create</button>
