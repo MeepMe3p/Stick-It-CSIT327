@@ -86,3 +86,25 @@ class SimpleBoard(Board):
     def save(self, *args, **kwargs):
         self.board_type = 'simple'
         super().save(*args, **kwargs)
+
+
+class Notification(models.Model):
+    user_sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
+    user_receiver = models.ForeignKey(User, on_delete=models.CASCADE,related_name='receiver')
+    board = models.ForeignKey(Board, on_delete=models.CASCADE)
+    NOTIF_TYPES = [
+        ('invite','Invitation'),
+        ('join','Joining'),
+        ('remove','Removed'),
+        ('accepted','Accepted'),
+        ('declined','Declined'),
+        
+    ]
+    notif_type = models.CharField(max_length=10,choices=NOTIF_TYPES)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now=True)
+    has_responded = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return f'Sender: {self.user_sender} Rec: {self.user_receiver} Mess: {self.message} Board: {self.board} Has responded: {self.has_responded}'
+

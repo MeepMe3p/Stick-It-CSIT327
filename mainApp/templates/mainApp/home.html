@@ -8,6 +8,7 @@
     <title>STICKIT|Home</title>
     <link rel="stylesheet" href="{% static 'mainApp/styles.css' %}">
     <link rel="stylesheet" href="{% static 'mainApp/style.css' %}">
+    <link rel ="stylesheet" href = "{%static 'board/css/style.css'%}">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
 </head>
 <body>
@@ -22,6 +23,7 @@
                 <div class="dropdown-menu" id="dropdown-menu">
                     <!-- <a href="#" class="dropdown-item" onclick="openProfileModal()">Profile</a> -->
                     <a href="{% url 'mainApp:my_space' %}" class="dropdown-item">My Space</a>
+                    <a   class="dropdown-item" onclick = 'toggleNotificationPopup()'>Notifications</a>
                     <a href="{% url 'authentication:logout' %}" class="dropdown-item">Logout</a>
                 </div>
             </div>
@@ -117,7 +119,7 @@
                         
                         {%else%}
                         <div class="ellipsis">
-                            <a href="">Join</a>
+                            <a href="{%url 'board:join_board' board.id%}">Join</a>
                             <p>board oener: {{board.creator}}</p>
                         </div>
                         {%endif%}
@@ -141,6 +143,39 @@
         </section>
     </div>
 
+    <!-- Notifications modal -->
+    <div id="notification-popup" class="notification-popup">
+        <h3>Notifications</h3>
+
+        <ul id="notification-list">
+            {%if not notifications%}
+                <li>You have no notifications.</li>
+            {%endif%}
+            {%for notifs in notifications%}
+                {%if notifs.has_responded == False%}
+                    <li>{{notifs.message}}
+                        {%if notifs.notif_type == 'invite'%}
+                        <form method = "POST" action = "{%url 'board:respond_invite' notifs.id%}">
+                            {%csrf_token%}
+                            <input type="submit" value = "Yes" name = 'accept'>
+                            <input type="submit" value = "No" name = 'decline'>
+                        </form>
+                        {%endif%}
+                        {%if notifs.notif_type == 'join'%}
+                        <form method = "POST" action = "{%url 'board:respond_join' notifs.id%}">
+                            {%csrf_token%}
+                            <input type="submit" value = "Yezzz" name = 'accept'>
+                            <input type="submit" value = "Nooo" name = 'decline'>
+                        </form>
+                        {%endif%}
+                    </li>
+                    
+                {%else%}
+                    <!-- <li>You have no notifications.</li> -->
+                {%endif%}
+            {%endfor%}
+        </ul>
+    </div>
     <!-- Modal Overlay -->
     <div id="createBoardModal" class="modal-overlay">
         <div class="modal-content">
@@ -224,5 +259,6 @@
     </div>
 
     <script src="{% static 'mainApp/scripts.js' %}"></script>
+    <script src="{% static 'board/js/script.js' %}"></script>
 </body>
 </html>

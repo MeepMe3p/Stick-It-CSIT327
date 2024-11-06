@@ -4,9 +4,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.contrib.auth import login,authenticate,get_user_model
 from .forms import TableCreationForm,CategoryCreationForm
-from .models import Category,Board, ProjectBoard, SimpleBoard
+from .models import Category,Board, ProjectBoard, SimpleBoard, Notification
 from django.contrib.auth.decorators import login_required
 from mainApp.utils import get_user_initials
+from django.contrib.auth.models import User
+
+
 
 
 # To handle the creation of the new board ---- processes the inout data from modal overlay in mainApp/home.html
@@ -38,7 +41,7 @@ def create_board(request):
                 return render(request, 'board/my_board.html', {'form': form, 'categories': categories})
             
         form = TableCreationForm(post_data)
-        print("this is form:" ,form.data)
+        # print("this is form:" ,form.data)
  
         if form.is_valid():
             print("Form is valid")
@@ -79,12 +82,18 @@ def create_board(request):
             
             if collaborators:
                 for users in collaborators:
-                    print(users)
-                    board.users.add(users)
+                    # print(users)
+                    notif = Notification.objects.create(
+                        user_sender = request.user,
+                        user_receiver = User.objects.get(pk=users),
+                        board = board,
+                        notif_type = 'invite',
+                        message = f'You have been invited in {board.board_name}. Accept?')
+                    # board.users.add(users)
 
             board.users.add(request.user)
             board.user_count = board.users.count()
-            # board.save()
+            board.save()
             # form.save() 
             return redirect('board:render_board')  
         else:
@@ -126,13 +135,14 @@ def all_boards(request):
 def filter_owner(request):
     boards = Board.objects.filter(users = request.user)
     categories = Category.objects.all()  
+    notifs = Notification.objects.all()
     initials = get_user_initials(request.user)
     context = {
         'boards': boards,
         'initials' : initials,
         'boards': boards,
         'categories': categories,
-        # 'selected_category': category,
+        'notifications':notifs,
     }
     return render(request,'mainApp/home.html',context)
     
@@ -142,20 +152,72 @@ def filter_boards_by_category(request, category_slug):
     boards = Board.objects.filter(category=category)
     categories = Category.objects.all()  
     initials = get_user_initials(request.user)
+    notifs = Notification.objects.all()
 
     return render(request, 'mainApp/home.html', {
         'initials' : initials,
         'boards': boards,
         'categories': categories,
         'selected_category': category,
+        'notifications':notifs,
     })
 
 @login_required
 def update_board(request,pk):
+    if request.method == 'POST':
+        form = TableCreationForm(request.POST,is_update =True)
+        if form.is_valid():
+            # print(form.data)
+            board = Board.objects.get(pk=pk)
+   
+
+            board.board_name = form.cleaned_data['board_name']
+            board.category = form.cleaned_data['category']
+            board.description = form.cleaned_data['description']
+            board.board_theme = form.cleaned_data['board_theme']
+            board.visibility = form.cleaned_data['visibility']
+
+            added = request.POST.getlist('add_user')
+            removed = request.POST.getlist('remove_user')
+
+            if added:
+                for users in added:
+                    # print(users)
+                    notif = Notification.objects.create(
+                        user_sender = request.user,
+                        user_receiver = User.objects.get(pk=users),
+                        board = board,
+                        notif_type = 'invite',
+                        message = f'You have been invited in {board.board_name}. Accept?')
+                    
+                    # print(notif.user_receiver)
+                    # board.users.add(users)
+            if removed:
+                for users in removed:
+                    # print(users)
+                    
+                    notif = Notification.objects.create(
+                        user_sender = request.user,
+                        user_receiver = User.objects.get(pk=users),
+                        board = board,
+                        notif_type = 'remove',
+                        message = f'You have been removed in {board.board_name}')
+                    
+                    board.users.remove(users)
+            board.save()
+
+        else:
+            print(form.errors)
+    
     board = Board.objects.get(pk=pk)
     category = Category.objects.all()
-    users_remove = board.users.all()
-    users_add = Board.objects.exclude(id__in = users_remove.values_list('id',flat=True))
+    owner = board.creator
+    users_remove = board.users.all().exclude(pk=owner.pk)
+    users_add = User.objects.all().exclude(id__in=users_remove).exclude(is_staff=True).exclude(id=owner.pk)
+    
+    notifs = Notification.objects.all()
+
+    # print(users_add,"asddead")
     initials = get_user_initials(request.user)
     context = {
         'initials' : initials,
@@ -163,6 +225,83 @@ def update_board(request,pk):
         'categories':category,
         'add':users_add,
         'remove':users_remove,
+        'notifications':notifs,
     }
     return render(request,'board/update_board.html',context)
+
+@login_required
+def respond_invite(request,pk):
+    # print("went hereeeeee")
+    # print(request.POST.get('yes'))
+    notif = Notification.objects.get(pk=pk)
+    notif.has_responded = True
+    if request.POST.get('accept'):
+        board = notif.board
+        print(notif)
+        print(board)
+        board.users.add(request.user)
+        Notification.objects.create(
+            user_sender = request.user,
+            user_receiver = notif.user_sender,
+            board = board,
+            notif_type = 'accepted',
+            message = f'{request.user.username} has accepted your invite in {board.board_name}')
+
+    elif request.POST.get('decline'):
+        print("no clicked")
+        board = notif.board
+
+        Notification.objects.create(
+            user_sender = request.user,
+            user_receiver = notif.user_sender   ,
+            board = board,
+            notif_type = 'decline',
+            message = f'{request.user.username} has rejected your invite to join {board.board_name}')
+    print("T F: ",notif.has_responded)
+    notif.save()
+    return redirect('mainApp:home')  
+@login_required
+def join_board(request,pk):
+    board = Board.objects.get(pk=pk)
+    print(board.board_name)
+    notif = Notification.objects.create(
+        user_sender = request.user,
+        user_receiver = board.creator,
+        board = board,
+        notif_type = 'join',
+        message = f'{request.user.username} would like to join {board.board_name}')
+    print(f'{request.user.username} would like to join {board.board_name}')     
+    return redirect("board:render_board")
+@login_required
+def respond_join_request(request,pk):
+    notif = Notification.objects.get(pk=pk)
+    notif.has_responded = True
+    board = notif.board
+    if request.POST.get('accept'):
+        print(notif)
+        print(board)
+        board.users.add(notif.user_sender)
+        Notification.objects.create(
+        user_sender = request.user,
+        user_receiver = notif.user_sender,
+        board = board,
+        notif_type = 'accepted',
+        message = f'{request.user.username} accepted your request to join {board.board_name}')
+        print("went herewwwwwwwwwwwwwwwwww")
+    elif request.POST.get('decline'):
+        # print("no clicked")
+
+        Notification.objects.create(
+        user_sender = request.user,
+        user_receiver = notif.user_sender,
+        board = board,
+        notif_type = 'decline',
+        message = f'{request.user.username} rejected your request to join {board.board_name}')
+        print("went herewwwwwwwwwwwwwwwwww")
+    print("T F: ",notif.has_responded)
+    notif.save()
+    return redirect('mainApp:home')  
+    
+
+
 #

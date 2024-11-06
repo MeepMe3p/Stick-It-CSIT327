@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from board.models import Board, ProjectBoard, SimpleBoard
+from board.models import Board, ProjectBoard, SimpleBoard, Notification
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
@@ -16,12 +16,19 @@ def home(request):
     boards = Board.objects.all().exclude(creator = request.user).exclude(users = request.user)
     projectboards = ProjectBoard.objects.all()
     simpleboards = SimpleBoard.objects.all()
+    # notifs = Notification.objects.all()
+    notifs = Notification.objects.all().filter(user_receiver = request.user)
     # ej changes
     users = User.objects.all().exclude(id = request.user.id).exclude(is_staff=True)
     #
     # if request.method == 'GET':
     #     board = Board.objects.all()
-    print(request.user.first_name)
+    # if notifs:
+    #     for notif in notifs:
+    #         print(request.user,' == ' , notif.user_receiver)
+    #         print(notif)
+    # else:
+    #     print("empty")
     print(request.user.last_name)
     initials = get_user_initials(request.user)
     context = {
@@ -30,9 +37,10 @@ def home(request):
         'boards': boards,
         'projectboards' : projectboards,
         'simpleboards' : simpleboards,
-        'users' : users
+        'users' : users,
+        'notifications':notifs,
     }
-    print(f"This is context {context}")
+    # print(f"This is context {context}")
     return render(request, 'mainApp/home.html', context)
 
 @login_required(login_url='authentication:login')
