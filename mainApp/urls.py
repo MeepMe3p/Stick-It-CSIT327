@@ -3,6 +3,7 @@ from django.urls import path, include
 from . import views
 
 app_name = 'mainApp'
+app_name = 'mainApp'
 urlpatterns = [
      path('home/', views.home, name='home'),
      path('my_space/', views.my_space, name='my_space'),

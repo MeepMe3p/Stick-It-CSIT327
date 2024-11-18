@@ -32,21 +32,24 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+    'channels',
+    'django_bootstrap5',
     'note',
     'authentication',
     'mainApp',
     'board',
-    
 ]
 
 AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    
     'django.contrib.auth.backends.ModelBackend',
     'authentication.backends.EmailBackend',
     # 'authentication.module.EmailBackend',
@@ -75,14 +78,17 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'Stick_It.wsgi.application'
-
-
+ASGI_APPLICATION = 'Stick_It.asgi.application'
+CHANNEL_LAYERS = {
+    "default": {"BACKEND": "channels.layers.InMemoryChannelLayer"},
+}
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
@@ -143,7 +149,8 @@ STATICFILES_DIRS = [
     ('note', os.path.join(BASE_DIR, 'mainApp/static')),
     ('board',os.path.join(BASE_DIR,'board/static')),
 ]
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+# MEDIA REFERENCES:  https://stackoverflow.com/questions/64290228/unable-to-access-media-files-in-django-template 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
 # Default primary key field type
