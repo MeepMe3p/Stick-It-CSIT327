@@ -76,7 +76,8 @@ def create_board(request):
                 )
             else:
                 print("Invalid board type.")
-                return render(request, 'board/my_board.html', {'form': form, 'categories': categories})
+                # return render(request, 'board/my_board.html', {'form': form, 'categories': categories})
+                return redirect('note:note', board=board.board_name)
             
             print("selected collabs: ",collaborators )
             
@@ -95,14 +96,17 @@ def create_board(request):
             board.user_count = board.users.count()
             board.save()
             # form.save() 
-            return redirect('board:render_board')  
+            # return redirect('board:render_board') 
+            return redirect('note:note', board=board.board_name)
+
         else:
             print("Form errors:", form.errors) 
     else:
         form = TableCreationForm()
         form.fields['category'].queryset = categories
-    
     return render(request, 'board/my_board.html', {'form': form, 'categories': categories})
+    # return redirect('note:note', board='Test_Board_Name')
+    
 
 @login_required(login_url='authentication:login')
 def render_board(request):

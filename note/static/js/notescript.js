@@ -121,7 +121,7 @@ createBtn.onclick = () => {
     <textarea placeholder="Write Content..." rows="10" cols="30"></textarea>
     <div class="custom-checkbox-container">
         <input type="checkbox" class="btn-check" id="${id}" checked autocomplete="off">
-        <label class="btn btn-outline-secondary" for="${id}">&#10003;</label><br>
+        <label id="note-btn-style" class="btn btn-outline-secondary" for="${id}">&#10003;</label><br>
     </div>
     `;
     newNote.style.borderColor = color.value;
@@ -384,6 +384,7 @@ const csrftoken = getCookie('csrftoken');
 
 
 window.onload = () => {
+    console.log("HMM?")
     fetch('/note/get_notes/', {
         method : 'GET',
     })
@@ -417,7 +418,7 @@ function notes_creation(note){
     <textarea placeholder="Write Content..." rows="10" cols="30">${note.content}</textarea>
     <div class="custom-checkbox-container">
         <input type="checkbox" class="btn-check" id="${note.checkbox_id}" checked autocomplete="off">
-        <label class="btn btn-outline-secondary" for="${note.checkbox_id}">&#10003;</label><br>
+        <label id="note-btn-style" class="btn btn-outline-secondary" for="${note.checkbox_id}">&#10003;</label><br>
     </div>
     `;
     const checkBox = newNote.querySelector(".custom-checkbox-container").querySelector(".btn-check")

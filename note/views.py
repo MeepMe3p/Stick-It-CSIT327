@@ -8,9 +8,9 @@ from .forms import StickItUserCreationForm
 from django.template.context import RequestContext
 from django.http import JsonResponse
 class NoteView(View):
-    def get(self, request):
+    def get(self, request, board):
         # TODO PASS THE BOARD NAME HERE!
-        note_board_name = "JellllyFishMyKamiOOshiiiiiNamBerWanFanHereSupport4Ever"  # This will be the name of your board
+        note_board_name = board  # This will be the name of your board
         return render(request, 'note.html', {'note_board_name': note_board_name})
     
 # class NoteCreateView(View):
@@ -68,6 +68,7 @@ class NoteDeleteView(View):
 class NoteGetView(View):
     def get(self, request, *args, **kwargs):
         notes = Note.objects.all().values('id', 'content', 'border_color', 'coordinates', 'is_finished', 'checkbox_id')
+        print(notes)
         return JsonResponse(list(notes), safe=False)
         # return JsonResponse({'notes' : notes})
     
