@@ -2,27 +2,50 @@
 {% load django_bootstrap5 %}
 <!DOCTYPE html>
 <head>
+    <title>STICKIT Board</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/notestyle.css' %}">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.3/dist/sweetalert2.all.min.js"></script>
     {% bootstrap_css %}
 </head>
 <body>
+    <div class="toolbar">
+        <div class="left-controls">
+            <div class="logo">STICKIT</div>
+            <button class="back-button"><a href="{% url 'mainApp:home' %}" style="color: black; text-decoration: none;">Back to files</a></button>
+        </div>
+        <div class="right-controls">
+            <div class="circle-indicators">
+                <div class="circle active"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <span class="plus-circle">{{ board.user_count }}</span>
+            </div>
+            <div class="profile-btn">{{ user_initials }}</div>
+            <button class="share-btn">Share</button>
+        </div>
+    </div>
     <!-- <input type="checkbox" class="btn-check" id="btn-check-2-outlined" checked autocomplete="off">
     <label class="btn btn-outline-secondary" for="btn-check-2-outlined">Checked</label><br> -->
     
     <div class="note_div" >
         <form class="div_note_form" action="">
             {% csrf_token %}
-            <input type="color" id="color" value="#e6b905">
+            <input type="color" id="color" value="#f4ccff">
             <button type="button" id="createBtn">+</button>
         </form>
         <div id="list">    
         </div>
     </div>
+    <div>
+    </div>
     <script>
+
         const noteBoardName = "{{ note_board_name }}";  // Pass the variable from the template
+
     </script>
     <script src="{% static 'js/notescript.js' %}"></script>
+    <script src="https://cdn.ckeditor.com/4.5.6/standard/ckeditor.js"></script>
 </body>
     <script>
 </script>

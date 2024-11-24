@@ -33,6 +33,11 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'daphne',
+    'django_bootstrap5',
+    'note',
+    'authentication',
+    'mainApp',
+    'board',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,11 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'channels',
-    'django_bootstrap5',
-    'note',
-    'authentication',
-    'mainApp',
-    'board',
 ]
 
 AUTHENTICATION_BACKENDS = [

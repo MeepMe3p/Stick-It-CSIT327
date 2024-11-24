@@ -121,7 +121,7 @@ createBtn.onclick = () => {
     <textarea placeholder="Write Content..." rows="10" cols="30"></textarea>
     <div class="custom-checkbox-container">
         <input type="checkbox" class="btn-check" id="${id}" checked autocomplete="off">
-        <label class="btn btn-outline-secondary" for="${id}">&#10003;</label><br>
+        <label id="note-btn-style" class="btn btn-outline-secondary" for="${id}">&#10003;</label><br>
     </div>
     `;
     newNote.style.borderColor = color.value;
@@ -384,11 +384,22 @@ const csrftoken = getCookie('csrftoken');
 
 
 window.onload = () => {
+    console.log("HMM?")
     fetch('/note/get_notes/', {
         method : 'GET',
     })
-    .then(response => response.json())
+    
+    .then(response => {
+        console.log('Response status:', response);  // Check if the status is OK
+        console.log('Response status:', response.json);  // Check if the status is OK
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+
+        return response.json();
+    })
     .then(notes => { 
+        console.log("wrnt hereeeeeee")
         // let index = 0;
         // notes.forEach(note => {
         //     console.log(note, index);
@@ -406,6 +417,8 @@ function notes_creation(note){
     let newNote = document.createElement('div');
     // console.log(note.is_finished)
     
+    console.log("nipasok ka diri");
+
     newNote.classList.add('note');
     newNote.style.borderColor = note.border_color;
     newNote.style.position = 'absolute'; // Make sure to set position for coordinates
@@ -413,11 +426,12 @@ function notes_creation(note){
     newNote.style.top = note.coordinates.y; // Set the y position
     newNote.innerHTML = `
     
+    
     <span class="close" style="border-color: ${note.border_color};">x</span>
     <textarea placeholder="Write Content..." rows="10" cols="30">${note.content}</textarea>
     <div class="custom-checkbox-container">
         <input type="checkbox" class="btn-check" id="${note.checkbox_id}" checked autocomplete="off">
-        <label class="btn btn-outline-secondary" for="${note.checkbox_id}">&#10003;</label><br>
+        <label id="note-btn-style" class="btn btn-outline-secondary" for="${note.checkbox_id}">&#10003;</label><br>
     </div>
     `;
     const checkBox = newNote.querySelector(".custom-checkbox-container").querySelector(".btn-check")

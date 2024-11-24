@@ -5,12 +5,19 @@ from django.contrib.auth import login,authenticate,get_user_model
 from django.contrib import messages
 from .models import Note
 from .forms import StickItUserCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.template.context import RequestContext
 from django.http import JsonResponse
+        # notes = Note.objects.all().values('id', 'content', 'border_color', 'coordinates', 'is_finished', 'checkbox_id')
+        # print("you went hereeeeeeee")
+        # return JsonResponse(list(notes), safe=False)
 class NoteView(View):
-    def get(self, request):
+    def get(self, request, board):
         # TODO PASS THE BOARD NAME HERE!
-        note_board_name = "JellllyFishMyKamiOOshiiiiiNamBerWanFanHereSupport4Ever"  # This will be the name of your board
+        print("the one that ran cuz this is the one that running")
+
+        note_board_name = board  # This will be the name of your board
+        print("note: ",note_board_name)
         return render(request, 'note.html', {'note_board_name': note_board_name})
     
 # class NoteCreateView(View):
@@ -45,7 +52,7 @@ class NoteUpdateView(View):
 
             note = Note.objects.get(pk=pk)
             note_data = serialize_note(note, data)
-            print(note_data)
+            print("note data:",note_data)
             return JsonResponse(note_data, status=200)
 
         except Note.DoesNotExist:
@@ -64,12 +71,19 @@ class NoteDeleteView(View):
             return JsonResponse({'error': 'Note not found'}, status=404)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
-        
 class NoteGetView(View):
     def get(self, request, *args, **kwargs):
         notes = Note.objects.all().values('id', 'content', 'border_color', 'coordinates', 'is_finished', 'checkbox_id')
+        print("you went hereeeeeeee")
         return JsonResponse(list(notes), safe=False)
         # return JsonResponse({'notes' : notes})
+        # return JsonResponse({"test1":1,"test2":2})
+def get_nudes(request):
+    notes = Note.objects.all().values('id', 'content', 'border_color', 'coordinates', 'is_finished', 'checkbox_id')
+    print("you went hereeeeeeee")
+    return JsonResponse(list(notes), safe=False)
+        
+        
     
 def serialize_note(note, data):
     # Update the note's attributes with the data received
