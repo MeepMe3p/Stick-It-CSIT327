@@ -1,0 +1,84 @@
+{% extends 'mainApp/base.html' %}
+{% block content %}
+<section class="profile-section">
+    <div class="profile-card  main-profile-card">
+        <form method="POST" action="{% url 'mainApp:edit_profile' %}">
+            {% csrf_token %}
+            <div class="profile-info">
+                <div class="profile-image">
+                    <div class="profile-circle">
+                        <i class="fas fa-pen edit-icon"></i>
+                    </div>
+                    <h2>{{ user.username }}</h2>
+                    <span>Joined last {{ user.date_joined }}</span>
+                    {% if user_profile.description == None or user_profile.description == '' %}
+                    <input id="description-input" name="description" type="text" placeholder="Add short self-description" class="profile-input short-bio-input"/>
+                    {% else %}
+                    <input id="description-input" name="description" type="text" value="{{ user_profile.description }}"class="profile-input short-bio-input"/>
+                    {% endif %}
+                </div>
+                <div class="profile-details">
+                    <h3>Profile Details</h3>
+                    <label for="first_name">First Name*</label>
+                    <input class="profile-input" id="firstname-input" name="first_name" type="text" value="{{ user.first_name }}" required/>
+
+                    <label for="last_name">Last Name*</label>
+                    <input class="profile-input" id="lastname-input" name="last_name" type="text" value="{{ user.last_name }}" required/>
+                    
+                    <label for="email">Email*</label>
+                    <input class="profile-input" id="email-input" name="email" type="email" value="{{ user.email }}" required/>
+                    
+                    <label for="birthdate">Birthdate</label>
+                    {% if user_profile.birthdate == None or user_profile.birthdate == '' %}
+                    <input class="profile-input" id="birthdate-input" name="birthdate" type="text" value="" placeholder="Add birthdate"/>
+                    {% else %}
+                    <input class="profile-input" id="birthdate-input" name="birthdate" type="text" value="{{ user_profile.birthdate }}" />
+                    {% endif %}
+                    <!-- <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div> -->
+                </div>
+            </div>
+            <button type="submit" id="p1-update-btn" class="edit-profile-btn">Update</button>    
+        </form>
+    </div>
+    <div class="profile-card">
+        <form method="POST" action="{% url 'mainApp:edit_social_links' %}"> 
+            {% csrf_token %}
+            <div class="profile-details social-links-details">
+                <h3>Social Links</h3>
+                <label for="facebook_link">Facebook</label>
+                {% if user_profile.facebook_link == None or user_profile.facebook_link == '' %}
+                <input class="socials-input" name="facebook_link" type="text" id="facebook" value="" placeholder="Add Facebook link"/>
+                {% else %}
+                <input class="socials-input" name="facebook_link" type="text" id="facebook" value="{{ user_profile.facebook_link }}" />
+                {% endif %}
+                
+                <label for="linkedin_link">LinkedIn</label>
+                {% if user_profile.linkedin_link == None or user_profile.linkedin_link == '' %}
+                <input class="socials-input" name="linkedin_link" type="text" id="linkedin" value="" placeholder="Add LinkedIn link"/>
+                {% else %}
+                <input class="socials-input" name="linkedin_link" type="text" id="linkedin" value="{{ user_profile.linkedin_link }}" />
+                {% endif %}
+                
+                <label for="twitter_link">Twitter</label>
+                {% if user_profile.twitter_link == None or user_profile.twitter_link == '' %}
+                <input class="socials-input" name="twitter_link" type="text" id="twitter" value="" placeholder="Add Twitter link"/>
+                {% else %}
+                <input class="socials-input" name="twitter_link" type="text" id="twitter" value="{{ user_profile.twitter_link }}" />
+                {% endif %}
+                <!-- <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                </div> -->
+                
+            </div>
+            <button type="submit" id="p2-update-btn" class="edit-profile-btn update-btn-socials">Update</button>    
+        </form>
+    </div>
+</section>
+
+{% endblock %}

@@ -143,6 +143,10 @@ body::-webkit-scrollbar-thumb:hover {
     border-radius: 4px;
 }
 
+.join-btn {
+    color: #000;
+}
+
 .board-container {
     position: absolute;
     top: 0;

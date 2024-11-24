@@ -2,6 +2,7 @@ import json
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
+from django.views   .generic import DetailView
 from django.contrib.auth import login,authenticate,get_user_model
 from .forms import TableCreationForm,CategoryCreationForm
 from .models import Category,Board, ProjectBoard, SimpleBoard
@@ -125,3 +126,31 @@ def all_boards(request):
         'boards': boards, 
         'categories': categories,
     })
+
+def join_board(request, board_id):
+    # board = Board.objects.get(id=board_id)
+    board = get_object_or_404(Board, id=board_id)
+    board.users.add(request.user)
+    board.user_count = board.users.count() 
+    board.save()
+    return redirect('board:board_detail', pk=board.id)
+
+
+class BoardDetailView(DetailView):
+    model = Board
+    template_name = 'board/my_board.html'
+    context_object_name = 'board'
+
+    def get_object(self):
+        board = super().get_object()
+        return board
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        board = self.get_object()
+        initials = get_user_initials(board.creator)
+        
+        context['initials'] = initials
+        return context
+    

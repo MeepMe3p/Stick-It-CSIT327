@@ -7,12 +7,13 @@ from django.apps import apps
 # SAUCE: https://docs.djangoproject.com/en/5.1/topics/db/models/
 class Note(models.Model):
     content = models.TextField()
-    board = models.ForeignKey('board.Board', null=True, related_name='notes', on_delete=models.SET_NULL) 
-
-    is_completed = models.BooleanField(default=False)
+    board = models.ForeignKey('board.Board', null=True, related_name='notes', on_delete=models.CASCADE) 
+    coordinates = models.JSONField()
+    is_finished = models.BooleanField(default=False)
+    checkbox_id = models.CharField(max_length=100)
 
     def toggle_complete(self):
-        self.is_completed = not self.is_completed
+        self.is_finished = not self.is_finished
         self.save()
         
         # Lazy load the Board and update progress if the board is a ProjectBoard

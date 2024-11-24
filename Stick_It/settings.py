@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'authentication',
     'mainApp',
     'board',
-    
+    # 'bootstrap5',
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -75,6 +75,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -170,3 +171,5 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media' 
 
 LOGIN_REDIRECT_URL = 'home'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

@@ -174,7 +174,7 @@ input {
   background: #625D5D;
   margin-top: 30px;
   width: 100%;
-  padding: 10px 0;
+  padding: 5px 0;
   border-radius: 10px;
 }
 
@@ -202,7 +202,7 @@ input {
 }
 .div_note_form input, button{
   width: 30px;
-  height: 30px;
+  height: 40px;
   padding: 0;
   border: none;
   background-color: transparent;

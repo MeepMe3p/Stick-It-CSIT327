@@ -26,12 +26,13 @@ class Board(models.Model):
     board_type = models.CharField(max_length=10, choices=BOARD_TYPES, default='simple')
     
     THEME = (
-        ('white', 'Default (White)'),
-        ('blue', 'Blue'),
-        ('green', 'Green'),
-        ('pink', 'Pink')
+        ('#dddcd7', 'Default (Gray)'),
+        ('#e0ecf8', 'Blue'),
+        ('#dbeed5', 'Green'),
+        ('#fde4e4', 'Pink'),
+        ('#eaf3d0', 'Yellow')
     )
-    board_theme = models.CharField(max_length=10, choices=THEME, default='white')
+    board_theme = models.CharField(max_length=10, choices=THEME, default='#dddcd7')
 
     VISIBILITY_CHOICES = (
         ('public', 'Public'),

@@ -1,0 +1,50 @@
+{% extends 'mainApp/base.html' %}
+{% block content %}
+<section class="boards-header">
+    <div class="board-tabs">
+        <button class="tab-button active">My Boards</button>
+        <button class="tab-button">Joined Boards</button>
+    </div>
+    <div class="filters">
+        <select class="filter-dropdown">
+            <option>Visibility</option>
+            <option>Public</option>
+            <option>Private</option>
+        </select>
+        <select class="filter-dropdown">
+            <option>Board Type</option>
+            <option>Project</option>
+            <option>Simple</option>
+        </select>
+    </div>
+</section>
+
+<section class="board-list home-boards">
+    {% for board in boards %}
+        <a href="{% url 'board:board_detail' board.id %}" class="board-preview" style="background-color: {{ board.board_theme }};">
+            <div class="board-header">
+                {% if board.board_type == 'project' %}
+                <div class="circle-container">
+                    <div class="progress-circle-main">
+                        <span>{{ projectboard.progress }}</span>
+                    </div>
+                    <div class="progress-circle-offset"></div>
+                </div>
+                {% endif %}
+                <div class="ellipsis">...</div>
+            </div>
+            <div class="board-content">
+                <h2>{{ board.board_name }}</h2>
+                <p class="creator">Created by {{ board.creator.username }}</p>
+                <p class="updated-time">Last updated {{ board.timestamp }}</p>
+                {% if board.visibility == 'public' %}
+                <p class="collaborator">Public</p>
+                {% else %}
+                <p class="collaborator">Private</p>
+                {% endif %}
+            </div>
+        </a>
+    {% endfor %}
+</section>
+
+{% endblock %}

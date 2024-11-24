@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from board.models import Board, ProjectBoard, SimpleBoard
-from django.contrib.auth import logout
+from django.contrib.auth import logout, get_user_model
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from .utils import get_user_initials
@@ -15,6 +15,8 @@ def home(request):
     boards = Board.objects.all()
     projectboards = ProjectBoard.objects.all()
     simpleboards = SimpleBoard.objects.all()
+    User = get_user_model()
+    users = User.objects.all()
     # if request.method == 'GET':
     #     board = Board.objects.all()
     print(request.user.first_name)
@@ -24,6 +26,7 @@ def home(request):
         'initials': initials, 
         'categories': categories,
         'boards': boards,
+        'users' : users,
         'projectboards' : projectboards,
         'simpleboards' : simpleboards
     }
@@ -38,6 +41,9 @@ def my_space(request):
     user = request.user
     boards = Board.objects.filter(creator=user)
     categories = Category.objects.filter(board__creator=user).distinct()
+    User = get_user_model()
+    users = User.objects.all()
+    db_categories = Category.objects.all()
 
     count = boards.count()
     print(f"Number of boards current user has: {count}")
@@ -51,11 +57,76 @@ def my_space(request):
         'initials': initials,
         'user_profile': user_profile,
         'categories': categories,
+        'db_categories' : db_categories,
+        'users' : users,
         'boards': boards,
         'count' : count,   
-        'show_my_boards_section': True if request.GET.get('show') == 'my-boards' else False
+        # 'show_my_boards_section': True if request.GET.get('show') == 'my-boards' else False
     }
     return render(request, 'mainApp/my_space.html', context)
+
+@login_required(login_url='authentication:login')
+def profile(request):
+    initials = get_user_initials(request.user)
+    user = request.user
+    boards = Board.objects.filter(creator=user)
+    User = get_user_model()
+    users = User.objects.all()
+
+    count = boards.count()
+    print(f"Number of boards current user has: {count}")
+
+    try:
+        user_profile = UserProfile.objects.get(user=user)  
+    except UserProfile.DoesNotExist:
+        user_profile = None 
+    
+    context = {
+        'initials': initials,
+        'user_profile': user_profile,
+        'users' : users,
+        'boards': boards,
+        'count' : count,   
+    }
+    return render(request, 'mainApp/profile.html', context)
+
+@login_required(login_url='authentication:login')
+def boards(request):
+    initials = get_user_initials(request.user)
+    user = request.user
+    boards = Board.objects.filter(creator=user)
+    User = get_user_model()
+    users = User.objects.all()
+
+    count = boards.count()
+    print(f"Number of boards current user has: {count}")
+    
+    context = {
+        'initials': initials,
+        'users' : users,
+        'boards': boards,
+        'count' : count,   
+    }
+    return render(request, 'mainApp/boards.html', context)
+
+@login_required(login_url='authentication:login')
+def joined_boards(request):
+    initials = get_user_initials(request.user)
+    user = request.user
+    boards = Board.objects.filter(creatorc=user)
+    User = get_user_model()
+    users = User.objects.all()
+
+    count = boards.count()
+    print(f"Number of boards current user has: {count}")
+    
+    context = {
+        'initials': initials,
+        'users' : users,
+        'boards': boards,
+        'count' : count,   
+    }
+    return render(request, 'mainApp/boards.html', context)
 
 def edit_profile(request):
     profile = UserProfile.objects.get(user=request.user)
@@ -65,10 +136,10 @@ def edit_profile(request):
         if form.is_valid():
             print("Editing form is valid. Proceeding...")
             form.save()
-            return redirect('mainApp:my_space')
+            return redirect('mainApp:profile')
     else:
         form = ProfileEditForm(instance=profile, user=request.user)
-    return render(request, 'mainApp/my_space.html', {'form': form})
+    return render(request, 'mainApp/profile.html', {'form': form})
 
 
 def edit_social_links(request):
@@ -79,7 +150,7 @@ def edit_social_links(request):
         if form.is_valid():
             print("Social Links Editing form is valid. Proceeding...")
             form.save()
-            return redirect('mainApp:my_space')
+            return redirect('mainApp:profile')
     else:
         form = SocialLinksEditForm(instance=profile)
-    return render(request, 'mainApp/my_space.html', {'form': form})
+    return render(request, 'mainApp/profile.html', {'form': form})

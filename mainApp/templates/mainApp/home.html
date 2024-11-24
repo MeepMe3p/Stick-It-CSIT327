@@ -1,203 +1,62 @@
-<!DOCTYPE html>
-{% load static %}
-
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STICKIT|Home</title>
-    <link rel="stylesheet" href="{% static 'mainApp/styles.css' %}">
-    <link rel="stylesheet" href="{% static 'mainApp/style.css' %}">
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
-</head>
-<body>
-    <header>
-        <div class="logo">STICKIT</div>
-        <div class="header-icons">
-            <button class="create-board-btn" onclick="openModal()">Create Board</button>
-            <div class="user-dropdown">
-                <div class="user-icon" id="user-icon" onclick="myFunction()">
-                    <span class="user-initials">{{ initials }}</span>
-                </div>
-                <div class="dropdown-menu" id="dropdown-menu">
-                    <!-- <a href="#" class="dropdown-item" onclick="openProfileModal()">Profile</a> -->
-                    <a href="{% url 'mainApp:my_space' %}" class="dropdown-item">My Space</a>
-                    <a href="{% url 'authentication:logout' %}" class="dropdown-item">Logout</a>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <div class="main-container"> 
-        <section class="search-section"> 
-            <h1>What do you want to work on?</h1>
-            <div class="search-bar">
-                <i class="uil uil-search-alt search-icon"></i>
-                <input type="text" placeholder="Search your board" />
-            </div>
-            <div class="board-categories">
-                <div class="category-icon">
-                    <a href="{% url 'mainApp:home' %}" class="category-btn">
-                        <img src="/media/stars.svg" alt="Boards Icon" width="20" height="16">
-                    </a>
-                    <span>Boards</span>
-                </div>
-                {% for category in categories %}
-                <div class="category-icon">
-                    <a href="{% url 'board:filter_boards_by_category' category.id %}" class="category-btn">
-                        <img src="/media/stars.svg" alt="Boards Icon" width="20" height="16">
-                    </a>
-                    <span>{{ category.category_name }}</span>
-                </div>
-                {% endfor %}
-                <!-- <div class="category-icon">
-                    <button class="category-btn">
-                        <img src="media/window-desktop.svg" alt="Work Icon" width="20" height="20">
-                    </button>
-                    <span>Work</span>
-                </div> -->
-                <div class="category-icon" onclick="openModal()">
-                    <button class="category-btn create-new">
-                        <img src="media/stars.svg" alt="Create New Icon" width="20" height="20">
-                    </button>
-                    <span>Create New</span>
-                </div>
-            </div>
-        </section>    
-
-        <section class="board-list home-boards">
-            {% for board in boards %}
-                <div class="board-preview">
-                    <div class="board-header">
-                        {% if board.board_type == 'project' %}
-                        <div class="circle-container">
-                            <div class="progress-circle-main">
-                                <span>{{ projectboard.progress }}</span>
-                            </div>
-                            <div class="progress-circle-offset"></div>
-                        </div>
-                        {% endif %}
-                        <!-- <div class="progress-circle">
-                            <span>75%</span>
-                        </div> -->
-                        <div class="ellipsis">...</div>
-                    </div>
-                    <div class="board-content">
-                        <h2>{{ board.board_name }}</h2>
-                        <p class="creator">Created by {{ board.creator.username }}</p>
-                        <p class="updated-time">Last updated {{ board.timestamp }}</p>
-                        {% if board.visibility == 'public' %}
-                        <p class="collaborator">Public</p>
-                        {% else %}
-                        <p class="collaborator">Private</p>
-                        {% endif %}
-                    </div>
-                </div>
-            {% endfor %}
-        </section>
+{% extends 'mainApp/base.html' %}
+{% block content %}
+<section class="search-section"> 
+    <h1>What do you want to work on?</h1>
+    <div class="search-bar">
+        <i class="uil uil-search-alt search-icon"></i>
+        <input type="text" placeholder="Search your board" />
     </div>
-
-    <footer>
-        <div class="footer-container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
-            <div style="margin-bottom: 15px;">
-                <a href="/" style="text-decoration: none; font-weight: bold; font-size: 1.2em; color: #333;">STICKIT</a>
-            </div>
-            
-            <nav style="margin-bottom: 15px;">
-                <a href="/about" style="margin: 0 10px; color: #666; text-decoration: none;">About Us</a>
-                <a href="/contact" style="margin: 0 10px; color: #666; text-decoration: none;">Contact</a>
-                <a href="/privacy" style="margin: 0 10px; color: #666; text-decoration: none;">Privacy Policy</a>
-                <a href="/terms" style="margin: 0 10px; color: #666; text-decoration: none;">Terms of Service</a>
-            </nav>
-            
-            <div style="font-size: 0.9em; color: #888;">
-                © 2024 STICKIT. All rights reserved.
-            </div>
+    <div class="board-categories category-filter">
+        <div class="category-icon">
+            <a href="{% url 'mainApp:home' %}" class="category-btn">
+                <img src="/media/stars.svg" alt="Boards Icon" width="20" height="20">
+            </a>
+            <span>Boards</span>
         </div>
-    </footer>
-    
-    <!-- Modal Overlay -->
-    <div id="createBoardModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Create Board</h2>
-                <span class="close-btn" style="font-size: 28px;" onclick="closeModal()">&times;</span>
-            </div>
-            
-            <form method="POST" action="{% url 'board:create_board' %}"> 
-                {% csrf_token %}
-                <div class="form-group first-input">
-                    <label for="board-namde">Board Name</label>
-                    <input type="text" name="board_name" id="board-name" placeholder="Board Name" required>
-                    <!-- <div class="input">
-                        {{forms.board_name}}
-                    </div> -->
-                </div>
-
-                <div class="form-group">
-                    <label for="board-description">Board Description</label>
-                    <textarea name="description" id="board-description" placeholder="Board Description" required></textarea>
-                    <!-- <div class="textarea"> -->
-                        <!-- {{ forms.board_description }} -->
-                    <!-- </div> -->
-                </div>
-
-                <div class="form-group">
-                    <label for="collaborators">Collaborators</label>
-                    <input type="text" name="collaborators" id="collaborators" placeholder="Collaborators">
-                </div>
-
-                <div class="form-group">
-                    <label for="category">Category</label>
-                    <select name="category" id="category" onchange="handleCategoryChange()" required>
-                        <option value="" selected>Select...</option>
-                        <option value="create-new">Create new...</option>
-                        {% for category in categories %}
-                            <option value="{{ category.id }}">{{ category.category_name }}</option>
-                        {% endfor %}
-                    </select>
-                    <input type="text" id="new-category" name="new-category" placeholder="Enter new category" style="display: none; margin-top: 10px;">
-                    <!-- <input value="{{ category.id }}" id="new-category" placeholder="Enter new category" style="display: none; margin-top: 10px;"> -->
-                </div>
-
-                <div class="form-group flex-container" style="margin-bottom: 0;">
-                    <div class="board-type">
-                        <label>Board Type</label>
-                        <select name="board_type" id="board-type" required>
-                            <option value="" selected>Select...</option>
-                            <option value="simple">Simple Board</option>
-                            <option value="project">Project Board</option>
-                        </select>
-                        <!-- {{ forms.board_type }} -->
-                    </div>
-    
-                    <div class="form-group" style="margin: 0;">
-                        <label for="theme">Theme</label>
-                        <select name="board_theme" id="theme" class="theme-select">
-                            <option value="white">Default (Gray)</option>
-                            <option value="blue">Blue</option>
-                            <option value="green">Green</option>
-                            <option value="pink">Pink</option>
-                        </select>
-                        <!-- {{ forms.board_theme }} -->
-                    </div>
-                </div>
-
-                <div class="form-group visibility-create-container">
-                    <div class="visibility">
-                        <label for="visibility">Visibility</label>
-                        <select id="visibility" name="visibility" class="visibility-select">
-                            <option value="public">Public</option>
-                            <option value="private">Private</option>
-                        </select>
-                    </div>
-
-                    <button type="submit" class="submit-btn">Create</button>
-                </div>
-            </form>
+        {% for category in categories %}
+        <div class="category-icon">
+            <a href="{% url 'board:filter_boards_by_category' category.id %}" class="category-btn" data-category="{{ category.id }}">
+                <img src="/media/component.svg" alt="Boards Icon" width="20" height="20">
+            </a>
+            <span>{{ category.category_name }}</span>
+        </div>
+        {% endfor %}
+        <div class="category-icon" onclick="openModal()">
+            <button class="category-btn create-new">
+                <img src="/media/create.svg" alt="Create New Icon" width="20" height="20">
+            </button>
+            <span>Create New</span>
         </div>
     </div>
+</section>    
 
-    <script src="{% static 'mainApp/scripts.js' %}"></script>
-</body>
-</html>
+<section class="board-list home-boards">
+    {% for board in boards %}
+        {% if board.visibility == 'public' %}
+        <a href="{% url 'board:board_detail' board.id %}" class="board-preview" style="background-color: {{ board.board_theme }};">
+            <div class="board-header">
+                {% if board.board_type == 'project' %}
+                <div class="circle-container">
+                    <div class="progress-circle-main">
+                        <span>{{ projectboard.progress }}</span>
+                    </div>
+                    <div class="progress-circle-offset"></div>
+                </div>
+                {% endif %}
+                <div class="ellipsis">...</div>
+            </div>
+            <div class="board-content">
+                <h2>{{ board.board_name }}</h2>
+                <p class="creator">Created by {{ board.creator.username }}</p>
+                <p class="updated-time">Last updated {{ board.timestamp }}</p>
+                <!-- {% if board.visibility == 'public' %}
+                <p class="collaborator">Public</p>
+                {% else %}
+                <p class="collaborator">Private</p>
+                {% endif %} -->
+            </div>
+        </a>
+        {% endif %}
+    {% endfor %}
+</section>
+{% endblock %}

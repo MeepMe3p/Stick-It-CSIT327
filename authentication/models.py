@@ -10,6 +10,7 @@ class UserProfile(models.Model):
     # password2 = models.CharField(max_length=100)
     # birth_date = models.DateField(null=True, blank=True)
     # phone_number = models.CharField(max_length=15, blank=True, null=True)
+    birthdate = models.DateField(null=True, blank=True)
     description = models.TextField(max_length=500, null=True, blank =True)
     facebook_link = models.TextField(max_length=250, null=True,blank=True)
     facebook_link_hidden = models.BooleanField(null=True, default=True)
