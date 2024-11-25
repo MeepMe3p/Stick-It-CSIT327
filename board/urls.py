@@ -14,7 +14,7 @@ urlpatterns = [
     # path('home/<slug:category_slug>/', views.filter_boards_by_category, name='filter_boards_by_category'),
     path('response/invite/<int:pk>', views.respond_invite,name="respond_invite"),
     path('response/join/<int:pk>', views.respond_join_request,name="respond_join"),
-    path('join/<int:pk>',views.join_board, name = "join_board"),
+    # path('join/<int:pk>',views.join_board, name = "join_board"),
     # 
 
     # path('home/al', views.all_boards, name='all_boards')
@@ -22,5 +22,8 @@ urlpatterns = [
          {'template_name': 'mainApp/my_space.html'}, name='filter_boards_by_category_my_space'),
     path('my_board/', views.render_board, name='render_board'),
     path('join-board/<int:board_id>/', views.join_board, name='join_board'),
-    path('board/<int:pk>/', views.BoardDetailView.as_view(), name='board_detail')
+    path('board/<int:pk>/', views.BoardDetailView.as_view(), name='board_detail'),
+
+    # for going to effing boards nga katong naay chuy af nga real time shizz
+    path('board/go_to_effing_board/<int:pk>', views.go_to_effing_board,name = "note_board")
 ]

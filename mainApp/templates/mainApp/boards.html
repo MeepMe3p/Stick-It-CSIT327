@@ -21,7 +21,7 @@
 
 <section class="board-list home-boards">
     {% for board in boards %}
-        <a href="{% url 'board:board_detail' board.id %}" class="board-preview" style="background-color: {{ board.board_theme }};">
+        <a href="{% url 'board:note_board' board.id %}" class="board-preview" style="background-color: {{ board.board_theme }};">
             <div class="board-header">
                 {% if board.board_type == 'project' %}
                 <div class="circle-container">

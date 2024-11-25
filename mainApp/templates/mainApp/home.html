@@ -33,7 +33,8 @@
 <section class="board-list home-boards">
     {% for board in boards %}
        {% if board.visibility == 'public' or board.visibility == 'private'  %}
-        <a href="{% url 'board:board_detail' board.id %}" class="board-preview" style="background-color: {{ board.board_theme }};">
+        <!-- <a href="{% url 'board:board_detail' board.id %}" class="board-preview" style="background-color: {{ board.board_theme }};"> -->
+        <a href="{% url 'board:join_board' board.id %}" class="board-preview" style="background-color: {{ board.board_theme }};">
             <div class="board-header">
                 {% if board.board_type == 'project' %}
                 <div class="circle-container">
@@ -44,6 +45,8 @@
                 </div>
                {% endif %}
                 <div class="ellipsis">...</div>
+                <div class="ellipsis">Join</div>
+
             </div>
             <div class="board-content">
                 <h2>{{ board.board_name }}</h2>

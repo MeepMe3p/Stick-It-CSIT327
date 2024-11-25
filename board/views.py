@@ -17,7 +17,6 @@ from authentication.models import UserProfile
 # To handle the creation of the new board ---- processes the inout data from modal overlay in mainApp/home.html
 @login_required(login_url='authentication:login')
 def create_board(request):
-    print("jasbdajosnfjasnfajosnfajsnfkjansfkjasnfkjanfkjansfk")
     categories = Category.objects.all()
     if request.method == 'POST':
         print("Validating form...")
@@ -108,53 +107,6 @@ def create_board(request):
         form = TableCreationForm()
         form.fields['category'].queryset = categories
     return render(request, 'board/my_board.html', {'form': form, 'categories': categories})
-
-# Create your views here.
-# PROGRAMMER NAME: Elijah Rei Sabay
-# class CreateBoardView(View):
-    # def get(self,request):
-    #     print(request)
-    #     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-    #         data = list(Category.objects.all().values())
-    #         print(data)
-    #         return JsonResponse({'context':data})
-    #     else:
-    #         choices = Category.objects.all()
-    #         print(choices)
-    #         return render(request,'board/my_board.html',{'form':TableCreationForm(),'form2':CategoryCreationForm})
-    
-    # def post(self,request):
-    #     print(request,"THIS IS THE REQUEST")
-    #     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-    #         data = request.body
-    #         data = data.decode('utf-8')
-    #         data = json.loads(data)
-
-    #         name = data['category_name']
-    #         desc = data['category_description']
-
-    #         print(f"name : {name} desc: {desc}")
-    #         Category.objects.create(category_name = name,category_description = desc)
-            
-    #         return JsonResponse(data, safe = False)
-
-    #     else:
-    #         form = TableCreationForm(request.POST)
-    #         if form.is_valid():
-    #             board_name = form.cleaned_data['board_name']
-    #             description = form.cleaned_data['description']
-    #             category = form.cleaned_data['category']
-    #             privacy_settings = form.cleaned_data['privacy_settings']
-            
-
-        
-
-    
-    #             cat = Board.objects.create(board_name = board_name, description = description, category = category,privacy_settings=privacy_settings)
-    #             cat.save()
-    #             cat.users.add(request.user.id)
-    #             return redirect("note:home")
-    #         return render(request,'board/my_board.html',{'form':TableCreationForm()})
 
 
 @login_required(login_url='authentication:login')
@@ -330,8 +282,8 @@ def respond_invite(request,pk):
     notif.save()
     return redirect('mainApp:home')  
 @login_required
-def join_board(request,pk):
-    board = Board.objects.get(pk=pk)
+def join_board(request,board_id):
+    board = Board.objects.get(pk=board_id)
     print(board.board_name)
     notif = Notification.objects.create(
         user_sender = request.user,
@@ -340,7 +292,8 @@ def join_board(request,pk):
         notif_type = 'join',
         message = f'{request.user.username} would like to join {board.board_name}')
     print(f'{request.user.username} would like to join {board.board_name}')     
-    return redirect("board:render_board")
+    # notif.save()
+    return redirect("mainApp:home")
 @login_required
 def respond_join_request(request,pk):
     notif = Notification.objects.get(pk=pk)
@@ -390,3 +343,9 @@ class BoardDetailView(DetailView):
         context['initials'] = initials
         return context
 #
+
+
+# oh diba sheesshhhhh muredirect na sa note
+def go_to_effing_board(request,pk):
+    board = Board.objects.get(pk=pk)
+    return redirect('note:note', board=board.board_name)
