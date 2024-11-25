@@ -1,7 +1,9 @@
 from django.urls import path
 from .views import *
+from . import views
 from django.contrib.auth.views import LogoutView
 
+app_name = "note"
 urlpatterns = [
     path('get_notes/', NoteGetView.as_view(), name='get_notes'),
     path('update_note/<int:pk>/', NoteUpdateView.as_view(), name='update_note'),
