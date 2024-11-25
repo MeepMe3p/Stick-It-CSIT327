@@ -2,12 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Aoboshi+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Aoboshi+One&family=Fredoka:wght@300..700&display=swap');
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Aoboshi One', serif;
-}
+
 
 /* * {
     margin: 0;
@@ -55,6 +50,7 @@ body::-webkit-scrollbar-thumb:hover {
     /* padding: 0px 0; */
     /* border-bottom: 2px solid #ddd; */
     height: 50px;
+    pointer-events: none; /* Makes the toolbar not block mouse events */
 }
 
 .left-controls {
@@ -69,6 +65,8 @@ body::-webkit-scrollbar-thumb:hover {
     border-radius: 10px;
     height: 50px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    
+    pointer-events: all;
 }
 
 .logo {
@@ -171,12 +169,12 @@ body::-webkit-scrollbar-thumb:hover {
     position: relative;
 } */
 
-.note {
+/* .note {
     width: 150px;
     height: 120px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
+} */
 
 .blue-note {
     background-color: #cceeff;
@@ -250,36 +248,4 @@ body::-webkit-scrollbar-thumb:hover {
     -o-transform: scaleX(-1);
     transform: scaleX(-1) rotate(-80deg);
     /* transform: ; */
-}
-
-.zoom-controls {
-    display: flex;
-    align-items: center;
-    height: 45px;
-    gap: 5px;
-    margin-top: 15px;
-    background-color: white;
-    border-radius: 8px;
-    padding: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.zoom-btn {
-    background-color: white;
-    border: none;
-    padding: 8px;
-    cursor: pointer;
-    font-size: 18px;
-    border-radius: 4px;
-    /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); */
-}
-
-.zoom-btn:hover {
-    background-color: #f0f0f0;
-}
-
-.zoom-controls span {
-    font-size: 14px;
-    font-weight: bold;
-    margin: 0 5px;
 }
