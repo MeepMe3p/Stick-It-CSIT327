@@ -14,6 +14,7 @@ from authentication.models import UserProfile
 # To handle the creation of the new board ---- processes the inout data from modal overlay in mainApp/home.html
 @login_required(login_url='authentication:login')
 def create_board(request):
+    print("jasbdajosnfjasnfajosnfajsnfkjansfkjasnfkjanfkjansfk")
     categories = Category.objects.all()
     if request.method == 'POST':
         print("Validating form...")

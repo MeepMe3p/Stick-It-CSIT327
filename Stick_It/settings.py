@@ -39,10 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    'note',
-    'authentication',
-    'mainApp',
-    'board',
+    'note.apps.WebsiteConfig',
+    'authentication.apps.AuthenticationConfig',
+    'mainApp.apps.MainappConfig',
+    'board.apps.BoardConfig',
+
     # 'bootstrap5',
 ]
 
@@ -100,13 +101,10 @@ WSGI_APPLICATION = 'Stick_It.wsgi.application'
 # }
 DATABASES = {
     "default": {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Stick-It-Database',
-        'USER': 'root',
-        'PASSWORD': 'mysqlroot00',
-        # 'PASSWORD': get_decrypted_password(),
-        'HOST' : 'localhost',
-        'PORT' : '3307'
+
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "mydatabase",
+
     }
 }
 

@@ -138,8 +138,9 @@
                     <select name="category" id="category" onchange="handleCategoryChange()" required>
                         <option value="" selected>Select...</option>
                         <option value="create-new">Create new...</option>
-                        {% for db_category in db_categories %}
-                            <option value="{{ db_category.id }}">{{ db_category.category_name }}</option>
+                        {%comment%}{% for db_category in db_categories %} {%endcomment%}
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.category_name }}</option>
                         {% endfor %}
                     </select>
                     <input type="text" id="new-category" name="new-category" placeholder="Enter new category" style="display: none; margin-top: 10px;">
@@ -160,10 +161,10 @@
                     <div class="form-group" style="margin: 0;">
                         <label for="theme">Theme</label>
                         <select name="board_theme" id="theme" class="theme-select">
-                            <option value="white">Default (White)</option>
-                            <option value="blue">Blue</option>
-                            <option value="green">Green</option>
-                            <option value="pink">Pink</option>
+                            <option value="#dddcd7">Default (White)</option>
+                            <option value="#e0ecf8">Blue</option>
+                            <option value="#dbeed5">Green</option>
+                            <option value="#fde4e4">Pink</option>
                         </select>
                         <!-- {{ forms.board_theme }} -->
                     </div>

@@ -19,8 +19,8 @@ def home(request):
     users = User.objects.all()
     # if request.method == 'GET':
     #     board = Board.objects.all()
-    print(request.user.first_name)
-    print(request.user.last_name)
+    # print(request.user.first_name)
+    # print(request.user.last_name)
     initials = get_user_initials(request.user)
     context = {
         'initials': initials, 
@@ -30,7 +30,7 @@ def home(request):
         'projectboards' : projectboards,
         'simpleboards' : simpleboards
     }
-    print(f"This is context {context}")
+    # print(f"This is context {context}")
     return render(request, 'mainApp/home.html', context)
 
 @login_required(login_url='authentication:login')
