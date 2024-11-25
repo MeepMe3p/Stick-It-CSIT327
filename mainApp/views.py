@@ -24,8 +24,8 @@ def home(request):
     # ej changes
     users = User.objects.all().exclude(id = request.user.id).exclude(is_staff=True)
     #
-    User = get_user_model()
-    users = User.objects.all()
+    # User = get_user_model()
+    # users = User.objects.all()
     # if request.method == 'GET':
     #     board = Board.objects.all()
     # if notifs:

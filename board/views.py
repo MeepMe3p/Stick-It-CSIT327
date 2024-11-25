@@ -108,7 +108,6 @@ def create_board(request):
         form = TableCreationForm()
         form.fields['category'].queryset = categories
     return render(request, 'board/my_board.html', {'form': form, 'categories': categories})
->>>>>>> Stashed changes
 
 # Create your views here.
 # PROGRAMMER NAME: Elijah Rei Sabay
@@ -130,7 +129,6 @@ def create_board(request):
     #         data = request.body
     #         data = data.decode('utf-8')
     #         data = json.loads(data)
->>>>>>>>> Temporary merge branch 2
 
     #         name = data['category_name']
     #         desc = data['category_description']
@@ -148,24 +146,15 @@ def create_board(request):
     #             category = form.cleaned_data['category']
     #             privacy_settings = form.cleaned_data['privacy_settings']
             
-<<<<<<<<< Temporary merge branch 1
-                cat = Board.objects.create(board_name = board_name, description = description, category = category,privacy_settings=privacy_settings)
-                cat.save()
-                cat.users.add(request.user.id)
-                # cat.save
-                return redirect("note:home")
-            print(form.is_valid(),' I DONT THINK SO')
-            return render(request,'board/create_table.html',{'form':TableCreationForm()})
+
         
 
     
-=========
     #             cat = Board.objects.create(board_name = board_name, description = description, category = category,privacy_settings=privacy_settings)
     #             cat.save()
     #             cat.users.add(request.user.id)
     #             return redirect("note:home")
     #         return render(request,'board/my_board.html',{'form':TableCreationForm()})
->>>>>>>>> Temporary merge branch 2
 
 
 @login_required(login_url='authentication:login')
@@ -383,5 +372,21 @@ def respond_join_request(request,pk):
     return redirect('mainApp:home')  
     
 
+class BoardDetailView(DetailView):
+    model = Board
+    template_name = 'board/my_board.html'
+    context_object_name = 'board'
 
+    def get_object(self):
+        board = super().get_object()
+        return board
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        board = self.get_object()
+        initials = get_user_initials(board.creator)
+        
+        context['initials'] = initials
+        return context
 #
