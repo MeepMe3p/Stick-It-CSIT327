@@ -475,17 +475,6 @@ header {
     padding: 0;
 }
 
-.edit-name {
-    display: flex;
-    flex-direction: row;
-}
-
-.edit-name .form-group {
-    width: 100%;
-    margin-right: 0;
-    padding: 0;
-}
-
 .form-group {
     margin: 12px 0;
 }
@@ -560,14 +549,7 @@ textarea {
     font-size: 14px;
     display: none;
 }
-#new-desc {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-    display: none;
-}
+
 /* Edit Prfile Infos */
 .edit-profile-header {
     display: flex;
@@ -604,71 +586,9 @@ textarea {
     flex-direction: column;
     margin-top: 15px;
     align-items: center;
-}
+} */
 
-.tab-wrapper {
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: row;
-    /* gap: 10px; */
-    width: 100%;
-}
-
-.tab-wrapper button {
-    background-color: semi-transparent;
-    color: #504C2D;
-    border: 1px solid #ccc;
-    padding: 10px 15px;
-    font-family: "Aoboshi One", serif;
-    font-size: 15px;
-    /* border-radius: 12px; */
-    cursor: pointer;
-    text-align: left;
-    font-weight: bold;
-    transition: background-color 0.3s ease, border 0.3s ease;
-}
-
-.tab-wrapper .profile-tab {
-    width: 94px;
-    z-index: 1;
-    align-items: center;
-    justify-content: center;
-    /* position: absolute; */
-    /* right: 14%; */
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-}
-
-.tab-wrapper .my-boards-tab {
-    position: absolute;
-    left: 18%;
-    border-top-right-radius: 12px;
-    box-shadow: 0 2px 5px rgba(81, 81, 81, 0.1);
-    border-bottom: none;
-}
-
-.tab-wrapper button.active {
-    background-color: #d5d4c9;
-    border: 1px solid #c3c2b5;
-    color: #333;
-}
-
-.tab-wrapper button:hover {
-    background-color: #ddd;
-    border: 1px solid #aaa;
-}
-
-.content-section {
-    width: 100%;
-    border: solid 1px rgb(190, 190, 190);
-    box-shadow: 0 2px 5px rgba(81, 81, 81, 0.1);
-    border-radius: 10px;
-    border-top-left-radius: 0;
-    padding: 35px 25px;
-    background-color: #fff;
-    /* overflow-y: scroll; */
-}
-
+/* 
 #my-boards-section .search-bar {
     display: flex;
     justify-content: left;
@@ -708,61 +628,9 @@ textarea {
 
 .category-btn-v2:hover {
     color: #666;
-}
+}*/
 
-.name-and-email {
-    margin-top: 5px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-#profile-section {
-    /* padding-left: 35px; */
-    padding-inline: 45px;
-}
-
-.profile-header {
-    display: flex;
-    flex-direction: row;
-    text-align: center;
-    justify-content: left;
-    margin-bottom: 20px;
-}
-
-.user-icon-large {
-    display: inline-block;
-    background-color: #A29B9B; 
-    color: white;
-    border-radius: 50%;
-    width: 68px;
-    height: 68px;
-    font-size: 25px;
-    line-height: 65px;
-    align-items: center;
-    text-align: center;
-    margin-bottom: 10px;
-    margin-right: 10px;
-    border: 2px solid #600E0E;
-}
-
-.name-and-email h2 {
-    font-size: 24px;
-}
-
-.name-and-email p {
-    font-size: 16px;
-    margin: 0 0;
-}
-
-/* .tabs {
-    display: flex;
-    justify-content: left;
-    align-items: center;
-    margin-bottom: 20px;
-} */
-
-.tab {
+/* .tab {
     background: none;
     border: none;
     font-size: 14px;
