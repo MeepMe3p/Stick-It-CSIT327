@@ -2,6 +2,7 @@ import json
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
+from django.views   .generic import DetailView
 from django.contrib.auth import login,authenticate,get_user_model
 from .forms import TableCreationForm,CategoryCreationForm
 from .models import Category,Board, ProjectBoard, SimpleBoard, Notification
@@ -10,11 +11,13 @@ from mainApp.utils import get_user_initials
 from django.contrib.auth.models import User
 
 
+from authentication.models import UserProfile
 
 
 # To handle the creation of the new board ---- processes the inout data from modal overlay in mainApp/home.html
 @login_required(login_url='authentication:login')
 def create_board(request):
+    print("jasbdajosnfjasnfajosnfajsnfkjansfkjasnfkjanfkjansfk")
     categories = Category.objects.all()
     if request.method == 'POST':
         print("Validating form...")
@@ -105,8 +108,65 @@ def create_board(request):
         form = TableCreationForm()
         form.fields['category'].queryset = categories
     return render(request, 'board/my_board.html', {'form': form, 'categories': categories})
-    # return redirect('note:note', board='Test_Board_Name')
+>>>>>>> Stashed changes
+
+# Create your views here.
+# PROGRAMMER NAME: Elijah Rei Sabay
+# class CreateBoardView(View):
+    # def get(self,request):
+    #     print(request)
+    #     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+    #         data = list(Category.objects.all().values())
+    #         print(data)
+    #         return JsonResponse({'context':data})
+    #     else:
+    #         choices = Category.objects.all()
+    #         print(choices)
+    #         return render(request,'board/my_board.html',{'form':TableCreationForm(),'form2':CategoryCreationForm})
     
+    # def post(self,request):
+    #     print(request,"THIS IS THE REQUEST")
+    #     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+    #         data = request.body
+    #         data = data.decode('utf-8')
+    #         data = json.loads(data)
+>>>>>>>>> Temporary merge branch 2
+
+    #         name = data['category_name']
+    #         desc = data['category_description']
+
+    #         print(f"name : {name} desc: {desc}")
+    #         Category.objects.create(category_name = name,category_description = desc)
+            
+    #         return JsonResponse(data, safe = False)
+
+    #     else:
+    #         form = TableCreationForm(request.POST)
+    #         if form.is_valid():
+    #             board_name = form.cleaned_data['board_name']
+    #             description = form.cleaned_data['description']
+    #             category = form.cleaned_data['category']
+    #             privacy_settings = form.cleaned_data['privacy_settings']
+            
+<<<<<<<<< Temporary merge branch 1
+                cat = Board.objects.create(board_name = board_name, description = description, category = category,privacy_settings=privacy_settings)
+                cat.save()
+                cat.users.add(request.user.id)
+                # cat.save
+                return redirect("note:home")
+            print(form.is_valid(),' I DONT THINK SO')
+            return render(request,'board/create_table.html',{'form':TableCreationForm()})
+        
+
+    
+=========
+    #             cat = Board.objects.create(board_name = board_name, description = description, category = category,privacy_settings=privacy_settings)
+    #             cat.save()
+    #             cat.users.add(request.user.id)
+    #             return redirect("note:home")
+    #         return render(request,'board/my_board.html',{'form':TableCreationForm()})
+>>>>>>>>> Temporary merge branch 2
+
 
 @login_required(login_url='authentication:login')
 def render_board(request):
@@ -151,16 +211,32 @@ def filter_owner(request):
     return render(request,'mainApp/home.html',context)
     
 @login_required
-def filter_boards_by_category(request, category_slug):
+def filter_boards_by_category(request, category_slug, template_name='mainApp/home.html'):
+    user = request.user 
+    try:
+        user_profile = UserProfile.objects.get(user=user)  
+    except UserProfile.DoesNotExist:
+        user_profile = None 
+    
+    # all_categories = Category.objects.all()
     category = get_object_or_404(Category, category_slug=category_slug)
-    boards = Board.objects.filter(category=category)
-    categories = Category.objects.all()  
+    if template_name == 'mainApp/home.html':
+        boards = Board.objects.filter(category=category)
+        categories = Category.objects.all()
+        count = boards.count()
+    else:
+        boards = Board.objects.filter(creator=user, category=category)
+        categories = Category.objects.filter(board__creator=user).distinct()
+        count = boards.count()
     initials = get_user_initials(request.user)
     notifs = Notification.objects.all()
 
-    return render(request, 'mainApp/home.html', {
+    return render(request, template_name, {
         'initials' : initials,
+        'user_profile': user_profile,
         'boards': boards,
+        'count' : count,
+        # 'all_categories' : all_categories,
         'categories': categories,
         'selected_category': category,
         'notifications':notifs,

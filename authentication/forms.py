@@ -4,6 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login,logout,authenticate
 from django import forms
 from datetime import date
+from .models import UserProfile
 
 
 # PROGRAMMER NAME: ELIJAH REI SABAY
@@ -118,12 +119,7 @@ class StickItUserCreationForm(UserCreationForm):
             user = User.objects.create_user(username=username, email=email, first_name=first_name, last_name=last_name)
             user.set_password(password)
             user.save()
-            # UserProfile.objects.create(
-            #     user=user,
-            #     # email=self.cleaned_data['email'],
-            #     # first_name=self.cleaned_data['first_name'],
-            #     # last_name=self.cleaned_data['last_name'],
-            #     # birth_date=self.cleaned_data.get('birth_date', None),
-            #     # phone_number=self.cleaned_data.get('phone_number', None)
-            # )
+            UserProfile.objects.create(
+                user=user,
+            )
         return user

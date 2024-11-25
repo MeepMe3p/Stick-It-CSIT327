@@ -3,6 +3,7 @@ from django.core.serializers import serialize
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from note.models import *
+
 class NoteConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.note_board_name = f"board_{self.scope['url_route']['kwargs']['note_board_name']}"

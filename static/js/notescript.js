@@ -351,14 +351,12 @@ function updateNote(id, note){
         }),
     }).then(response => {
         if (!response.ok) { // Check if the response is OK (status 200-299)
-            // window.location.reload(1);
             throw new Error('Network response was not ok');
         }
         return response.json(); // Populates the data below kay gwapa siya! muehuehue
     })
     .then(data => {
         console.log("update_note's Data! ", data); // Log the entire response data
-        console.log("After: ", data.is_finished)
     })
     .catch(error => console.error('Error:', error));
 }

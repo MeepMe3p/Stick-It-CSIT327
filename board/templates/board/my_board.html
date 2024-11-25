@@ -21,8 +21,13 @@
                 <div class="circle"></div>
                 <span class="plus-circle">{{ board.user_count }}</span>
             </div>
-            <div class="profile-btn">{{ user_initials }}</div>
+            <div class="profile-btn">{{ initials }}</div>
+            {% if user not in board.users.all %}
+            <a href="{% url 'board:join_board' board.id %}" class="share-btn join-btn" style="text-decoration: none;">Join Board</a>
+            <!-- <button >Join</button> -->
+            {% else %}
             <button class="share-btn">Share</button>
+            {% endif %}
         </div>
     </div>
 

@@ -11,5 +11,15 @@ class Note(models.Model):
     coordinates = models.JSONField()  # Storing x and y as a JSON object
     is_finished = models.BooleanField(default=False)
     checkbox_id = models.CharField(max_length=100)
+
+    def toggle_complete(self):
+        self.is_finished = not self.is_finished
+        self.save()
+        
+        # Lazy load the Board and update progress if the board is a ProjectBoard
+        Board = apps.get_model('board', 'Board')
+        if isinstance(self.board, Board) and self.board.board_type == 'project':
+            self.board.update_progress()
+
     def __str__(self):
         return self.content

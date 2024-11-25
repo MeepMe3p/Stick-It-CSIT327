@@ -1,0 +1,199 @@
+{% extends 'mainApp/base.html' %}
+{% block content %}
+<!-- <main class="my-space"> -->
+
+<section class="heading-container">
+    <!-- <a href="{% url 'mainApp:home' %}"><img src="/media/arrow.png" alt="back-arrow-icon" height="23px" width="23px"></a> -->
+    <a href="{% url 'mainApp:home' %}" style="font-size: 15px;">Back to home</a>
+    <h1>My Space</h1>
+</section>
+<section class="space-content-container">
+    <!-- <div class="tab-wrapper">
+        <button id="profile-btn" class="tab-btn active profile-tab" onclick="showProfile()">Profile</button>
+        <button id="my-boards-btn" class="tab-btn my-boards-tab" onclick="showMyBoards()">My Boards</button>
+    </div>  -->
+    <!-- Profile Section -->
+    <!-- <section id="profile-section" class="content-section">
+        <div class="profile-header">
+            <div class="user-icon-large">
+                <span class="user-initials">{{ initials }}</span>
+            </div>           
+            <div class="name-and-email">
+                {% if user.is_authenticated %}
+                <h2>{{ user.get_username }}</h2>
+                <p>{{ user.email }}</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="profile-content">
+            <div id="about" class="tab-content">
+                <div class="profile-sect">
+                    <button class="tab active">ABOUT ME</button>
+                    <img src="/media/edit-text.png" width="16" height="16" alt="edit-text-icon" onclick="openEditProfileModal()" style="cursor: pointer;">
+                </div>
+                {% if user_profile.description == '' or user_profile.description == None %}
+                <p><i>Add short bio.</i></p>
+                {% else %}
+                <p>{{ user_profile.description }}</p>
+                {% endif %}
+                <p>Joined last {{ user.date_joined }}</p>
+            </div>
+            <div id="social" class="tab-content">
+                <div class="profile-sect">
+                    <button class="tab active">SOCIAL LINKS</button>
+                    <img src="/media/edit-text.png" width="16" height="16" alt="edit-text-icon" onclick="openEditSocialsModal()" style="cursor: pointer;">
+                </div>
+                {% if user_profile.facebook_link == '' and user_profile.linkedin_link == '' and user_profile.twitter_link == ''%}
+                    <div class="social-links">
+                        <p><i>Add social media links.</i></p>
+                    </div>
+                {% elif user_profile.facebook_link == None and user_profile.linkedin_link == None and user_profile.twitter_link == None %}
+                    <div class="social-links">
+                        <p><i>Add social media links.</i></p>
+                    </div>
+                {% else %}
+                    {% if user_profile.facebook_link == '' %}
+                    <div class="social-links">
+                    </div>
+                    {% else %}
+                    <div class="social-links">
+                        <img src="/media/facebook.png" width="25" height="25" alt="facebook-icon">
+                        <p>{{ user_profile.facebook_link }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if user_profile.linkedin_link == '' %}
+                    <div class="social-links">
+                    </div>
+                    {% else %}
+                    <div class="social-links">
+                        <img src="/media/linkedin.png" width="25" height="25" alt="facebook-icon">
+                        <p>{{ user_profile.linkedin_link }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if user_profile.twitter_link == '' %}
+                    <div class="social-links">
+                    </div>
+                    {% else %}
+                    <div class="social-links">
+                        <img src="/media/twitter.png" width="25" height="25" alt="facebook-icon">
+                        <p>{{ user_profile.twitter_link }}</p>
+                    </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </section> -->
+
+    <!-- My Boards Section -->
+    <!-- <section id="my-boards-section" class="content-section" style="display: none;">
+        {% if count >= 1 %}
+        <div class="search-bar v2-search">
+            <i class="uil uil-search-alt search-icon"></i>
+            <input type="text" placeholder="Search your board">
+        </div>
+        <div class="board-categories-v2">
+            <a href="{% url 'mainApp:my_space' %}?show=my-boards#my-boards-section" class="tab active">All Boards</a>
+            {% for category in categories %}
+                <a href="{% url 'board:filter_boards_by_category_my_space' category.id %}?show=my-boards#my-boards-section" class="tab">{{ category.category_name }}</a>
+            {% endfor %}
+        </div>
+        <section class="board-list my-space-boards">
+            {% for board in boards %}
+                <div class="board-preview" style="background-color: {{ board.board_theme }};">
+                    <div class="board-header">
+                        {% if board.board_type == 'project' %}
+                        <div class="circle-container">
+                            <div class="progress-circle-main">
+                                <span>{{ projectboard.progress }}</span>
+                            </div>
+                            <div class="progress-circle-offset"></div>
+                        </div>
+                        {% endif %}
+                        <div class="progress-circle">
+                            <span>75%</span>
+                        </div>
+                        <div class="ellipsis">...</div>
+                    </div>
+                    <div class="board-content">
+                        <h2>{{ board.board_name }}</h2>
+                        <p class="creator">Created by {{ board.creator.username }}</p>
+                        <p class="updated-time">Last updated 2 hours ago</p>
+                        <p class="collaborator">{{ board.visibility }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </section>
+        {% else %}
+        <div class="board-categories-v2" style="justify-self: center;">
+            <span><i>No boards created.</i></span>
+        </div>
+        {% endif %}
+    </section> -->
+</section>
+<!-- </main> -->
+{% endblock %}
+
+
+
+
+
+// function openEditProfileModal() {
+//     // document.getElementsByClassName('about-me-modal')[0].style.display = 'flex';
+//     document.querySelector('.about-me-modal').style.display = 'flex';
+// }
+
+// function closeEditProfileModal() {
+//     document.querySelector('.about-me-modal').style.display = 'none';
+//     // document.getElementById('editProfileModal').style.display = 'none';
+// }
+
+// function openEditSocialsModal() {
+//     document.querySelector('.social-links-modal').style.display = 'flex';
+// }
+
+// function closeEditSocialsModal() {
+//     document.querySelector('.social-links-modal').style.display = 'none';
+// }
+
+// function showProfile() {
+//     document.getElementById('profile-section').style.display = 'block';
+//     document.getElementById('my-boards-section').style.display = 'none';
+//     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+//     document.querySelectorAll('.tab-btn')[0].classList.add('active');
+// }
+
+// function showMyBoards() {
+//     document.getElementById('profile-section').style.display = 'none';
+//     document.getElementById('my-boards-section').style.display = 'block';
+//     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+//     document.querySelectorAll('.tab-btn')[1].classList.add('active');
+// }
+
+// document.addEventListener('DOMContentLoaded', () => {
+//     const urlParams = new URLSearchParams(window.location.search);
+//     const showMyBoards = urlParams.get('show') === 'my-boards';
+
+//     if (showMyBoards) {
+//         document.getElementById('my-boards-section').style.display = 'block';
+//         document.getElementById('profile-section').style.display = 'none';
+//     }
+// });
+
+// function showSection(sectionId) {
+//     document.querySelectorAll('.content-section').forEach(section => {
+//         section.classList.remove('active');
+//     });
+
+//     const selectedSection = document.getElementById(sectionId);
+//     selectedSection.classList.add('active');
+// }
+
+// document.getElementById('profile-btn').addEventListener('click', () => {
+//     showSection('profile-section');
+// });
+
+// document.getElementById('my-boards-btn').addEventListener('click', () => {
+//     showSection('my-boards-section');
+// });
