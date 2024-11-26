@@ -13,7 +13,6 @@ let note = {
     y: null
 }
 
-// I GIVE UP ADMIRE LAAAAANG WOHOO
 // DJANGO CHANNELS
 // Determine the WebSocket protocol based on the application's URL
 const websocketProtocol = window.location.protocol === "https:" ? "wss" : "ws";
@@ -32,7 +31,6 @@ socket.onclose = (event) => {
     console.log("WebSocket connection closed!");
 };
 // DJANGO CHANNELS
-// I GIVE UP ADMIRE LAAAAANG WOHOO
 function channel_handler(note, state){
     console.log(note)
     socket.send(
@@ -188,9 +186,6 @@ createBtn.onclick = () => {
 // Inside this <div>, a close button (<span class="close">) and a <textarea> for writing content are added.
 // The border color of the note is set based on the selected color from the color input.
 // Finally, the new note is appended to the list.
-
-// IMPLEMENTED JUST TO KNOWLEDGE++
-// CUTE KAAYU SIYA PAG ACQUAINTANCE! HUEHUEHUE MUST PROTEK!
 
 
 // CAN'T ACCESS THE ID WHEN A NOTE IS LOADED!
@@ -384,8 +379,9 @@ const csrftoken = getCookie('csrftoken');
 
 
 window.onload = () => {
-    console.log("HMM?")
-    fetch('/note/get_notes/', {
+    console.log("Current Board Name: ", noteBoardName)
+    fetch(`/note/get_notes/${noteBoardName}`, {
+    // fetch(`/note/get_notes/`, {
         method : 'GET',
     })
     
@@ -437,18 +433,6 @@ function notes_creation(note){
     const checkBox = newNote.querySelector(".custom-checkbox-container").querySelector(".btn-check")
     const textArea = newNote.querySelector('textarea')
     checkBox.checked = note.is_finished
-    // console.log(textArea)
-
-    // if(checkBox.checked){
-    //     textArea.disabled = true;
-    // }
-    // checkBox.addEventListener('change', function () {
-    //     if (this.checked) {
-    //         // textArea.disabled = true; // Disable textarea if checkbox is checked
-    //     } else {
-    //         // textArea.disabled = false; // Enable textarea if checkbox is unchecked
-    //     }
-    // });
     textArea.addEventListener('keydown', function(event){
         // console.log('Contraceptives', event)
         if(checkBox.checked){
@@ -458,6 +442,16 @@ function notes_creation(note){
     newNote.dataset.id = note.id;
     newNote.querySelector('textarea').setAttribute("oninput", `saveOnInput(event, ${newNote.dataset.id})`)  
     list.appendChild(newNote);
+
+    tinymce.init({
+        selector: `#note-${note.id}`, // Target the specific textarea
+        menubar: false,
+        toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist',
+        plugins: 'lists',
+        height: 200,
+        readonly: false, // Ensure this is false or omitted
+    });
+    
 }
 // setTimeout(function(){
 //     window.location.reload(1);
