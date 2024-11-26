@@ -20,6 +20,7 @@
     /* position: relative; */
     /* position: absolute; */
     position: absolute;
+    /* margin: 65px; */
     top: 0;
     left: 0;
     right: 0;
@@ -39,6 +40,7 @@
     transition: transform 0.3s ease, background-size 0.3s ease;  /* Smooth zoom transition */
     transform-origin: 0 0; 
     overflow: hidden;
+    z-index: 4;
 }
 
 
@@ -53,6 +55,7 @@
   left: 0;
   bottom: 0;
   background-color: #eee;
+  position: fixed;
 }
 .div_note_form #color{
   position: relative;
@@ -83,15 +86,16 @@
   height: 110px;
 }
 #list .note{
-  background-color: #cceeff;
+  background-color: #ffff;
   width: max-content;
   border-top: 30px solid #e6b905;
   border-radius: 20px;
-  box-shadow: 0 20px 50px #cceeff;
+  box-shadow: 0 20px 50px #e8dcdc;
   padding: 10px;
   position: absolute;
   top: 60px;
   left: 50px;
+  z-index: 100;
 }
 #list .note span{
   position: absolute;
@@ -132,19 +136,19 @@
 }
 .div_note_form img{
   margin-bottom: 12px;
-  display: hidden;
+  display: none;
 }
 .swal2-popup {
-  background: linear-gradient(135deg, #cceeff, #e480ff);
+  background: linear-gradient(135deg, #7c7c7c, rgb(20, 19, 19));
   color: white; /* Ensure text is visible on the dark background */
 }
 .swal2-popup h2{
   color: whitesmoke;
 }
 .swal2-popup button {
-  background: #e480ff;
+  background: #7c7c7c;
   color: white; /* Ensures the text is visible */
-  box-shadow: 0px 4px 10px #f4ccff; /* Creates a shadow effect */
+  box-shadow: 0px 4px 10px #171717; /* Creates a shadow effect */
   border: none; /* Optional: remove border */
   padding: 10px 20px; /* Optional: adds padding for a better button appearance */
   transition: box-shadow 0.3s ease; /* Adds a smooth transition for the shadow effect */
@@ -155,6 +159,37 @@
 }
 
 .custom-checkbox-container #note-btn-style{
-  background-color: #f4ccff;
-  border-color: #e480ff;
+  background-color: #c6c6c6;
+  border-color: black;
+}
+
+.zoom-controls {
+  align-items: center;
+  height: 45px;
+  gap: 5px;
+  margin-top: 15px;
+  background-color: white;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.zoom-btn {
+  background-color: white;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: 4px;
+  /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); */
+}
+
+.zoom-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.zoom-controls span {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0 5px;
 }
