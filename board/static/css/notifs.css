@@ -1,10 +1,9 @@
-/* Notification Icon
+/* Notification Icon */
 #notification-icon {
     position: relative;
     cursor: pointer;
 }
-
-Notification Popup
+/* Notification Popup */
 .notification-popup {
     display: none;
     position: absolute;
@@ -18,23 +17,19 @@ Notification Popup
     padding: 15px;
     z-index: 1000;
 }
-
-Notification Popup Styling
+/* Notification Popup Styling */
 .notification-popup h3 {
     margin-top: 0;
     font-size: 18px;
 }
-
 .notification-popup ul {
     list-style-type: none;
     padding: 0;
 }
-
 .notification-popup ul li {
     padding: 10px 0;
     border-bottom: 1px solid #eee;
 }
-
 .notification-popup ul li:last-child {
     border-bottom: none;
-} */
+}

@@ -4,6 +4,7 @@ from django.views import View
 from django.contrib.auth import login,authenticate,get_user_model
 from django.contrib import messages
 from .models import Note
+from board.models import Board
 from .forms import StickItUserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.template.context import RequestContext
@@ -72,16 +73,21 @@ class NoteDeleteView(View):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
 class NoteGetView(View):
-    def get(self, request, *args, **kwargs):
-        notes = Note.objects.all().values('id', 'content', 'border_color', 'coordinates', 'is_finished', 'checkbox_id')
-        print("you went hereeeeeeee")
+    def get(self, request, noteBoardName, *args, **kwargs):
+        print("Inside `NoteGetView`")
+        try:
+            # Fetch the board using the provided name
+            board_instance = Board.objects.get(board_name=noteBoardName)
+            # Filter notes by this board
+            notes = Note.objects.filter(board=board_instance).values(
+                'id', 'content', 'border_color', 'coordinates', 'is_finished', 'checkbox_id'
+            )
+        except Board.DoesNotExist:
+            # If the board does not exist, return an empty list or an error
+            return JsonResponse({"error": "Board not found"}, status=404)
+
         return JsonResponse(list(notes), safe=False)
-        # return JsonResponse({'notes' : notes})
-        # return JsonResponse({"test1":1,"test2":2})
-def get_nudes(request):
-    notes = Note.objects.all().values('id', 'content', 'border_color', 'coordinates', 'is_finished', 'checkbox_id')
-    print("you went hereeeeeeee")
-    return JsonResponse(list(notes), safe=False)
+
         
         
     

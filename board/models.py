@@ -30,7 +30,6 @@ class Board(models.Model):
     board_name = models.CharField(max_length=30)
     description = models.TextField(max_length=500)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-
     BOARD_TYPES = (
         ('simple', 'Simple Board'),
         ('project', 'Project Board')

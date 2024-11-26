@@ -93,9 +93,11 @@ def create_board(request):
                         notif_type = 'invite',
                         message = f'You have been invited in {board.board_name}. Accept?')
                     # board.users.add(users)
+                    
 
             board.users.add(request.user)
             board.user_count = board.users.count()
+            notif.save()
             board.save()
             # form.save() 
             # return redirect('board:render_board') 
@@ -225,6 +227,7 @@ def update_board(request,pk):
                         message = f'You have been removed in {board.board_name}')
                     
                     board.users.remove(users)
+            notif.save()
             board.save()
 
         else:
@@ -292,8 +295,9 @@ def join_board(request,board_id):
         notif_type = 'join',
         message = f'{request.user.username} would like to join {board.board_name}')
     print(f'{request.user.username} would like to join {board.board_name}')     
-    # notif.save()
+    notif.save()
     return redirect("mainApp:home")
+    # return redirect("board:board_detail")
 @login_required
 def respond_join_request(request,pk):
     notif = Notification.objects.get(pk=pk)
@@ -320,6 +324,7 @@ def respond_join_request(request,pk):
         notif_type = 'decline',
         message = f'{request.user.username} rejected your request to join {board.board_name}')
         print("went herewwwwwwwwwwwwwwwwww")
+    
     print("T F: ",notif.has_responded)
     notif.save()
     return redirect('mainApp:home')  

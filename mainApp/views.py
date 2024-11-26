@@ -15,6 +15,7 @@ from .forms import ProfileEditForm, SocialLinksEditForm
 
 @login_required(login_url='authentication:login')
 def home(request):
+    
     categories = Category.objects.all()
     boards = Board.objects.all().exclude(creator = request.user).exclude(users = request.user)
     projectboards = ProjectBoard.objects.all()

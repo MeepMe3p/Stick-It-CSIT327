@@ -1,5 +1,6 @@
 {% extends 'mainApp/base.html' %}
 {% block content %}
+{%load static%}
 <section class="search-section"> 
     <h1>What do you want to work on?</h1>
     <div class="search-bar">
@@ -34,9 +35,10 @@
     {% for board in boards %}
        {% if board.visibility == 'public' or board.visibility == 'private'  %}
         <!-- <a href="{% url 'board:board_detail' board.id %}" class="board-preview" style="background-color: {{ board.board_theme }};"> -->
-        <a href="{% url 'board:join_board' board.id %}" class="board-preview" style="background-color: {{ board.board_theme }};">
+        <!-- <a href="{% url 'board:join_board' board.id %}" class="board-preview" style="background-color: {{ board.board_theme }};"> -->
+            <a  class="board-preview" style="background-color: {{ board.board_theme }};" onclick="openJoinModal({{board.id}});">
             <div class="board-header">
-                {% if board.board_type == 'project' %}
+                {% if board.board_type == 'project' %}  
                 <div class="circle-container">
                     <div class="progress-circle-main">
                         <span>{{ projectboard.progress }}</span>
@@ -48,6 +50,7 @@
                 <div class="ellipsis">Join</div>
 
             </div>
+            
             <div class="board-content">
                 <h2>{{ board.board_name }}</h2>
                 <p class="creator">Created by {{ board.creator.username }}</p>
@@ -58,8 +61,48 @@
                 <p class="collaborator">Private</p>
                 {% endif %} -->
             </div>
+
+            
         </a>
         {% endif %}
-    {% endfor %}
-</section>
+        {% endfor %}
+    </section>
+    <!-- Trigger/Open The Modal --> 
+    <div id="myPopupModal" class="modal">
+    
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Do you like to join this board?</p>
+            <button id = "joinButton" >Yes</button>
+        <button>No</button>
+      </div>
+    <button id="myPopupBtn">Open Modal</button>
+    
+    
+
+
+</div>
+
+
+<script src="{% static 'mainApp/js/popUpModal.js' %}"></script>
+<script>
+    function openJoinModal(i){
+        console.log("the thing is: ",i);
+        console.log("nagpakita");
+        modal.style.display = "block";  
+        
+        document.getElementById("joinButton").value = i;
+        url = `/board/join-board/${i}`
+        // url = `/board/1`
+        console.log(url)
+    }
+    function redirect(url){ 
+        // window.location.href = url
+    }
+    let btn1 = document.getElementById("joinButton")
+    btn1.onclick =  function(){
+        window.location.href = url
+        // console.log(url)
+    }
+</script>
 {% endblock %}
