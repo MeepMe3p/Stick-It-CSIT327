@@ -53,7 +53,8 @@ def create_board(request):
             board_theme = form.cleaned_data['board_theme']
             visibility = form.cleaned_data['visibility']
 
-            collaborators = request.POST.getlist('collaborators')
+            collaborators = request.POST.getlist('selected_emails[]')
+            print(collaborators)
 
             if board_type == 'project':
                 board = ProjectBoard.objects.create(
@@ -88,7 +89,7 @@ def create_board(request):
                     # print(users)
                     notif = Notification.objects.create(
                         user_sender = request.user,
-                        user_receiver = User.objects.get(pk=users),
+                        user_receiver = User.objects.get(email = users),
                         board = board,
                         notif_type = 'invite',
                         message = f'You have been invited in {board.board_name}. Accept?')

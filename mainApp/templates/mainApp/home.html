@@ -86,23 +86,5 @@
 
 <script src="{% static 'mainApp/js/popUpModal.js' %}"></script>
 <script>
-    function openJoinModal(i){
-        console.log("the thing is: ",i);
-        console.log("nagpakita");
-        modal.style.display = "block";  
-        
-        document.getElementById("joinButton").value = i;
-        url = `/board/join-board/${i}`
-        // url = `/board/1`
-        console.log(url)
-    }
-    function redirect(url){ 
-        // window.location.href = url
-    }
-    let btn1 = document.getElementById("joinButton")
-    btn1.onclick =  function(){
-        window.location.href = url
-        // console.log(url)
-    }
 </script>
 {% endblock %}

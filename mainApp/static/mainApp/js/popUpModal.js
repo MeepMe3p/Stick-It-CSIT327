@@ -16,6 +16,7 @@ btn.onclick = function() {
   modal.style.display = "block";
 }
 
+
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
   modal.style.display = "none";
@@ -31,4 +32,22 @@ window.onclick = function(event) {
 
 join_btn.onclick = function(event){
   console.log(join_btn);
+}
+function openJoinModal(i){
+  console.log("the thing is: ",i);
+  console.log("nagpakita");
+  modal.style.display = "block";  
+  
+  document.getElementById("joinButton").value = i;
+  url = `/board/join-board/${i}`
+  // url = `/board/1`
+  console.log(url)
+}
+function redirect(url){ 
+  // window.location.href = url
+}
+let btn1 = document.getElementById("joinButton")
+btn1.onclick =  function(){
+  window.location.href = url
+  // console.log(url)
 }

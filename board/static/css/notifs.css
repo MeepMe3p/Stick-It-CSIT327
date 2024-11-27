@@ -33,3 +33,17 @@
 .notification-popup ul li:last-child {
     border-bottom: none;
 }
+
+.close-notif {
+    cursor: pointer;
+    color: #333;
+    font-size: 18px; 
+    margin-left: auto; 
+    padding: 5px; 
+    transition: color 0.3s ease, transform 0.3s ease; 
+}
+
+.close-notif:hover {
+    color: #4e5c85; /* Change color on hover */
+    transform: scale(3.5); /* Increase size without affecting layout */
+}
