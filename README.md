@@ -17,7 +17,8 @@
   <a href="#download">Download</a> •
   <a href="#credits">Credits</a> •
   <a href="#related">Related</a> •
-  <a href="#license">License</a>
+  <a href="#contributors">Contributors</a> •
+  <a href="#license">License</a> 
 </p>
 
 ![screenshot](StickIt%20Images/StickIt-ERD.png)
@@ -88,6 +89,11 @@ This software uses the following open-source packages:
 ## You may also like...
 
 - [Stickit](https://github.com/MeepMe3p/Stick-It-CSIT327) - The same app
+
+## Contributors
+<a href="https://github.com/MeepMe3p/Stick-It-CSIT327/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=MeepMe3p/Stick-It-CSIT327" alt="contrib.rocks image" />
+</a>
 
 ## License
 
