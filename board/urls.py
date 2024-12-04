@@ -7,9 +7,11 @@ urlpatterns = [
     # path('create-board/',CreateBoardView.as_view(),name = "create_table"),
     path('create-board/', views.create_board, name='create_board'),
     path('home/<int:category_id>/', views.filter_boards_by_category, name='filter_boards_by_category'),
-    path('my-space/<int:category_id>/', views.filter_boards_by_category, 
-         {'template_name': 'mainApp/my_space.html'}, name='filter_boards_by_category_my_space'),
+    # path('boards/shared-boards', views.shared_boards, name='shared_boards'),
+    # path('boards/joined-boards', views.joined_boards, name='joined_boards'),
+    # path('my-space/<int:category_id>/', views.filter_boards_by_category, 
+    #      {'template_name': 'mainApp/my_space.html'}, name='filter_boards_by_category_my_space'),
     path('my_board/', views.render_board, name='render_board'),
     path('join-board/<int:board_id>/', views.join_board, name='join_board'),
-    path('board/<int:pk>/', views.BoardDetailView.as_view(), name='board_detail')
+    path('board_view/<int:pk>/', views.BoardDetailView.as_view(), name='board_detail')
 ]

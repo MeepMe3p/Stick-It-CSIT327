@@ -30,9 +30,9 @@
                     
                     <label for="birthdate">Birthdate</label>
                     {% if user_profile.birthdate == None or user_profile.birthdate == '' %}
-                    <input class="profile-input" id="birthdate-input" name="birthdate" type="text" value="" placeholder="Add birthdate"/>
+                    <input class="profile-input" id="birthdate-input" name="birthdate" type="date" value="" placeholder="Add birthdate"/>
                     {% else %}
-                    <input class="profile-input" id="birthdate-input" name="birthdate" type="text" value="{{ user_profile.birthdate }}" />
+                    <input class="profile-input" id="birthdate-input" name="birthdate" type="date" value="{{ user_profile.birthdate|date:'Y-m-d' }}" />
                     {% endif %}
                     <!-- <div class="social-icons">
                         <a href="#"><i class="fab fa-facebook"></i></a>
