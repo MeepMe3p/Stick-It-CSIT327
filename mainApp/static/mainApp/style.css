@@ -25,6 +25,14 @@ a {
     /* padding: 0 100px; */
 }
 
+.main-board-list, .b1-board-list {
+    display: flex;
+}
+
+.simple-boards-list, .project-boards-list {
+    display: none;
+}
+
 .board-list.loading {
     opacity: 0.5; 
     transition: opacity 1.5s ease;
@@ -44,9 +52,10 @@ a {
 .board-preview {
     position: fixed;
     width: 280px;
+    height: 170px;
     background-color: #F3F3F3;
     border-radius: 15px;
-    padding: 15px;
+    padding: 20px;
     /* padding-right: 75px; */
     margin: 12px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -66,31 +75,45 @@ a {
     margin-bottom: 10px;
 }
 
-/* .circle-container {
-    position: absolute;
-    top: 35%;
-    left: 80%;
-    width: 40px;
-    height: 40px;
-    background-color: transparent;
-    border-radius: 50%;
+.ca-vi-container {
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    color: #666;
-    border: 2px solid #ccc;
-} */
-
-.circle-container {
-    position: absolute;
-    width: 50px; 
-    height: 50px;
-    top: 32%;
-    left: 77%;
 }
 
-.progress-circle-main {
+.progress-container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    border-top: 1px solid #ccc;
+    margin-top: 10px;
+    /* padding: 5px 0; */
+}
+
+.progress-bar {
+    position: relative;
+    width: 100%;
+    height: 10px;
+    border-radius: 30px;
+    background-color: #ccc;
+    box-shadow: 0 2px 5px 0 rgba(204, 185, 185, 0.75);
+}
+
+.progress-container span {
+    /* width: 100%;
+    height: 100%; */
+    color: #333;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 1.4;
+    text-align: center;
+    border-radius: 30px;
+
+}
+
+/* .progress-circle-main {
     width: 38px;
     height: 38px;
     top: 4px;  
@@ -105,9 +128,9 @@ a {
     border: 2px solid #ccc;
     position: relative;
     z-index: 2;
-}
+} */
 
-.progress-circle-offset {
+/* .progress-circle-offset {
     width: 46px;
     height: 46px;
     background-color: transparent; 
@@ -117,32 +140,37 @@ a {
     top: 0;  
     left: 0;
     z-index: 1;
-}
-
+} */
 
 .board-header .ellipsis {
-    font-size: 18px;
-    cursor: pointer;
+    filter: hue-rotate(180deg);
 }
 
-.board-content h2 {
-    font-size: 16px;
+.ellipsis:hover {
+    transform: scale(1.05);
+    /* box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); */
+    filter: invert(24%) sepia(60%) saturate(747%) hue-rotate(319deg) brightness(98%) contrast(100%);
+}
+
+.board-header h2 {
+    font-size: 15px;
     margin: 0;
     font-weight: bold;
     color: #333;
 }
 
-.board-content .creator {
+.board-content .creator, .updated-time {
     color: #666;
     font-size: 11px;
 }
 
-.board-content .updated-time {
-    color: #666;
-    font-size: 11px;
-}
-
-.board-content .collaborator {
+.board-content .board-category {
+    width:fit-content;
+    background-color: rgb(246, 246, 246);
+    text-align: center;
+    border: 1px solid #e3e3e3;
+    border-radius: 10px;
+    padding: 5px 13px;
     font-size: 10px;
     color: #55a1e6;
     margin-top: 10px;
@@ -160,3 +188,51 @@ a {
 .my-space-boards .board-preview {
     margin: 24px;
 }
+
+.board-filter {
+    width: 95%;
+    display: flex;
+    gap: 12px;
+    margin-bottom: 15px;
+    justify-content: left;
+}
+  
+.filter-item {
+    width: 125px;
+    /* height: 75px; */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 500;
+    background-color: #f1f1f1;
+    color: #2c2c2c;
+    border: 1px solid rgb(132, 132, 151);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+  
+.filter-item:hover {
+    background-color: #ececec;
+    border-color: #d4d4d4;
+}
+  
+.filter-item.hp2-dropdown {
+    width: 200px;
+    background-color: #e4e0db;
+    border-color: #d2d2d2;
+    font-weight: 600;
+    color: #1f1f1f;
+}
+  
+.filter-item.hp2-dropdown .dropdown-icon {
+    margin-left: 6px;
+    font-size: 10px;
+}
+  
+.filter-item:active {
+    transform: scale(0.98);
+}
+  

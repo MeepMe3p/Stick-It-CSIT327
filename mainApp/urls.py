@@ -8,6 +8,7 @@ urlpatterns = [
      # path('my_space/', views.my_space, name='my_space'),
      path('profile/', views.profile, name='profile'),
      path('my_boards/', views.boards, name='my_boards'),
+     path('collaborated_boards/', views.collaborated_boards, name='collaborated_boards'),
      path('profile/edit_profile', views.edit_profile, name='edit_profile'),
      path('profile/edit_social_links', views.edit_social_links, name='edit_social_links'),
      # path('logout/', views.logoutPage , name = "logout"),

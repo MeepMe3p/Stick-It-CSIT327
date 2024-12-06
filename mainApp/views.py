@@ -109,16 +109,33 @@ def boards(request):
     }
     return render(request, 'mainApp/boards.html', context)
 
-@login_required(login_url='authentication:login')
-def joined_boards(request):
+# @login_required(login_url='authentication:login')
+# def joined_boards(request):
+    # initials = get_user_initials(request.user)
+    # user = request.user
+    # boards = Board.objects.filter(creatorc=user)
+    # User = get_user_model()
+    # users = User.objects.all()
+
+    # count = boards.count()
+    # print(f"Number of boards current user has: {count}")
+    
+    # context = {
+    #     'initials': initials,
+    #     'users' : users,
+    #     'boards': boards,
+    #     'count' : count,   
+    # }
+    # return render(request, 'mainApp/boards.html', context)
+
+def collaborated_boards(request):
     initials = get_user_initials(request.user)
     user = request.user
-    boards = Board.objects.filter(creatorc=user)
+    boards = Board.objects.filter(collaborators = user)
     User = get_user_model()
     users = User.objects.all()
 
     count = boards.count()
-    print(f"Number of boards current user has: {count}")
     
     context = {
         'initials': initials,
@@ -139,7 +156,9 @@ def edit_profile(request):
             return redirect('mainApp:profile')
     else:
         form = ProfileEditForm(instance=profile, user=request.user)
-    return render(request, 'mainApp/profile.html', {'form': form})
+    
+    user_profile = UserProfile.objects.get(user=request.user)
+    return render(request, 'mainApp/profile.html', {'form': form, 'user_profile': user_profile})
 
 
 def edit_social_links(request):

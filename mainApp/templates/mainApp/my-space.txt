@@ -136,7 +136,59 @@
 {% endblock %}
 
 
+Edit Profile Modal
+    <div id="editProfileModal" class="profile-modal-overlay about-me-modal">
+        <div class="modal-content">
+            <div class="edit-profile-header">
+                <h2>Edit Profile</h2>
+                <span class="close-btn" onclick="closeEditProfileModal()">Cancel</span>
+            </div>
+            <form method="POST" action="{% url 'mainApp:edit_profile' %}"> 
+                {% csrf_token %}
+                <div class="edit-name">
+                    <div class="form-group">
+                        <label for="first-name">First Name</label>
+                        <input value="{{ user.first_name }}" name="first_name" type="text" id="first-name" placeholder="First Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="last-name">Last Name</label>
+                        <input value="{{ user.last_name }}" name="last_name" type="text" id="last-name" placeholder="Last Name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="short-bio">Short Bio</label>
+                    <textarea name="description" id="short-bio" placeholder="Short Bio">{{ user_profile.description }}</textarea>
+                </div>
+                <button type="submit" class="confirm-btn">Confirm Edit</button>
+            </form>
+        </div>
+    </div>
 
+    Edit Social Links Modal
+    <div id="editProfileModal" class="profile-modal-overlay social-links-modal">
+        <div class="modal-content">
+            <div class="edit-profile-header">
+                <h2>Edit Social Links</h2>
+                <span class="close-btn" onclick="closeEditSocialsModal()">Cancel</span>
+            </div>
+            <form method="POST" action="{% url 'mainApp:edit_social_links' %}"> 
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="first-name">Facebook Link</label>
+                    <input value="{{ user_profile.facebook_link }}" name="facebook_link" type="text" id="first-name" placeholder="Facebook Account Link">
+                </div>
+                <div class="form-group">
+                    <label for="last-name">LinkedIn Link</label>
+                    <input value="{{ user_profile.linkedin_link }}" name="linkedin_link" type="text" id="last-name" placeholder="LinkedIn Account Link">
+                </div>
+                <div class="form-group">
+                    <label for="short-bio">Twitter Link</label>
+                    <input value="{{ user_profile.twitter_link }}" name="twitter_link" type="text" id="last-name" placeholder="Twitter Account Link">
+                </div>
+                <button type="submit" class="confirm-btn">Confirm Edit</button>
+            </form>
+        </div>
+    </div>
 
 
 // function openEditProfileModal() {
@@ -197,3 +249,8 @@
 // document.getElementById('my-boards-btn').addEventListener('click', () => {
 //     showSection('my-boards-section');
 // });
+
+
+
+
+<a href="{% url 'board:board_detail' board.id %}" class="board-preview" style="background-color: {{ board.board_theme }};">

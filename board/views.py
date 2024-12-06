@@ -117,7 +117,7 @@ def filter_boards_by_category(request, category_id, template_name='mainApp/home.
         # 'all_categories' : all_categories,
         'categories': categories,
         'selected_category': category,
-        'show_my_boards_section': True if request.GET.get('show') == 'my-boards' else False
+        # 'show_my_boards_section': True if request.GET.get('show') == 'my-boards' else False
     })
 
 def all_boards(request):
@@ -132,10 +132,16 @@ def join_board(request, board_id):
     # board = Board.objects.get(id=board_id)
     board = get_object_or_404(Board, id=board_id)
     board.users.add(request.user)
+    board.collaborators.add(request.user)
     board.user_count = board.users.count() 
     board.save()
     return redirect('board:board_detail', pk=board.id)
 
+# def joined_boards(request):
+#     return render(request, 'mainApp/boards.html', context)
+
+# def shared_boards(request):
+#     return render(request, 'board')
 
 class BoardDetailView(DetailView):
     model = Board
