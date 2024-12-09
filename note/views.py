@@ -23,7 +23,12 @@ class NoteView(View):
             board_obj = Board.objects.get(board_name=board)
             users_remove = board_obj.users.all().exclude(pk=request.user.id)
             category = Category.objects.all()
-
+            notes = Note.objects.filter(board= board_obj)
+            finished = 0
+            for n in notes:
+                if n.is_finished:
+                    finished += 1
+            progress = int((finished / notes.count() ) * 100)
             users_add = User.objects.all().exclude(id__in=users_remove).exclude(is_staff=True).exclude(id=request.user.id)
     
         except Board.DoesNotExist:
@@ -34,7 +39,9 @@ class NoteView(View):
                        {'note_board_name': note_board_name,
                         "board":board_obj, "add":users_add,
                         "remove":users_remove,
-                        "categories":category
+                        "categories":category,
+                        "notes":notes,
+                        "progress":progress,
                         })
     
 # class NoteCreateView(View):

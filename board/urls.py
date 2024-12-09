@@ -10,6 +10,7 @@ urlpatterns = [
     # ej changes
     path('home/<int:category_id>/', views.filter_boards_by_category, name='filter_boards_by_category'), 
     path('update/<int:pk>', views.update_board,name='update_board'),
+    path('update-progress/<int:pk>', views.update_progress,name='update_progress'),
     path('home/my-board/', views.filter_owner, name='filter_by_owner'),
     # path('home/<slug:category_slug>/', views.filter_boards_by_category, name='filter_boards_by_category'),
     path('response/invite/<int:pk>', views.respond_invite,name="respond_invite"),

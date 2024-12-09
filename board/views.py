@@ -9,6 +9,8 @@ from .models import Category,Board, ProjectBoard, SimpleBoard, Notification
 from django.contrib.auth.decorators import login_required
 from mainApp.utils import get_user_initials
 from django.contrib.auth.models import User
+from note.models import Note
+from django.urls import reverse
 
 
 from authentication.models import UserProfile
@@ -365,5 +367,33 @@ def go_to_effing_board(request,pk):
     board = Board.objects.get(pk=pk)
     return redirect('note:note', board=board.board_name)
 
-# def go_to_effing_board_non_owner(request,pk):
-#     board = 
+def update_progress(request,pk):
+    if request.method == "POST":
+        board = get_object_or_404(Board, pk=pk)
+        notes = Note.objects.filter(board = board)
+        
+        
+        for note in notes:
+            print("went there",note)
+            note_status = request.POST.get(f'note_{note.id}') 
+            print(note_status,"this satus")
+            if note_status == 'complete':
+                note.is_finished = True
+            elif note_status == 'incomplete':
+                note.is_finished = False
+            print("bbbbbbbbb",note)
+            note.save()
+            print("aaaaaaaaaaaaaa",note)
+        
+        total_notes = notes.count()
+        if total_notes > 0:
+            completed_notes = notes.filter(is_finished=1).count()
+            progress = int((completed_notes / total_notes) * 100)
+        else:
+            progress = 0
+        
+        projectB = ProjectBoard.objects.get(pk=board)
+        projectB.progress = progress
+        projectB.save()
+
+    return redirect('note:note',board= board.board_name)
