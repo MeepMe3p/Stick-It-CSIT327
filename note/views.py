@@ -25,10 +25,15 @@ class NoteView(View):
             category = Category.objects.all()
             notes = Note.objects.filter(board= board_obj)
             finished = 0
-            for n in notes:
-                if n.is_finished:
-                    finished += 1
-            progress = int((finished / notes.count() ) * 100)
+            total = notes.count()
+            if total > 0:
+                for n in notes:
+                    if n.is_finished:
+                        finished += 1
+                progress = int((finished / total) * 100)
+            else:
+                progress=0
+            # progress = int(1* 100)
             users_add = User.objects.all().exclude(id__in=users_remove).exclude(is_staff=True).exclude(id=request.user.id)
     
         except Board.DoesNotExist:
