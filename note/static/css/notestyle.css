@@ -36,7 +36,7 @@
     gap: 20px;
     padding: 20px;
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
     transition: transform 0.3s ease, background-size 0.3s ease;  /* Smooth zoom transition */
     transform-origin: 0 0; 
     overflow: hidden;
@@ -80,10 +80,15 @@
 .div_note_form input::-webkit-color-swatch{
   border-radius: 50%;
 }
-#list textarea{
-  all: unset;
+.content-editable{
+  /* all: unset; */
   color: #000000; 
-  height: 110px;
+  height: 300px;
+  width: 300px;
+  position: relative;  
+}
+.close{
+  top: -28px;
 }
 #list .note{
   background-color: #ffff;
@@ -101,7 +106,7 @@
   position: absolute;
   bottom: 100%;
   right: 0;
-  height: 30px;
+  height: 25px;
   font-family: cursive;
   font-size: large;
   padding-right: 10px;

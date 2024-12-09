@@ -12,7 +12,6 @@ let note = {
     x: null,
     y: null
 }
-
 // DJANGO CHANNELS
 // Determine the WebSocket protocol based on the application's URL
 const websocketProtocol = window.location.protocol === "https:" ? "wss" : "ws";
@@ -38,7 +37,7 @@ function channel_handler(note, state){
             state : state,
             note : {
                 id : note.dataset.id,
-                content: note.querySelector('textarea').value,
+                content: note.querySelector('.content-editable').innerHTML,
                 borderColor: note.style.borderColor,
                 coordinates: { x: note.style.left, y: note.style.top },
                 is_finished : note.querySelector('.custom-checkbox-container').querySelector('.btn-check').checked, // Added
@@ -67,8 +66,6 @@ socket.addEventListener("message", (event) => {
             break
         case "move":
             note = response_data.note
-            // note.dom.style.left = (note.x + distance.x) + 'px';
-            // note.dom.style.top = (note.y + distance.y) + 'px';
             console.log(note)
             console.log("MOVE! ",document.querySelector(`div[data-id='${note.id}']`))
             document.querySelector(`div[data-id='${note.id}']`).style.left = note.coordinates.x
@@ -82,9 +79,7 @@ socket.addEventListener("message", (event) => {
             break
         case "input":
             note = response_data.note
-            // console.log("Input: ", document.querySelector(`div[data-id='${note.id}']`).querySelector('textarea'))
-            console.log("Textarea: ", note.content)
-            document.querySelector(`div[data-id='${note.id}']`).querySelector('textarea').value = note.content
+            document.querySelector(`div[data-id='${note.id}']`).querySelector('.content-editable').innerHTML = note.content
             break
     }
 
@@ -100,7 +95,7 @@ createBtn.onclick = () => {
     // Count the number of existing blank notes
     let blankNotesCount = 0;
     list.querySelectorAll('.note').forEach(note => {
-        let content = note.querySelector('textarea').value;
+        let content = note.querySelector('.content-editable').innerHTML;
         if (content.trim() === '') {
             blankNotesCount++;
         }
@@ -116,7 +111,7 @@ createBtn.onclick = () => {
     let id = uuidv4();
     newNote.innerHTML = `
     <span class="close">x</span>
-    <textarea placeholder="Write Content..." rows="10" cols="30"></textarea>
+    <div class="content-editable" placeholder="Write Content..." id="note-${id}"></div>
     <div class="custom-checkbox-container">
         <input type="checkbox" class="btn-check" id="${id}" checked autocomplete="off">
         <label id="note-btn-style" class="btn btn-outline-secondary" for="${id}">&#10003;</label><br>
@@ -125,70 +120,21 @@ createBtn.onclick = () => {
     newNote.style.borderColor = color.value;
 
     console.log(newNote.querySelector('.custom-checkbox-container').querySelector('.btn-check').checked)
-    // list.appendChild(newNote)
+    
+    const quill = new Quill(`#note-${id}`, {
+        theme: 'snow',
+        placeholder: 'Write Content...',
+        modules: {
+            toolbar: [
+                // [{ header: [1, 2, false] }],
+                ['bold', 'italic', 'underline'],
+                // [{ list: 'ordered' }, { list: 'bullet' }],
+                // ['link', 'image']
+            ]
+        }
+    });
     channel_handler(newNote, 'create')
-    //  create a note in database with Ajax and use "GET" to get the new created note
-    // fetch('/note/save_note/',{
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //         'X-CSRFToken': csrftoken,
-    //     },
-        // body: JSON.stringify({
-        //     content: newNote.querySelector('textarea').value,
-        //     borderColor: color.value,
-        //     coordinates: { x: newNote.style.left, y: newNote.style.top },
-        //     is_finished : newNote.querySelector('.custom-checkbox-container').querySelector('.btn-check').checked, // Added
-        //     checkbox_id :id
-        // }),
-    // })
-    // .then(response => {
-    //     if (!response.ok) { // Check if the response is OK (status 200-299)
-    //         // window.location.reload(1);
-    //         throw new Error('Network response was not ok');
-    //     }
-    //     return response.json(); 
-    // })
-    // .then(data => {
-    //     console.log('New note created with ID:', data.id); // This should now work
-    //     newNote.dataset.id = data.id; // Store the ID in the dataset
-    //     // last_note_id = newNote.dataset.id;
-    //     // newNote.querySelector('textarea').setAttribute("onblur", `saveOnInput(event, ${newNote.dataset.id})`)
-    //     newNote.querySelector('textarea').setAttribute("oninput", `saveOnInput(event, ${newNote.dataset.id})`)
-    //     // newNote.setAttribute("onblur", `saveOnInput(event, ${newNote.dataset.id})`)
-    //     // console.log(data); // Log the entire response data
-        
-    //     const checkBox = newNote.querySelector(".custom-checkbox-container").querySelector(".btn-check")
-    //     const textArea = newNote.querySelector('textarea')
-    //     checkBox.checked = note.is_finished
-    //     console.log(textArea)
-
-    //     if(checkBox.checked){
-    //         textArea.disabled = true;
-    //     }
-    //     // checkBox.addEventListener('change', function () {
-    //     //     if (this.checked) {
-    //     //         textArea.disabled = true; // Disable textarea if checkbox is checked
-    //     //     } else {
-    //     //         textArea.disabled = false; // Enable textarea if checkbox is unchecked
-    //     //     }
-    //     // });
-    //     textArea.addEventListener('keydown', function(event){
-    //         // console.log('Contraceptives', event)
-    //         if(checkBox.checked){
-    //             event.preventDefault()
-    //         }
-    //     })
-    // })
-    // .catch(error => console.error('Error:', error));
 }
-// When the button is clicked, a new <div> is created with the class note.
-// Inside this <div>, a close button (<span class="close">) and a <textarea> for writing content are added.
-// The border color of the note is set based on the selected color from the color input.
-// Finally, the new note is appended to the list.
-
-
-// CAN'T ACCESS THE ID WHEN A NOTE IS LOADED!
 document.addEventListener('click', (event) => {
     try {
         if(event.target.classList.contains('close')){
@@ -291,26 +237,14 @@ document.addEventListener('mousemove', (event) => {
     });
 })
 
-// checkbox.addEventListener('change', (event) => {
-//     // Check if the checkbox is checked or not
-//     if (event.target.checked) {
-//         console.log('Checkbox is checked!');
-//     } else {
-//         console.log('Checkbox is unchecked!');
-//     }
-// });
-
-// document.querySelectorAll('textarea').forEach(textarea=>{
-//     textarea.addEventListener('input', (event)=>{
-//         console.log(event)
-//     });
-// })
 let saveTimeout; // Variable to store the timeout
 function saveOnInput(event, id){
-    // console.log("Inside!")
-    // console.log(event.returnValue)
-    // console.log(event.target.parentNode.dataset.id)
     
+    // const quill = new Quill(`#note-${id}`, {
+    //     theme: 'snow'
+    // });
+    // const content = quill.root.innerHTML;  // Get the current content of the editor
+
     channel_handler(event.target.parentNode, 'input')
     // Clear the previous timeout if the user is still typing
     if (saveTimeout) {
@@ -339,7 +273,7 @@ function updateNote(id, note){
             'X-CSRFToken': csrftoken,
         },
         body: JSON.stringify({
-            content: note.querySelector('textarea').value,
+            content: note.querySelector('.content-editable').innerHTML,
             borderColor: note.querySelector('input[type="color"]'),
             coordinates: { x: note.style.left, y: note.style.top },
             is_finished : note.querySelector(".custom-checkbox-container").querySelector(".btn-check").checked // Added
@@ -381,7 +315,6 @@ const csrftoken = getCookie('csrftoken');
 window.onload = () => {
     console.log("Current Board Name: ", noteBoardName)
     fetch(`/note/get_notes/${noteBoardName}`, {
-    // fetch(`/note/get_notes/`, {
         method : 'GET',
     })
     
@@ -395,13 +328,6 @@ window.onload = () => {
         return response.json();
     })
     .then(notes => { 
-        console.log("wrnt hereeeeeee")
-        // let index = 0;
-        // notes.forEach(note => {
-        //     console.log(note, index);
-        
-        //     index++; // Increment the index
-        // });
     notes.forEach(note => {
         notes_creation(note)
     });
@@ -411,9 +337,6 @@ window.onload = () => {
 function notes_creation(note){
     
     let newNote = document.createElement('div');
-    // console.log(note.is_finished)
-    
-    console.log("nipasok ka diri");
 
     newNote.classList.add('note');
     newNote.style.borderColor = note.border_color;
@@ -424,44 +347,50 @@ function notes_creation(note){
     
     
     <span class="close" style="border-color: ${note.border_color};">x</span>
-    <textarea placeholder="Write Content..." rows="10" cols="30">${note.content}</textarea>
+    <div class="content-editable" placeholder="Write Content..." id="note-${note.checkbox_id}">${note.content}</div>
     <div class="custom-checkbox-container">
         <input type="checkbox" class="btn-check" id="${note.checkbox_id}" checked autocomplete="off">
         <label id="note-btn-style" class="btn btn-outline-secondary" for="${note.checkbox_id}">&#10003;</label><br>
     </div>
     `;
     const checkBox = newNote.querySelector(".custom-checkbox-container").querySelector(".btn-check")
-    const textArea = newNote.querySelector('textarea')
+    const editableDiv = newNote.querySelector('.content-editable');
     checkBox.checked = note.is_finished
-    textArea.addEventListener('keydown', function(event){
-        // console.log('Contraceptives', event)
-        if(checkBox.checked){
-            event.preventDefault()
+    editableDiv.addEventListener('keydown', function(event) {
+        if (checkBox.checked) {
+            event.preventDefault();
         }
-    })
-    newNote.dataset.id = note.id;
-    newNote.querySelector('textarea').setAttribute("oninput", `saveOnInput(event, ${newNote.dataset.id})`)  
-    list.appendChild(newNote);
-
-    tinymce.init({
-        selector: `#note-${note.id}`, // Target the specific textarea
-        menubar: false,
-        toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist',
-        plugins: 'lists',
-        height: 200,
-        readonly: false, // Ensure this is false or omitted
     });
+    console.log("Content: ", note.content)
+
     
+    newNote.dataset.id = note.id;
+    newNote.querySelector('.content-editable').setAttribute("oninput", `saveOnInput(event, ${newNote.dataset.id})`);
+    // Initialize the content in Quill
+    list.appendChild(newNote);
+    // quill.root.innerHTML = note.content;
+
+    
+    
+    console.log("Quill: ", `note-${note.checkbox_id}`)
+    // Initialize Quill editor on the content-editable div
+    const quill = new Quill(`#note-${note.checkbox_id}`, {
+        theme: 'snow',
+        placeholder: 'Write Content...',
+        modules: {
+            toolbar: [
+                // [{ header: [1, 2, false] }],
+                ['bold', 'italic', 'underline'],
+                // [{ list: 'ordered' }, { list: 'bullet' }],
+                // ['link', 'image']
+            ]
+        }
+    });
 }
-// setTimeout(function(){
-//     window.location.reload(1);
-//  }, 5000);
 
 function isCollide(a, b) {
     const rect1 = a.getBoundingClientRect();
     const rect2 = b.getBoundingClientRect();
-    // console.log("A Rect!", rect1)
-    // console.log("B Rect!", rect2)
     return !(
         rect1.right < rect2.left ||  // right side of el1 is left of el2
         rect1.left > rect2.right ||  // left side of el1 is right of el2
