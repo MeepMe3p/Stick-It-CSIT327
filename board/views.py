@@ -93,12 +93,13 @@ def create_board(request):
                         board = board,
                         notif_type = 'invite',
                         message = f'You have been invited in {board.board_name}. Accept?')
+                    notif.save()
                     # board.users.add(users)
                     
 
+            board.collaborators.add(request.user)
             board.users.add(request.user)
             board.user_count = board.users.count()
-            notif.save()
             board.save()
             # form.save() 
             # return redirect('board:render_board') 
@@ -213,8 +214,10 @@ def update_board(request,pk):
                         board = board,
                         notif_type = 'invite',
                         message = f'You have been invited in {board.board_name}. Accept?')
+                    notif.save()
                     
                     # print(notif.user_receiver)
+                    # board.users.add(users)
                     # board.users.add(users)
             if removed:
                 for users in removed:
@@ -226,9 +229,10 @@ def update_board(request,pk):
                         board = board,
                         notif_type = 'remove',
                         message = f'You have been removed in {board.board_name}')
+                    notif.save()
                     
                     board.users.remove(users)
-            notif.save()
+                    board.collaborators.remove(users)
             board.save()
 
         else:
@@ -252,7 +256,9 @@ def update_board(request,pk):
         'remove':users_remove,
         'notifications':notifs,
     }
-    return render(request,'board/update_board.html',context)
+    # return render(request,'',context)
+    return redirect('note:note', board=board.board_name)
+
 
 @login_required
 def respond_invite(request,pk):
@@ -264,6 +270,7 @@ def respond_invite(request,pk):
         board = notif.board
         print(notif)
         print(board)
+        board.collaborators.add(request.user)
         board.users.add(request.user)
         Notification.objects.create(
             user_sender = request.user,
@@ -303,11 +310,13 @@ def join_board(request,board_id):
 def respond_join_request(request,pk):
     notif = Notification.objects.get(pk=pk)
     notif.has_responded = True
+    print("ANHIIIIIIIII DIRIIIIIII")
     board = notif.board
     if request.POST.get('accept'):
         print(notif)
         print(board)
         board.users.add(notif.user_sender)
+        board.collaborators.add(notif.user_sender)
         Notification.objects.create(
         user_sender = request.user,
         user_receiver = notif.user_sender,
@@ -351,7 +360,10 @@ class BoardDetailView(DetailView):
 #
 
 
-# oh diba sheesshhhhh muredirect na sa note
+# oh diba sheesshhhhh muredirect na sa note if IKAW OWNER
 def go_to_effing_board(request,pk):
     board = Board.objects.get(pk=pk)
     return redirect('note:note', board=board.board_name)
+
+# def go_to_effing_board_non_owner(request,pk):
+#     board = 

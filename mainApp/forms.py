@@ -10,19 +10,11 @@ class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['birthdate','description']
-    
-    # def clean_email(self):
-    #     email = self.cleaned_data.get('email') #  Django's initial validation
-    #     if User.objects.filter(email=email).exists():
-    #         print("Email already exists")
-    #         raise forms.ValidationError("A user with that email already exists.")
-    #     return email
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
         user = self.instance.user  # Get the user instance linked to this profile
 
-        # Check if another user with the same email exists
         if User.objects.filter(email=email).exclude(pk=user.pk).exists():
             raise forms.ValidationError("A user with that email already exists.")
         
@@ -43,6 +35,7 @@ class ProfileEditForm(forms.ModelForm):
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
         user.email = self.cleaned_data['email']
+        print(f"Saving profile with birthdate: {self.cleaned_data['birthdate']}")
         if commit:
             user.save()
             profile.save()

@@ -105,16 +105,21 @@
                                 selected {%endif%}>Private</option>
                             </select>
                         </div>
+                        <!-- <option value="#dddcd7">Default (Gray)</option>
+                            <option value="#e0ecf8">Blue</option>
+                            <option value="#dbeed5">Green</option>
+                            <option value="#fde4e4">Pink</option>
+                            <option value="#f2f4cd">Yellow</option> -->
                         <div class="form-group">
                             <label for="theme">Theme</label>
                             <select name="board_theme" id="theme" class="theme-select">
-                                <option value="white"{%if board.board_theme == "white"%}
-                                selected {%endif%}>Default (White)</option>
-                                <option value="blue"{%if board.board_theme == "blue"%}
+                                <option value="#dddcd7"{%if board.board_theme == "#dddcd7"%}
+                                selected {%endif%}>Default (Gray)</option>
+                                <option value="#e0ecf8"{%if board.board_theme == "#e0ecf8"%}
                                 selected {%endif%}>Blue</option>
-                                <option value="green"{%if board.board_theme == "green"%}
+                                <option value="#dbeed5"{%if board.board_theme == "#dbeed5"%}
                                 selected {%endif%}>Green</option>
-                                <option value="pink"{%if board.board_theme == "pink"%}
+                                <option value="#fde4e4"{%if board.board_theme == "#fde4e4"%}
                                 selected {%endif%}>Pink</option>
                             </select>
                         </div>

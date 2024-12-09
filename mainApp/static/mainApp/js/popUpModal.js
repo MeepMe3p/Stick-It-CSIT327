@@ -1,5 +1,6 @@
 // Get the modal
 let join_btn = document.getElementById("joinButton");
+let no_btn = document.getElementById("notJoinBtn");
 var modal = document.getElementById("myPopupModal");
 var url;
 
@@ -7,21 +8,18 @@ var url;
 var btn = document.getElementById("myPopupBtn");
 
 // Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-console.log(span);
 
-// When the user clicks on the button, open the modal
-btn.onclick = function() {
-  console.log("nagpakita");
+function openJoinRequestModal() {
   modal.style.display = "block";
+ 
 }
-
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
+no_btn.onclick = function(event){
+  
   modal.style.display = "none";
   console.log("nawagtang");
 }
+
+
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
@@ -36,9 +34,9 @@ join_btn.onclick = function(event){
 function openJoinModal(i){
   console.log("the thing is: ",i);
   console.log("nagpakita");
-  modal.style.display = "block";  
   
   document.getElementById("joinButton").value = i;
+  // url = "/board/join-board/1"
   url = `/board/join-board/${i}`
   // url = `/board/1`
   console.log(url)

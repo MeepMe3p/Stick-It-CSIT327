@@ -41,7 +41,7 @@ class Board(models.Model):
         ('#e0ecf8', 'Blue'),
         ('#dbeed5', 'Green'),
         ('#fde4e4', 'Pink'),
-        ('#eaf3d0', 'Yellow')
+        ('#f2f4cd', 'Yellow')
     )
     board_theme = models.CharField(max_length=10, choices=THEME, default='#dddcd7')
 
@@ -53,7 +53,8 @@ class Board(models.Model):
 
     date_created = models.DateField(auto_now_add=True)
     timestamp = models.DateTimeField(auto_now=True)
-    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_boards')  
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_boards') 
+    collaborators = models.ManyToManyField(User, related_name='collaborators')
     users = models.ManyToManyField(User, related_name='boards')
     user_count = models.IntegerField(default=1)
 

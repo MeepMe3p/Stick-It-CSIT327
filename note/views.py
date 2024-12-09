@@ -1,5 +1,6 @@
 import json
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
 from django.views import View
 from django.contrib.auth import login,authenticate,get_user_model
 from django.contrib import messages
@@ -8,18 +9,33 @@ from board.models import Board
 from .forms import StickItUserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.template.context import RequestContext
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
+from board.models import Category
         # notes = Note.objects.all().values('id', 'content', 'border_color', 'coordinates', 'is_finished', 'checkbox_id')
         # print("you went hereeeeeeee")
         # return JsonResponse(list(notes), safe=False)
 class NoteView(View):
     def get(self, request, board):
         # TODO PASS THE BOARD NAME HERE!
-        print("the one that ran cuz this is the one that running")
+        try:
+            
+            # board_obj = Board.objects.get(board_name=board, creator=request.user)
+            board_obj = Board.objects.get(board_name=board)
+            users_remove = board_obj.users.all().exclude(pk=request.user.id)
+            category = Category.objects.all()
 
+            users_add = User.objects.all().exclude(id__in=users_remove).exclude(is_staff=True).exclude(id=request.user.id)
+    
+        except Board.DoesNotExist:
+            return HttpResponse("Board not ig tea found", status=404)
         note_board_name = board  # This will be the name of your board
         print("note: ",note_board_name)
-        return render(request, 'note.html', {'note_board_name': note_board_name})
+        return render(request, 'note.html',
+                       {'note_board_name': note_board_name,
+                        "board":board_obj, "add":users_add,
+                        "remove":users_remove,
+                        "categories":category
+                        })
     
 # class NoteCreateView(View):
 #     def post(self, request, *args, **kwargs):

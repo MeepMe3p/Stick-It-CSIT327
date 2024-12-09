@@ -2,17 +2,27 @@
 {% load django_bootstrap5 %}
 <!DOCTYPE html>
 <head>
+    {% bootstrap_css %}
     <title>STICKIT Board</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/notestyle.css' %}">
     <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <!-- Add this in your base template -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.3/dist/sweetalert2.all.min.js"></script>
-    {% bootstrap_css %}
 </head>
 <body>
     <div class="toolbar">
         <div class="left-controls">
             <div class="logo">STICKIT</div>
             <button class="back-button"><a href="{% url 'mainApp:home' %}" style="color: black; text-decoration: none;">Back to files</a></button>
+            <!-- <button class="back-button"><a href="{% url 'board:update_board' board.id %}" style="color: black; text-decoration: none;">Update Board</a></button> -->
+             {%if board.creator == request.user%}
+                <button type="button" class = "back-button" data-bs-toggle="modal" data-bs-target="#updateBoardModal">
+                    Update Board
+                </button>
+                {%endif%}
         </div>
         <!-- <div class="right-controls">
             <div class="circle-indicators">
@@ -48,6 +58,115 @@
     </div>
     <div>
     </div>
+
+
+    <div class="modal fade" id="updateBoardModal" tabindex="-1" aria-labelledby="updateBoardModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateBoardModalLabel">Update {{ board.board_name }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form -->
+                    <form action="{% url 'board:update_board' board.id %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group mb-3">
+                            <label for="board-name">Board Name</label>
+                            <input type="text" name="board_name" id="board-name" class="form-control" value="{{ board.board_name }}" required>
+                        </div>
+    
+                        <div class="form-group mb-3">
+                            <label for="category">Category</label>
+                            <select name="category" id="category" class="form-select" onchange="handleCategoryChange()" required>
+                                <option value="create-new">Create new...</option>
+                                {% for category in categories %}
+                                    <option value="{{ category.id }}" {% if category.category_name == board.category.category_name %}selected{% endif %}>
+                                        {{ category.category_name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <input type="text" id="new-category" name="new-category" placeholder="Enter new category" class="form-control mt-2" style="display: none;">
+                        </div>
+    
+                        <!-- Add the rest of your form fields here, similar to your original structure -->
+                        <div class="form-group">
+                            <label for="board-description">Board Description</label>
+                            <textarea name="description" id="board-description"
+                            required> {{board.description}}</textarea>
+                        </div>
+    
+                        <div class="form-group flex-container" style="margin-bottom: 0;">
+                            
+                            <div class="form-group">
+                                <label for="add">Add users</label>
+                                <div class = "add-remove-scrollable">
+                                    {%for users in add%}
+                                    <div class="users-checkbox-label">
+                                        <input type="checkbox" id="{{ users.id }}" value="{{ users.id }}" name = "add_user">
+                                        <label for="{{ users.id }}">{{users.username}}</label>
+                                    </div>
+                                    {%endfor%}
+                                </div>
+                        
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="add">Remove users</label>
+                                <div class = "add-remove-scrollable">
+                                    {%for users in remove%}
+                                    <div class="users-checkbox-label">
+                                        <input type="checkbox" id="{{ users.id }}" value="{{ users.id }}" name = "remove_user">
+                                        <label for="{{ users.id }}">{{users.username}}</label>
+                                    </div>
+                                    {%endfor%}
+                                </div>
+                            </div>
+                        </div>
+    
+    
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label for="visibility">Visibility</label>
+                                <select id="visibility" name="visibility" class="form-select">
+                                    <option value="public" {% if board.visibility == "public" %}selected{% endif %}>Public</option>
+                                    <option value="private" {% if board.visibility == "private" %}selected{% endif %}>Private</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="theme">Theme</label>
+                                <select name="board_theme" id="theme" class="form-select">
+                                    <option value="#dddcd7" {% if board.board_theme == "#dddcd7" %}selected{% endif %}>Default (Gray)</option>
+                                    <option value="#e0ecf8" {% if board.board_theme == "#e0ecf8" %}selected{% endif %}>Blue</option>
+                                    <option value="#dbeed5" {% if board.board_theme == "#dbeed5" %}selected{% endif %}>Green</option>
+                                    <option value="#fde4e4" {% if board.board_theme == "#fde4e4" %}selected{% endif %}>Pink</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="board-type">Board Type</label>
+                                <select name="board_type" id="board-type" class="form-select" disabled>
+                                    <option value="simple" {% if board.board_type == "simple" %}selected{% endif %}>Simple Board</option>
+                                    <option value="project" {% if board.board_type == "project" %}selected{% endif %}>Project Board</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+
+
+                        <div class="form-group text-end">
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
     <script>
 
         const noteBoardName = "{{ note_board_name }}";  // Pass the variable from the template
