@@ -23,9 +23,7 @@
 
 ![screenshot](StickIt%20Images/erdStickit.png)
 
-## Key Features
 
-* Le features
 
 ## How To Use
 
