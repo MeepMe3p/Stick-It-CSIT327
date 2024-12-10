@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
+from django.shortcuts import  get_object_or_404
 from django.core.exceptions import ValidationError
 # from note.models import Note
 
@@ -61,9 +62,18 @@ class Board(models.Model):
     def clean(self):
         # Sanitize board_name and validate uniqueness
         sanitized_name = slugify(self.board_name)
-        if Board.objects.filter(board_name=sanitized_name).exists():
-            raise ValidationError(f"A board with the name '{sanitized_name}' already exists.")
+        print("Sanitized Pason kere",sanitized_name )
+        # board = get_object_or_404(Board, board_name=sanitized_name)
+        board = None
+        try:
+            board = Board.objects.get(board_name=sanitized_name)
+        except:
+             print("went here")
+             pass
+        if board:
+            print(board)
         self.board_name = sanitized_name
+        print("Lason kere",sanitized_name )
 
     def save(self, *args, **kwargs):
         # Ensure clean is called during save
