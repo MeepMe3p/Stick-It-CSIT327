@@ -11,6 +11,7 @@ from mainApp.utils import get_user_initials
 from django.contrib.auth.models import User
 from note.models import Note
 from django.urls import reverse
+from django.contrib import messages
 
 
 from authentication.models import UserProfile
@@ -108,11 +109,13 @@ def create_board(request):
             return redirect('note:note', board=board.board_name)
 
         else:
-            print("Form errors:", form.errors) 
+            messages.error(request, "Board created unsuccessfully.")
+            return redirect('mainApp:my_boards')
     else:
         form = TableCreationForm()
         form.fields['category'].queryset = categories
-    return render(request, 'board/my_board.html', {'form': form, 'categories': categories})
+    messages.error(request, "Board created unsuccessfully.")
+    return redirect('mainApp:my_boards')
 
 
 @login_required(login_url='authentication:login')

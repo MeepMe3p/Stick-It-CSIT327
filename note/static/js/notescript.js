@@ -442,16 +442,6 @@ function notes_creation(note){
     newNote.dataset.id = note.id;
     newNote.querySelector('textarea').setAttribute("oninput", `saveOnInput(event, ${newNote.dataset.id})`)  
     list.appendChild(newNote);
-
-    tinymce.init({
-        selector: `#note-${note.id}`, // Target the specific textarea
-        menubar: false,
-        toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist',
-        plugins: 'lists',
-        height: 200,
-        readonly: false, // Ensure this is false or omitted
-    });
-    
 }
 // setTimeout(function(){
 //     window.location.reload(1);

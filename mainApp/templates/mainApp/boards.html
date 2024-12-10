@@ -1,5 +1,13 @@
 {% extends 'mainApp/base.html' %}
 {% block content %}
+{% if messages %}
+    <div class="board-alert-container">
+        {% for message in messages %}
+            <div class="board-alert board-alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
 <section class="boards-header">
     <div class="board-tabs">
         <a href="{% url 'mainApp:my_boards' %}"><button class="tab-button user-boards-sect active">My Boards</button></a>

@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'mainApp.apps.MainappConfig',
     'board.apps.BoardConfig',
 
-    'bootstrap5',
+    # 'bootstrap5',
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -64,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'Stick_It.urls'

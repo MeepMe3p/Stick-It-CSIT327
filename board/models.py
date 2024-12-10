@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
+from django.core.exceptions import ValidationError
 # from note.models import Note
 
 # Create your models here.
@@ -27,7 +28,7 @@ class Category(models.Model):
 
 
 class Board(models.Model):
-    board_name = models.CharField(max_length=30)
+    board_name = models.CharField(max_length=30, unique=True)
     description = models.TextField(max_length=500)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     BOARD_TYPES = (
@@ -57,6 +58,17 @@ class Board(models.Model):
     collaborators = models.ManyToManyField(User, related_name='collaborators')
     users = models.ManyToManyField(User, related_name='boards')
     user_count = models.IntegerField(default=1)
+    def clean(self):
+        # Sanitize board_name and validate uniqueness
+        sanitized_name = slugify(self.board_name)
+        if Board.objects.filter(board_name=sanitized_name).exists():
+            raise ValidationError(f"A board with the name '{sanitized_name}' already exists.")
+        self.board_name = sanitized_name
+
+    def save(self, *args, **kwargs):
+        # Ensure clean is called during save
+        self.clean()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.board_name

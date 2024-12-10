@@ -211,12 +211,12 @@ body::-webkit-scrollbar-thumb:hover {
     position: relative;
 } */
 
-.note {
+/* .note {
     width: 150px;
     height: 120px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
+} */
 
 .blue-note {
     background-color: #cceeff;
