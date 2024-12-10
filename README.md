@@ -161,8 +161,3 @@ MIT
 
 
 
-
-## [UI/UX Design](https://www.figma.com/design/8kZjMDgJX0b4zhbyso0pEa/STICKIT-(IM2-Project)?node-id=0-1&t=Q4dxzTrC1bdf1z7I-1)
-## 
-## [Gantt Chart] ([https://1drv.ms/x/c/591a527f3d3066e8/EUAaBy-gNfJLsuFPutdrVwQBACKr4zHJppprfcOUXEEKWw?e=F6bcNh](https://1drv.ms/x/c/591a527f3d3066e8/EUAaBy-gNfJLsuFPutdrVwQBACKr4zHJppprfcOUXEEKWw?e=WPH4a2))
-## [Functional Requirements] ([https://1drv.ms/w/c/13df488aa9578483/EdNatAjKhuhCoRCZj63S7AQB96YodffTGn11Upnc5BvbPA?e=pLVGi7](https://1drv.ms/w/c/13df488aa9578483/EdNatAjKhuhCoRCZj63S7AQBxcsNgRuAXSSaqFVOQEnWYQ?e=s7MMyj))
