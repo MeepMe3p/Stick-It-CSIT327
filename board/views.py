@@ -158,7 +158,38 @@ def filter_owner(request):
     return render(request,'mainApp/home.html',context)
     
 @login_required
-def filter_boards_by_category(request, category_slug, template_name='mainApp/home.html'):
+# def filter_boards_by_category(request, category_slug, template_name='mainApp/home.html'):
+#     user = request.user 
+#     try:
+#         user_profile = UserProfile.objects.get(user=user)  
+#     except UserProfile.DoesNotExist:
+#         user_profile = None 
+    
+#     # all_categories = Category.objects.all()
+#     category = get_object_or_404(Category, category_slug=category_slug)
+#     if template_name == 'mainApp/home.html':
+#         boards = Board.objects.filter(category=category)
+#         categories = Category.objects.all()
+#         count = boards.count()
+#     else:
+#         boards = Board.objects.filter(creator=user, category=category)
+#         categories = Category.objects.filter(board__creator=user).distinct()
+#         count = boards.count()
+#     initials = get_user_initials(request.user)
+#     notifs = Notification.objects.all()
+
+#     return render(request, template_name, {
+#         'initials' : initials,
+#         'user_profile': user_profile,
+#         'boards': boards,
+#         'count' : count,
+#         # 'all_categories' : all_categories,
+#         'categories': categories,
+#         'selected_category': category,
+#         'notifications':notifs,
+#     })
+
+def filter_boards_by_category(request, category_id,template_name='mainApp/home.html'):
     user = request.user 
     try:
         user_profile = UserProfile.objects.get(user=user)  
@@ -166,7 +197,7 @@ def filter_boards_by_category(request, category_slug, template_name='mainApp/hom
         user_profile = None 
     
     # all_categories = Category.objects.all()
-    category = get_object_or_404(Category, category_slug=category_slug)
+    category = get_object_or_404(Category, pk=category_id)
     if template_name == 'mainApp/home.html':
         boards = Board.objects.filter(category=category)
         categories = Category.objects.all()

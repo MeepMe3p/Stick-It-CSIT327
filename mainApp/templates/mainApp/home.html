@@ -57,81 +57,62 @@
                 <p class="updated-time">Last updated {{ board.timestamp }}</p>
                 <div class="board-category">{{ board.category.category_name }}</div>
                 {% if board.board_type == 'project' %}
+                <!-- DIRIIIIIIII -->
+
+                    {%for project in projectboards%}
+                        {%if project.id == board.id%}
                 <div class="progress-container" style="border-top: none;">
-                    <div class="progress-bar">
+    
+                    <div class="progress-container" style="border-top: none;">
+                        <div id="myProgress">
+
+                            <div id="myBar" 
+                                 style="width: {{ project.progress }}%; ">
+                            </div>
+                        </div>
+                        <span>{{ project.progress }}%</span>
                     </div>
-                    <span data-width="90%">90%</span>
+                    
+                    <!-- HEREEEEE DONE -->
                 </div>
-                {% else %}
-                <div class="progress-container">
-                    <img src="" alt="">
-                </div>
+                
+                <!-- DIRIIIIIIII -->
+                {%endif%}
+                {%endfor%}
                 {% endif %}
             </div>
         </div>
         {% endif %}
-    {% endfor %}
-</section>
-
-<section class="board-list home-boards simple-boards-list">
-    {% for board in boards %}
+        {% endfor %}
+    </section>
+    
+    <section class="board-list home-boards simple-boards-list">
+        {% for board in boards %}
         {% if board.board_type == 'simple' and board.visibility == 'public' %}
         <div class="board-preview" style="background-color: {{ board.board_theme }};"
-            data-board-id="{{ board.id }}" 
-            data-board-name="{{ board.board_name }}"
-            data-description="{{ board.description }}" 
-            data-category="{{ board.category.category_name }}" 
-            data-creator="{{ board.creator.username }}" 
-            data-board-type="{{ board.board_type }}">
-            <div class="board-header">
-                <h2>{{ board.board_name }}</h2>
-                <!-- <img class="ellipsis" src="/media/option.svg" alt="vertical-dots" width="12" height="12"> -->
-                <!-- <div class="ellipsis">...</div> -->
-            </div>
-            
-            <div class="board-content">
-                <p class="creator">Created by {{ board.creator.username }}</p>
-                <p class="updated-time">Last updated {{ board.timestamp }}</p>
-                <div class="board-category">{{ board.category.category_name }}</div>
-                {% if board.board_type == 'project' %}
-                <div class="progress-container" style="border-top: none;">
-                    <div class="progress-bar">
-                    </div>
-                    <span data-width="90%">90%</span>
-                </div>
-                {% else %}
-                <div class="progress-container">
-                    <img src="" alt="">
-                </div>
-                {% endif %}
-            </div>
+        data-board-id="{{ board.id }}" 
+        data-board-name="{{ board.board_name }}"
+        data-description="{{ board.description }}" 
+        data-category="{{ board.category.category_name }}" 
+        data-creator="{{ board.creator.username }}" 
+        data-board-type="{{ board.board_type }}">
+        <div class="board-header">
+            <h2>{{ board.board_name }}</h2>
+            <!-- <img class="ellipsis" src="/media/option.svg" alt="vertical-dots" width="12" height="12"> -->
+            <!-- <div class="ellipsis">...</div> -->
         </div>
-        {% endif %}
-    {% endfor %}
-</section>
-
-<section class="board-list home-boards project-boards-list">
-    {% for board in boards %}
-        {% if board.board_type == 'project' and board.visibility == 'public' %}
-        <div class="board-preview" style="background-color: {{ board.board_theme }};"
-            data-board-id="{{ board.id }}" 
-            data-board-name="{{ board.board_name }}"
-            data-description="{{ board.description }}" 
-            data-category="{{ board.category.category_name }}" 
-            data-creator="{{ board.creator.username }}" 
-            data-board-type="{{ board.board_type }}">
-            <div class="board-header">
-                <h2>{{ board.board_name }}</h2>
-            </div>
-            <div class="board-content">
-                <p class="creator">Created by {{ board.creator.username }}</p>
-                <p class="updated-time">Last updated {{ board.timestamp }}</p>
-                <div class="board-category">{{ board.category.category_name }}</div>
-                {% if board.board_type == 'project' %}
-                <div class="progress-container" style="border-top: none;">
+        
+        <div class="board-content">
+            <p class="creator">Created by {{ board.creator.username }}</p>
+            <p class="updated-time">Last updated {{ board.timestamp }}</p>
+            <div class="board-category">{{ board.category.category_name }}</div>
+            
+            {% if board.board_type == 'project' %}
+            
+            <div class="progress-container" style="border-top: none;">
                     <div class="progress-bar">
                     </div>
-                    <span data-width="90%">90%</span>
+                    <span data-width="90%">9000%</span>
                 </div>
                 {% else %}
                 <div class="progress-container">
@@ -143,8 +124,42 @@
         {% endif %}
         {% endfor %}
     </section>
-
-<div class="modal-overlay board-modal glass">
+    
+<section class="board-list home-boards project-boards-list">
+    {% for board in boards %}
+    {% if board.board_type == 'project' and board.visibility == 'public' %}
+    <div class="board-preview" style="background-color: {{ board.board_theme }};"
+    data-board-id="{{ board.id }}" 
+    data-board-name="{{ board.board_name }}"
+    data-description="{{ board.description }}" 
+    data-category="{{ board.category.category_name }}" 
+    data-creator="{{ board.creator.username }}" 
+    data-board-type="{{ board.board_type }}">
+    <div class="board-header">
+        <h2>{{ board.board_name }}</h2>
+    </div>
+    <div class="board-content">
+        <p class="creator">Created by {{ board.creator.username }}</p>
+        <p class="updated-time">Last updated {{ board.timestamp }}</p>
+        <div class="board-category">{{ board.category.category_name }}</div>
+        {% if board.board_type == 'project' %}
+        <div class="progress-container" style="border-top: none;">
+            <div class="progress-bar">
+            </div>
+            <span data-width="90%">90000%</span>
+        </div>
+        {% else %}
+        <div class="progress-container">
+                    <img src="" alt="">
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </section>
+    
+    <div class="modal-overlay board-modal glass">
     <div class="modal-content board-content-mod">
         <img id="close-board-detail" src="/media/x-close.svg" alt="x-symbol" width="18" height="18">
         <div class="board-main-sect-b1">
@@ -175,23 +190,24 @@
             <div class="board-preview-n-btns">
                 <div class="board-pvw"></div>
             </div> 
-       </div>
+        </div>
     </div> 
 </div>
-  
-    <!-- Trigger/Open The Modal --> 
-    <div id="myPopupModal" class="modal" style = "z-index: 1100;">
+
+<!-- Trigger/Open The Modal --> 
+<div id="myPopupModal" class="modal" style = "z-index: 1100;">
     
-      <div class="modal-content">
+    <div class="modal-content">
         <!-- <span class="close">&times;</span>  -->
         <p>Do you like to join this board?</p>
         <button id = "joinButton" >Yes</button>
         <button id = "notJoinBtn">No</button>
-      </div>
     </div>
+</div>
 
 
 <script src="{% static 'mainApp/js/popUpModal.js' %}"></script>
 <script>
+    
 </script>
 {% endblock %}

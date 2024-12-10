@@ -35,3 +35,24 @@
     text-decoration: none;
     cursor: pointer;
   }
+
+
+
+/* FOR DA PROGRESS BAR */
+
+  #myProgress {
+    width: 200px;
+    background-color: gray; 
+    border-radius: 5px;
+  }
+  
+  #myBar {
+    /* height: 30px;
+    background-color: green; */
+    background-color: #48486a;
+     height: 20px; 
+     text-align: center; 
+     line-height: 30px; 
+     color: white; 
+     border-radius: 5px;
+  }

@@ -47,11 +47,16 @@ def home(request):
         'users' : users,
         'notifications':notifs,
     }
+    for asher in boards:
+        print(asher.board_type)
+        if asher.board_type == "project":
+            print("asher is a project", asher.board_name)
     # print(f"This is context {context}")
     return render(request, 'mainApp/home.html', context)
 
 @login_required(login_url='authentication:login')
 def my_space(request):
+    print("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea")
     initials = get_user_initials(request.user)
     user = request.user
     boards = Board.objects.filter(creator=user)
@@ -62,7 +67,7 @@ def my_space(request):
 
     count = boards.count()
     print(f"Number of boards current user has: {count}")
-
+    print("milk")
     try:
         user_profile = UserProfile.objects.get(user=user)  
     except UserProfile.DoesNotExist:
@@ -114,13 +119,26 @@ def boards(request):
     users = User.objects.all()
 
     count = boards.count()
+    # projects = []
     print(f"Number of boards current user has: {count}")
-    
+    # for board in boards:
+    #     print(board.board_type)
+    #     if board.board_type == "project":
+    #         projects.append(board)
+    print("coookieee")
+    asher_projects = Board.objects.filter(board_type = "project")
+    asher_projects = []
+    for board in boards:
+        if board.board_type == "project":
+            print(board.board_name," is ",board.board_type)
+            ash = ProjectBoard.objects.get(pk = board.id)
+            asher_projects.append(ash)
     context = {
         'initials': initials,
         'users' : users,
         'boards': boards,
-        'count' : count,   
+        'count' : count, 
+        'projectboards':asher_projects,  
     }
     return render(request, 'mainApp/boards.html', context)
 
@@ -150,13 +168,26 @@ def collaborated_boards(request):
     User = get_user_model()
     users = User.objects.all()
 
+
+    asher_projects = Board.objects.filter(board_type = "project")
+    asher_projects = []
     count = boards.count()
+    for board in boards:
+        if board.board_type == "project":
+            ash = ProjectBoard.objects.get(pk = board.id)
+            asher_projects.append(ash)
+    print("copium")
+    for board in asher_projects:
+        print("progress type: ",board.progress)
+        # if board.board_type == "projects":
+            # projects.append(board)
     
     context = {
         'initials': initials,
         'users' : users,
         'boards': boards,
         'count' : count,   
+        'projectboards':asher_projects,
     }
     return render(request, 'mainApp/boards.html', context)
 
