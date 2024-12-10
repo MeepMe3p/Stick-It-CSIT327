@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'mainApp.apps.MainappConfig',
     'board.apps.BoardConfig',
 
-    # 'bootstrap5',
+    'bootstrap5',
 ]
 
 AUTHENTICATION_BACKENDS = [

@@ -10,49 +10,49 @@ const zoomOutBtn = document.querySelector('.zoom-out-btn');
 const zoomDisplay = document.querySelector('.zoom-display');
 
 // Function to update zoom
-function updateZoom() {
-    const baseGridSize = 20;  // Set the base size of the grid for 100% zoom
+// function updateZoom() {
+//     const baseGridSize = 20;  // Set the base size of the grid for 100% zoom
 
-    // Set transform scale for zooming
-    boardContainer.style.transform = `scale(${zoomLevel})`;
+//     // Set transform scale for zooming
+//     boardContainer.style.transform = scale(${zoomLevel});
 
-    // Adjust the background size dynamically based on zoom level
-    boardContainer.style.backgroundSize = `${baseGridSize / zoomLevel}px ${baseGridSize / zoomLevel}px`;
+//     // Adjust the background size dynamically based on zoom level
+//     boardContainer.style.backgroundSize = ${baseGridSize / zoomLevel}px ${baseGridSize / zoomLevel}px;
 
-    // Get current scroll position and adjust transform origin for centered zoom
-    const boardRect = boardContainer.getBoundingClientRect();
-    const centerX = boardRect.width / 2;
-    const centerY = boardRect.height / 2;
-    const scrollLeft = window.scrollX + centerX;
-    const scrollTop = window.scrollY + centerY;
+//     // Get current scroll position and adjust transform origin for centered zoom
+//     const boardRect = boardContainer.getBoundingClientRect();
+//     const centerX = boardRect.width / 2;
+//     const centerY = boardRect.height / 2;
+//     const scrollLeft = window.scrollX + centerX;
+//     const scrollTop = window.scrollY + centerY;
 
-    // Adjust the transform origin to ensure the zoom is centered on the screen
-    boardContainer.style.transformOrigin = `${scrollLeft}px ${scrollTop}px`;
+//     // Adjust the transform origin to ensure the zoom is centered on the screen
+//     boardContainer.style.transformOrigin = ${scrollLeft}px ${scrollTop}px;
 
-    // Update zoom display percentage
-    zoomDisplay.textContent = `${Math.round(zoomLevel * 100)}%`;
-}
+//     // Update zoom display percentage
+//     zoomDisplay.textContent = ${Math.round(zoomLevel * 100)}%;
+// }
 
 
 
 // Zoom In Button Click Event
-zoomInBtn.addEventListener('click', function() {
-    if (zoomLevel < 2) {  // Limit zoom-in to 200%
-        zoomLevel += 0.1;
-        updateZoom();
-    }
-});
+// zoomInBtn.addEventListener('click', function() {
+//     if (zoomLevel < 2) {  // Limit zoom-in to 200%
+//         zoomLevel += 0.1;
+//         updateZoom();
+//     }
+// });
 
 // Zoom Out Button Click Event
-zoomOutBtn.addEventListener('click', function() {
-    if (zoomLevel > 0.5) {  // Limit zoom-out to 50%
-        zoomLevel -= 0.1;
-        updateZoom();
-    }
-});
+// zoomOutBtn.addEventListener('click', function() {
+//     if (zoomLevel > 0.5) {  // Limit zoom-out to 50%
+//         zoomLevel -= 0.1;
+//         updateZoom();
+//     }
+// });
 
 // Initial zoom update
-updateZoom();
+// updateZoom();
 
 const circles = document.querySelectorAll('.circle');
 const modal = document.getElementById('general-users-mod');
@@ -65,19 +65,19 @@ circles.forEach(circle => {
     });
 });
 
-document.addEventListener('click', (event) => {
-    const isClickInsideModal = modal.contains(event.target);
-    circles.forEach(circle => {
-        const isClickInsideCircle = circle.contains(event.target);
-        if (!isClickInsideModal && !isClickInsideCircle) {
-            modal.classList.remove('appear');
-            modal.classList.add('disappear');
-            setTimeout(() => {
-                modal.style.display = 'none';
-            }, 300);
-        }
-    });
-});
+// document.addEventListener('click', (event) => {
+//     const isClickInsideModal = modal.contains(event.target);
+//     circles.forEach(circle => {
+//         const isClickInsideCircle = circle.contains(event.target);
+//         if (!isClickInsideModal && !isClickInsideCircle) {
+//             modal.classList.remove('appear');
+//             modal.classList.add('disappear');
+//             setTimeout(() => {
+//                 modal.style.display = 'none';
+//             }, 300);
+//         }
+//     });
+// });
 
   
 function showAdminModal() {
@@ -105,6 +105,7 @@ const twitter = profileModal.querySelector('.board-user-twitter');
 
 userIcons.forEach(user => {
     user.addEventListener("click", () => {
+        console.log("wenttt hereee fuckkingignig")
         const image = user.dataset.image;
         const firstName = user.dataset.firstName;
         const lastName = user.dataset.lastName;

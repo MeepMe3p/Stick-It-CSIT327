@@ -5,6 +5,7 @@ from django.views import View
 from django.contrib.auth import login,authenticate,get_user_model
 from django.contrib import messages
 from .models import Note
+from mainApp.utils import get_user_initials
 from board.models import Board
 from .forms import StickItUserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -35,7 +36,8 @@ class NoteView(View):
                 progress=0
             # progress = int(1* 100)
             users_add = User.objects.all().exclude(id__in=users_remove).exclude(is_staff=True).exclude(id=request.user.id)
-    
+            user_initials = get_user_initials(request.user)
+            print("THE USER init is: ", user_initials)
         except Board.DoesNotExist:
             return HttpResponse("Board not ig tea found", status=404)
         note_board_name = board  # This will be the name of your board
@@ -47,6 +49,7 @@ class NoteView(View):
                         "categories":category,
                         "notes":notes,
                         "progress":progress,
+                        "user_initials":user_initials,
                         })
     
 # class NoteCreateView(View):

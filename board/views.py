@@ -118,8 +118,31 @@ def create_board(request):
 @login_required(login_url='authentication:login')
 def render_board(request):
     user_initials = get_user_initials(request.user)
+    print("user init is: ", user_initials)
     return render(request, 'board/my_board.html', {'user_initials': user_initials})
 
+# ako giusab cuz nahan ko name ang nasa url
+# @login_required(login_url='authentication:login')
+# def filter_boards_by_category(request, category_id):
+#     category = get_object_or_404(Category, id=category_id)
+#     boards = Board.objects.filter(category=category)
+#     categories = Category.objects.all()  
+#     initials = get_user_initials(request.user)
+
+#     return render(request, 'mainApp/home.html', {
+#         'initials' : initials,
+#         'boards': boards,
+#         'categories': categories,
+#         'selected_category': category,
+#     })
+
+def all_boards(request):
+    boards = Board.objects.all()
+    categories = Category.objects.all()
+    return render(request, 'board/board_home.html', {'boards': boards, 'categories': categories})
+
+
+# ej added
 # ako giusab cuz nahan ko name ang nasa url
 # @login_required(login_url='authentication:login')
 # def filter_boards_by_category(request, category_id):
@@ -387,8 +410,10 @@ class BoardDetailView(DetailView):
         
         board = self.get_object()
         initials = get_user_initials(board.creator)
+        count = board.users.count()
         
         context['initials'] = initials
+        context['count'] = count
         return context
 #
 

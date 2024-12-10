@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load custom_filters %}
 
 <html lang="en">
 <head>
@@ -23,9 +24,14 @@
             <button class="create-board-btn" onclick="openModal()">Create Board</button>
             <div class="user-dropdown">
                 <div id="user-icon" class="m5-user-icon-header-flex" onclick="profileClickDropwdownFunction()">
+                    {% if user_profile.image %} 
+                    <div class="user-icon" style="background-image: url({{ user_profile.image.url }}); background-size: cover; background-position: center;">
+                    </div>
+                    {% else %} 
                     <div class="user-icon">
                         <span class="user-initials">{{ initials }}</span>
                     </div>
+                    {% endif %}
                     <div class="m6-user-name-email-flex">
                         <span class="username">{{ user.username }}</span>
                         <span class="email">{{ user.email  }}</span>
@@ -35,7 +41,7 @@
                 <div class="dropdown-menu" id="dropdown-menu">
                     <!-- <a href="#" class="dropdown-item" onclick="openProfileModal()">Profile</a> -->
                     <a class="dropdown-item" onclick = 'toggleNotificationPopup()'>Notifications</a>
-                    <div class="dropdown-item account-settings">Account Settings</div>
+                    <div class="dropdown-item account-settings" onclick="openSettingsModal()">Account Settings</div>
                     <a href="{% url 'authentication:logout' %}" class="dropdown-item">Logout</a>
                 </div>
             </div>
@@ -230,7 +236,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1>Account Settings</h1>
-                <img class="close-btn" src="/media/close-btn.svg" alt="x-symbol" width="30" height="30" id="close-settings-btn">
+                <img class="close-btn" src="/media/close-btn.svg" alt="x-symbol" width="30" height="30" id="close-settings-btn" onclick="closeSettingsModal()">
             </div>
             <form action="">
                 <div class="mod-change-pass">

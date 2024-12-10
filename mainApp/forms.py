@@ -56,3 +56,14 @@ class SocialLinksEditForm(forms.ModelForm):
     # facebook_link = forms.CharField(max_length=100)
     # linkedin_link = forms.CharField(max_length=100)
     # twitter_link = forms.CharField(max_length=100)
+
+class ProfileImageForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['image']
+    
+    def save(self, commit=True):
+        profile = super().save(commit=False)
+        if commit:
+            profile.save()
+        return profile
