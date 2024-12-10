@@ -21,7 +21,7 @@
   <a href="#license">License</a> 
 </p>
 
-![screenshot](StickIt%20Images/StickIt-ERD.png)
+![screenshot](StickIt%20Images/erdStickit.png)
 
 ## Key Features
 
@@ -56,17 +56,16 @@ $ py manage.py runserver
 > **Note**
 > If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
 
-
 <a id = "Features"></a>
 ##  OUR FEATURES 
 
 <p align="center">
   <a href="#userAuth">User Authentication</a> •
-  <a href="#how-to-use">How To Use</a> •
-  <a href="#download">Download</a> •
-  <a href="#credits">Credits</a> •
-  <a href="#related">Related</a> •
-  <a href="#license">License</a>
+  <a href="#userProfile">User Profile</a> •
+  <a href="#boards">Boards</a> •
+  <a href="#notifications">Notifications</a> •
+  <a href="#collaborate">Collaborate</a> •
+
 </p>
 
 ---
@@ -75,6 +74,38 @@ $ py manage.py runserver
 - Our application provides a **secure and seamless user authentication** system to ensure that only authorized users can access protected resources. Utilizing Python **Django's built in User Authentication Framework**
 ![screenshot](StickIt%20Images/1210%20(2).gif)
 
+[--Back to Features--](#Features)
+<a id="userProfile"></a> 
+## User Profile
+- **Customize** your User Profile!
+![screenshot](StickIt%20Images/1211.gif)
+
+[--Back to Features--](#Features)
+
+<a id="boards"></a> 
+## Boards
+- **Create** and **Update** your own Boards
+![screenshot](StickIt%20Images/1211%20(2).gif)
+
+- **Explore** 
+![screenshot](StickIt%20Images/1211%20(4).gif)
+
+[--Back to Features--](#Features)
+
+<a id="notifications"></a> 
+## Notifications
+- Get **NOTIFIED**!!
+![screenshot](StickIt%20Images/1211%20(5).gif)
+[--Back to Features--](#Features)
+
+<a id="collaborate"></a> 
+## Collaborate
+- Collaborate and share thoughts using **Simple Boards**!
+![screenshot](StickIt%20Images/1211%20(7).gif)
+
+
+- Collaborate and share thoughts using **Simple Boards**!
+![screenshot](StickIt%20Images/1211%20(10).gif)
 [--Back to Features--](#Features)
 ## Download
 
