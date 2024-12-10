@@ -28,6 +28,7 @@ def home(request):
     print(request.user.last_name)
     initials = get_user_initials(request.user)
     user_profile = UserProfile.objects.get(user = request.user)
+    # user_profile = UserProfile.objects.get(user = 3)
     if query:
         boards = boards.filter(Q(board_name__icontains=query))
     context = {

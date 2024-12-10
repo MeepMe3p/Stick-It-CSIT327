@@ -127,21 +127,21 @@ function closeSettingsModal() {
     }, 300);
 }
 
-function openEditProfPicModal() {
-    const ppModal = document.querySelector('.profile-pic-form-mod');
-    ppModal.classList.remove('disappear');
-    ppModal.classList.add('appear');
-    ppModal.style.display = 'block';
-}
+// function openEditProfPicModal() {
+//     const ppModal = document.querySelector('.profile-pic-form-mod');
+//     ppModal.classList.remove('disappear');
+//     ppModal.classList.add('appear');
+//     ppModal.style.display = 'block';
+// }
 
-function closeEditProfPicModal() {
-    const ppModal = document.querySelector('.profile-pic-form-mod');
-    ppModal.classList.remove('appear');
-    ppModal.classList.add('disappear');
-    setTimeout(() => {
-        ppModal.style.display = 'none';
-    }, 300);
-}
+// function closeEditProfPicModal() {
+//     const ppModal = document.querySelector('.profile-pic-form-mod');
+//     ppModal.classList.remove('appear');
+//     ppModal.classList.add('disappear');
+//     setTimeout(() => {
+//         ppModal.style.display = 'none';
+//     }, 300);
+// }
 
 // Create Board Modal Section
 function handleCategoryChange() {
@@ -259,10 +259,10 @@ social_links_inputs.forEach(input => {
 });
 
 //uncomment
-// brd_options.onclick = function() {
-//     const boardDropdown = document.getElementById('board-mod-options');
-//     boardDropdown.classList.toggle('show');
-// }
+brd_options.onclick = function() {
+    const boardDropdown = document.getElementById('board-mod-options');
+    boardDropdown.classList.toggle('show');
+}
 //uncomment
 //Filter boards in Home Page by Board Type
 function handleBoardTypeChange(selectElement) {
@@ -303,12 +303,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Modal content elements
     //uncomment
-    // const modalTitle = modal.querySelector(".board-title");
-    // const modalDescription = modal.querySelector(".board-description");
-    // const modalCategory = modal.querySelector(".category-button");
-    // const modalCreatorInitials = modal.querySelector(".avatar")
-    // const modalCreator = modal.querySelector(".creator-name");
-    // const viewBoard = modal.querySelector('.view-board-link');
+    const modalTitle = modal.querySelector(".board-title");
+    const modalDescription = modal.querySelector(".board-description");
+    const modalCategory = modal.querySelector(".category-button");
+    const modalCreatorInitials = modal.querySelector(".avatar")
+    const modalCreator = modal.querySelector(".creator-name");
+    const viewBoard = modal.querySelector('.view-board-link');
 
 
     //uncomment
@@ -351,13 +351,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Close modal functionality
     //uncomment
-    // closeModalBtn.addEventListener("click", () => {
-    //     modal.classList.remove('appear');
-    //     modal.classList.add('disappear');
-    //     setTimeout(() => {
-    //         modal.style.display = 'none';
-    //     }, 300);
-    // });
+    closeModalBtn.addEventListener("click", () => {
+        modal.classList.remove('appear');
+        modal.classList.add('disappear');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
+    });
     //uncomment
 });
-

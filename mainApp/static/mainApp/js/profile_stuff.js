@@ -58,6 +58,7 @@ const circles = document.querySelectorAll('.circle');
 const modal = document.getElementById('general-users-mod');
 
 circles.forEach(circle => {
+    console.log("aaaaa")
     circle.addEventListener("mouseenter", () => {
         modal.classList.remove('disappear');
         modal.classList.add('appear');

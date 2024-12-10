@@ -248,10 +248,64 @@
     {%endif%}
 
 
+<!--  -->
+
+<div class="general-users-mod" id="general-users-mod">
+    <div class="board-users-lbl"><span>Board Users</span></div>
+    <div class="board-users-dropdown">
+        {% for board_user in board.users.all %}
+            {% if board_user != board.creator %}
+                <div class="board-users-dropdown-item"
+                    {% if board_user.userprofile.image %}
+                    data-image="{{ board_user.userprofile.image.url }}"
+                    {% else %}
+                    data-first-name="{{ board_user.first_name }}"
+                    data-last-name="{{ board_user.last_name }}"
+                    {% endif %}
+                    data-user-name="{{ board_user.username }}"
+                    data-email="{{ board_user.email }}"
+                    data-description="{{ board_user.userprofile.description }}"
+                    data-facebook="{{ board_user.userprofile.facebook_link }}"
+                    data-linkedin="{{ board_user.userprofile.linkedin_link }}"
+                    data-twitter="{{ board_user.userprofile.twitter_link }}">
+                    {% if board_user.userprofile.image %}
+                    <div class="user-list-icon" style="background-image: url({{ board_user.userprofile.image.url }}); background-size: cover; background-position: center;"></div>
+                    {% else %}
+                    <div class="user-list-icon">{{ board_user|user_initials }}</div>
+                    {% endif %}
+                    <div class="user-list-name">
+                        <span>{{ board_user.username }}</span>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+<div class="general-users-mod admin-users-mod" id="admin-users-mod">
+    <div class="board-users-lbl">Board Users</div>
+    <div class="board-users-dropdown">
+        {% for board_user in board.users.all %}
+            {% if board_user != board.creator %}
+                <div class="board-users-dropdown-item">
+                    {% if board_user.userprofile.image %}
+                    <div class="user-list-icon" style="background-image: url({{ user_profile.image.url }}); background-size: cover; background-position: center;"></div>
+                    {% else %}
+                    <div class="user-list-icon">{{ board_user|user_initials }}</div>
+                    {% endif %}
+                    <div class="user-list-name">
+                        <span>{{ board_user.username }}</span>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+<!--  -->
     <div class="profile-modal-overlay">
         <div class="profile-card-modal">
             <div class="close-icon">
-                <img id="close-user-profile" src="/media/white-close-btn.svg" alt="x-symbol" width="18" height="18">
+                <img id="close-user-profile" src="/media/x-close.svg" alt="x-symbol" width="18" height="18">
             </div>
             <div class="image">
                 <div class="board-user-profile"></div>
@@ -264,9 +318,9 @@
                 <span class="board-user-description"><em>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vel venenatis dolor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</em></span>
             </div>
             <div class="row socials">
-                <a href="" class="board-user-facebook"><div><img src="/media/facebook.svg" alt="" width="30" height="30"></div></a>
-                <a href="" class="board-user-linkedin"><div><img src="/media/linkedin.svg" alt="" width="35" height="35"></i></div></a>
-                <a href="" class="board-user-twitter"><div><img src="/media/twitter.svg" alt="" width="25" height="25"></i></div></a>
+                <a href="" class="board-user-facebook"><div><img src="/media/facebook.png" alt="" width="30" height="30"></div></a>
+                <a href="" class="board-user-linkedin"><div><img src="/media/linkedin.png" alt="" width="35" height="35"></i></div></a>
+                <a href="" class="board-user-twitter"><div><img src="/media/twitter.png" alt="" width="25" height="25"></i></div></a>
             </div>
         </div> 
     </div>
@@ -276,7 +330,7 @@
     <script>
         const noteBoardName = "{{ note_board_name }}";  // Pass the variable from the template
     </script>
-    <script src="{% static 'js/notescript.js' %}"></script>
+    <!-- <script src="{% static 'js/notescript.js' %}"></script> -->
 
 </body>
     <script>
