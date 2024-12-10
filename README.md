@@ -104,7 +104,7 @@ $ py manage.py runserver
 ![screenshot](StickIt%20Images/1211%20(7).gif)
 
 
-- Collaborate and share thoughts using **Simple Boards**!
+- Collaborate and work on tasks using **Project Boards**!
 ![screenshot](StickIt%20Images/1211%20(10).gif)
 [--Back to Features--](#Features)
 ## Download
