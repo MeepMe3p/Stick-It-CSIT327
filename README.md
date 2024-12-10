@@ -29,7 +29,7 @@
 
 ## How To Use
 
-To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
+To clone and run this application, you'll need [Git]([https://git-scm.com](https://www.youtube.com/watch?v=dQw4w9WgXcQ)) and [Python](https://www.youtube.com/watch?v=dQw4w9WgXcQ) (which comes with [Django]([http://npmjs.com](https://www.youtube.com/watch?v=dQw4w9WgXcQ))) installed on your computer. From your command line:
 
 ```bash
 # Clone this repository
@@ -57,6 +57,25 @@ $ py manage.py runserver
 > If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
 
 
+<a id = "Features"></a>
+##  OUR FEATURES 
+
+<p align="center">
+  <a href="#userAuth">User Authentication</a> •
+  <a href="#how-to-use">How To Use</a> •
+  <a href="#download">Download</a> •
+  <a href="#credits">Credits</a> •
+  <a href="#related">Related</a> •
+  <a href="#license">License</a>
+</p>
+
+---
+<a id="userAuth"></a> 
+## User Authentication
+- Our application provides a **secure and seamless user authentication** system to ensure that only authorized users can access protected resources. Utilizing Python **Django's built in User Authentication Framework**
+![screenshot](StickIt%20Images/1210%20(2).gif)
+
+[--Back to Features--](#Features)
 ## Download
 
 You can [download](#) the latest installable version of StickiIt for Windows, macOS and Linux.
