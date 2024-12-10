@@ -21,14 +21,14 @@
 
 <section class="board-list home-boards b1-board-list">
     {% for board in boards %}
-        <a href="{% url 'board:board_detail' board.id %}" class="board-preview" style="background-color: {{ board.board_theme }};">
+        <a href="{% url 'board:note_board' board.id %}" class="board-preview" style="background-color: {{ board.board_theme }};">
             <div class="board-header">
                 <h2>{{ board.board_name }}</h2>
                 <img class="ellipsis" src="/media/option.svg" alt="vertical-dots" width="12" height="12">
                 <!-- <div class="ellipsis">...</div> -->
             </div>
             <div class="board-content">
-                <p class="creator">Created by {{ board.creator.username }}</p>
+                <p class="creator">Created byot {{ board.creator.username }}</p>
                 <p class="updated-time">Last updated {{ board.timestamp }}</p>
                 <div class="ca-vi-container">
                     <div class="board-category">{{ board.category.category_name }}</div>

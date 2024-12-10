@@ -31,4 +31,5 @@ urlpatterns = [
     path('mainApp/', include('mainApp.urls')),
     path('note/', include(("note.urls",'note'), namespace='note')),
     path("board/",include("board.urls")),
+    # path('tinymce/', include('tinymce.urls')),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

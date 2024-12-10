@@ -7,7 +7,6 @@ from note.models import *
 class NoteConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.note_board_name = f"board_{self.scope['url_route']['kwargs']['note_board_name']}"
-
         await self.channel_layer.group_add(self.note_board_name, self.channel_name)
         await self.accept()
     async def disconnect(self, close_code):
@@ -82,8 +81,18 @@ class NoteConsumer(AsyncWebsocketConsumer):
         is_finished = data.get('is_finished')
         checkbox_id = data.get('checkbox_id')
         
+        # Retrieve the board instance
+        board_name = self.note_board_name.split('_')[-1]
+        print(board_name)
+        try:
+            board_instance = Board.objects.get(board_name=board_name)
+        except Board.DoesNotExist:
+            # Handle the error if the board does not exist
+            raise Exception("Board not found")
+
         # Save note to database
         note = Note.objects.create(
+            board=board_instance,
             content=content,
             border_color=borderColor,
             coordinates=coordinates,

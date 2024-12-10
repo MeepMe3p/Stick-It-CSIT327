@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STICKIT|My Space</title>
+    <link rel="stylesheet" href="{% static 'mainApp/styles.css' %}">
+    <link rel ="stylesheet" href = "{%static 'board/css/style.css'%}">
+    <link rel="stylesheet" href="{% static 'mainApp/style.css' %}">
+    <!-- <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" /> -->
+</head>
+<body class="my-space-main-container">
+    <header>
+        <div class="logo">STICKIT</div>
+        <div class="header-icons">
+            <button class="create-board-btn">Hello {{request.user}}</button>
+            <div class="user-dropdown">
+                <div class="user-icon" id="user-icon" onclick="myFunction()">
+                    <span class="user-initials">{{ initials }}</span>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu">
+                    <!-- <a href="#" class="dropdown-item" onclick="openProfileModal()">Profile</a> -->
+                    <a href="#" class="dropdown-item">My Space</a>
+                    <a   class="dropdown-item" onclick = 'toggleNotificationPopup()'>Notifications</a>
+
+                    <a href="{% url 'authentication:logout' %}" class="dropdown-item">Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="my-space">
+        <div class="heading-container">
+            <!-- <a href="{% url 'mainApp:home' %}"><img src="/media/arrow.png" alt="back-arrow-icon" height="23px" width="23px"></a> -->
+            <a href="{% url 'mainApp:home' %}" style="font-size: 15px;">Back to home</a>
+            <h1>Update {{board.board_name}}</h1>
+        </div>
+        <div class="space-content-container">
+
+
+            <section id="profile-section" class="content-section">
+                
+                <form action="{% url 'board:update_board' board.id %}" method = "POST">
+                    {%csrf_token%}
+                    <div class="form-group first-input">
+                        <label for="board-namde">Board Name</label>
+                        <input type="text" name="board_name" id="board-name" value = "{{board.board_name}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select name="category" id="category" onchange="handleCategoryChange()" required>
+                            <option value="create-new">Create new...</option>
+                            {% for category in categories %}
+
+                                <option value="{{ category.id }}" {%if category.category_name == board.category.category_name%} 
+                                    selected  {%endif%}>{{ category.category_name }} </option>
+                            {% endfor %}
+                        </select>
+                        <input type="text" id="new-category" name="new-category" placeholder="Enter new category" style="display: none; margin-top: 10px;">
+                    </div>
+                    <div class="form-group">
+                        <label for="board-description">Board Description</label>
+                        <textarea name="description" id="board-description"
+                        required> {{board.description}}</textarea>
+                    </div>
+
+                    <div class="form-group flex-container" style="margin-bottom: 0;">
+                        
+                        <div class="form-group">
+                            <label for="add">Add users</label>
+                            <div class = "add-remove-scrollable">
+                                {%for users in add%}
+                                <div class="users-checkbox-label">
+                                    <input type="checkbox" id="{{ users.id }}" value="{{ users.id }}" name = "add_user">
+                                    <label for="{{ users.id }}">{{users.username}}</label>
+                                </div>
+                                {%endfor%}
+                            </div>
+                    
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="add">Remove users</label>
+                            <div class = "add-remove-scrollable">
+                                {%for users in remove%}
+                                <div class="users-checkbox-label">
+                                    <input type="checkbox" id="{{ users.id }}" value="{{ users.id }}" name = "remove_user">
+                                    <label for="{{ users.id }}">{{users.username}}</label>
+                                </div>
+                                {%endfor%}
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group flex-container" style="margin-bottom: 0;">
+                        <div class="form-group">
+                            <label for="visibility">Visibility</label>
+                            <select id="visibility" name="visibility" class="visibility-select">
+                                <option value="public" {%if board.visibility == "public"%}
+                                selected {%endif%}>Public</option>
+                                <option value="private" {%if board.visibility == "private"%}
+                                selected {%endif%}>Private</option>
+                            </select>
+                        </div>
+                        <!-- <option value="#dddcd7">Default (Gray)</option>
+                            <option value="#e0ecf8">Blue</option>
+                            <option value="#dbeed5">Green</option>
+                            <option value="#fde4e4">Pink</option>
+                            <option value="#f2f4cd">Yellow</option> -->
+                        <div class="form-group">
+                            <label for="theme">Theme</label>
+                            <select name="board_theme" id="theme" class="theme-select">
+                                <option value="#dddcd7"{%if board.board_theme == "#dddcd7"%}
+                                selected {%endif%}>Default (Gray)</option>
+                                <option value="#e0ecf8"{%if board.board_theme == "#e0ecf8"%}
+                                selected {%endif%}>Blue</option>
+                                <option value="#dbeed5"{%if board.board_theme == "#dbeed5"%}
+                                selected {%endif%}>Green</option>
+                                <option value="#fde4e4"{%if board.board_theme == "#fde4e4"%}
+                                selected {%endif%}>Pink</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div class="board-type">
+                                <label>Board Type</label>
+                                <select name="board_type" id="board-type" disabled >
+                                    <option value="simple" {%if board.board_type == 'simple'%}  
+                                    selected{%endif%}>Simple Board</option>
+                                    <option value="project" {%if board.board_type == 'project'%}  
+                                    selected{%endif%}>Project Board</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-btn">Update</button>
+
+                    </div>
+                </form>
+            </section>
+            
+        </div>
+    </main>
+
+        <!-- Notifications modal -->
+        <div id="notification-popup" class="notification-popup">
+            <h3>Notifications</h3>
+            <ul id="notification-list">
+                <!-- Notifications will be dynamically added here -->
+                {%for notifs in notifications%}
+                    <li>{{notifs.message}}</li>
+                {%endfor%}
+            </ul>
+        </div>
+    <script src="{% static 'board/js/script.js' %}"></script>
+    <script src="{% static 'mainApp/scripts.js' %}"></script>
+</body>
+</html>

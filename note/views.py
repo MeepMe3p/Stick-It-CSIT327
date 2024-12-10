@@ -1,17 +1,41 @@
 import json
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
 from django.views import View
 from django.contrib.auth import login,authenticate,get_user_model
 from django.contrib import messages
 from .models import Note
+from board.models import Board
 from .forms import StickItUserCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.template.context import RequestContext
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
+from board.models import Category
+        # notes = Note.objects.all().values('id', 'content', 'border_color', 'coordinates', 'is_finished', 'checkbox_id')
+        # print("you went hereeeeeeee")
+        # return JsonResponse(list(notes), safe=False)
 class NoteView(View):
-    def get(self, request):
+    def get(self, request, board):
         # TODO PASS THE BOARD NAME HERE!
-        note_board_name = "JellllyFishMyKamiOOshiiiiiNamBerWanFanHereSupport4Ever"  # This will be the name of your board
-        return render(request, 'note.html', {'note_board_name': note_board_name})
+        try:
+            
+            # board_obj = Board.objects.get(board_name=board, creator=request.user)
+            board_obj = Board.objects.get(board_name=board)
+            users_remove = board_obj.users.all().exclude(pk=request.user.id)
+            category = Category.objects.all()
+
+            users_add = User.objects.all().exclude(id__in=users_remove).exclude(is_staff=True).exclude(id=request.user.id)
+    
+        except Board.DoesNotExist:
+            return HttpResponse("Board not ig tea found", status=404)
+        note_board_name = board  # This will be the name of your board
+        print("note: ",note_board_name)
+        return render(request, 'note.html',
+                       {'note_board_name': note_board_name,
+                        "board":board_obj, "add":users_add,
+                        "remove":users_remove,
+                        "categories":category
+                        })
     
 # class NoteCreateView(View):
 #     def post(self, request, *args, **kwargs):
@@ -45,7 +69,7 @@ class NoteUpdateView(View):
 
             note = Note.objects.get(pk=pk)
             note_data = serialize_note(note, data)
-            print(note_data)
+            print("note data:",note_data)
             return JsonResponse(note_data, status=200)
 
         except Note.DoesNotExist:
@@ -64,12 +88,24 @@ class NoteDeleteView(View):
             return JsonResponse({'error': 'Note not found'}, status=404)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
-        
 class NoteGetView(View):
-    def get(self, request, *args, **kwargs):
-        notes = Note.objects.all().values('id', 'content', 'border_color', 'coordinates', 'is_finished', 'checkbox_id')
+    def get(self, request, noteBoardName, *args, **kwargs):
+        print("Inside `NoteGetView`")
+        try:
+            # Fetch the board using the provided name
+            board_instance = Board.objects.get(board_name=noteBoardName)
+            # Filter notes by this board
+            notes = Note.objects.filter(board=board_instance).values(
+                'id', 'content', 'border_color', 'coordinates', 'is_finished', 'checkbox_id'
+            )
+        except Board.DoesNotExist:
+            # If the board does not exist, return an empty list or an error
+            return JsonResponse({"error": "Board not found"}, status=404)
+
         return JsonResponse(list(notes), safe=False)
-        # return JsonResponse({'notes' : notes})
+
+        
+        
     
 def serialize_note(note, data):
     # Update the note's attributes with the data received

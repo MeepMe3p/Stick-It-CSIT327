@@ -2,13 +2,15 @@ from django.db import models
 # from board import models
 # from board.models import Board, ProjectBoard, SimpleBoard
 from django.apps import apps
+from board.models import Board
 
 # Create your models here.
 # SAUCE: https://docs.djangoproject.com/en/5.1/topics/db/models/
 class Note(models.Model):
+    board = models.ForeignKey(Board, on_delete=models.CASCADE, null=True, blank=True)
     content = models.TextField()
-    board = models.ForeignKey('board.Board', null=True, related_name='notes', on_delete=models.CASCADE) 
-    coordinates = models.JSONField()
+    border_color = models.CharField(max_length=100)  # Assuming you store the color as a hex code
+    coordinates = models.JSONField()  # Storing x and y as a JSON object
     is_finished = models.BooleanField(default=False)
     checkbox_id = models.CharField(max_length=100)
 

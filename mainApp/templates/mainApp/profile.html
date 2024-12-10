@@ -6,9 +6,17 @@
             {% csrf_token %}
             <div class="profile-info">
                 <div class="profile-image">
-                    <div class="profile-circle">
-                        <i class="fas fa-pen edit-icon"></i>
+                    {% if user_profile.image %} 
+                    <div class="profile-circle" style="background-image: url({{ user_profile.image.url }}); background-size: cover; background-position: center;">
+                        <i class="fas fa-pen edit-icon" onclick="openEditProfPicModal()"></i>
                     </div>
+                    {% else %} 
+                    <div class="profile-circle" style="background: linear-gradient(90deg, #dededc, #a9a9ad);">
+                        <span>{{ initials }}</span>
+                        <i class="fas fa-pen edit-icon" onclick="openEditProfPicModal()"></i>
+                    </div>
+                    {% endif %}
+                    
                     <h2>{{ user.username }}</h2>
                     <span>Joined last {{ user.date_joined }}</span>
                     {% if user_profile.description == None or user_profile.description == '' %}
@@ -34,17 +42,12 @@
                     {% else %}
                     <input class="profile-input" id="birthdate-input" name="birthdate" type="date" value="{{ user_profile.birthdate|date:'Y-m-d' }}" />
                     {% endif %}
-                    <!-- <div class="social-icons">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                    </div> -->
                 </div>
             </div>
             <button type="submit" id="p1-update-btn" class="edit-profile-btn">Update</button>    
         </form>
     </div>
-    <div class="profile-card">
+    <div class="profile-card social-profile-card" >
         <form method="POST" action="{% url 'mainApp:edit_social_links' %}"> 
             {% csrf_token %}
             <div class="profile-details social-links-details">
@@ -80,5 +83,17 @@
         </form>
     </div>
 </section>
+
+<div class="profile-pic-form-mod">
+    <form method="POST" action="{% url 'mainApp:edit_profile_image' %}" enctype="multipart/form-data" >
+        {% csrf_token %}
+        <img class="pp-modal-close" src="/media/x-close.svg" alt="x-symbol" width="16" height="16" onclick="closeEditProfPicModal()">
+        <input type="file" name="image" accept="image/*" />
+        <!-- <button class="remove-pp-btn">Remove Profile Pic</button> -->
+        <!-- <button type="submit" class="upload-pp-btn">Upload</button> -->
+        <button type="submit" name="action" value="upload" class="upload-pp-btn">Upload</button>
+        <button type="submit" name="action" value="remove" class="remove-pp-btn">Remove Profile Pic</button>
+    </form>
+</div>
 
 {% endblock %}

@@ -1,43 +1,54 @@
 from django.shortcuts import render
+from board.models import Board, ProjectBoard, SimpleBoard, Notification
+from django.contrib.auth import logout
 from board.models import Board, ProjectBoard, SimpleBoard
+from django.db.models import Q
 from django.contrib.auth import logout, get_user_model
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from .utils import get_user_initials
 from board.models import Category
 from authentication.models import UserProfile
-from .forms import ProfileEditForm, SocialLinksEditForm
+from .forms import ProfileEditForm
+from django.contrib.auth.models import User
+from .forms import ProfileEditForm, SocialLinksEditForm, ProfileImageForm
 
 
 @login_required(login_url='authentication:login')
 def home(request):
+    if request.method == 'POST':
+        query = request.POST.get('q')
+    else:
+        query = None
     categories = Category.objects.all()
     boards = Board.objects.all()
     projectboards = ProjectBoard.objects.all()
     simpleboards = SimpleBoard.objects.all()
-    User = get_user_model()
-    users = User.objects.all()
-    # if request.method == 'GET':
-    #     board = Board.objects.all()
-    print(request.user.first_name)
+    notifs = Notification.objects.all().filter(user_receiver = request.user)
+    users = User.objects.all().exclude(id = request.user.id).exclude(is_staff=True)
+    
     print(request.user.last_name)
     initials = get_user_initials(request.user)
+    user_profile = UserProfile.objects.get(user = request.user)
+    if query:
+        boards = boards.filter(Q(board_name__icontains=query))
     context = {
+        'user_profile': user_profile,
         'initials': initials, 
         'categories': categories,
         'boards': boards,
         'users' : users,
         'projectboards' : projectboards,
-        'simpleboards' : simpleboards
+        'simpleboards' : simpleboards,
+        'users' : users,
+        'notifications':notifs,
     }
-    print(f"This is context {context}")
+    # print(f"This is context {context}")
     return render(request, 'mainApp/home.html', context)
 
 @login_required(login_url='authentication:login')
 def my_space(request):
     initials = get_user_initials(request.user)
-    # boards = Board.objects.all()
-    # categories = Category.objects.all()
     user = request.user
     boards = Board.objects.filter(creator=user)
     categories = Category.objects.filter(board__creator=user).distinct()
@@ -97,11 +108,13 @@ def boards(request):
     boards = Board.objects.filter(creator=user)
     User = get_user_model()
     users = User.objects.all()
+    user_profile = UserProfile.objects.get(user=user)
 
     count = boards.count()
     print(f"Number of boards current user has: {count}")
     
     context = {
+        'user_profile': user_profile,
         'initials': initials,
         'users' : users,
         'boards': boards,
@@ -156,9 +169,42 @@ def edit_profile(request):
             return redirect('mainApp:profile')
     else:
         form = ProfileEditForm(instance=profile, user=request.user)
-    
+
+    initials = get_user_initials(request.user)
     user_profile = UserProfile.objects.get(user=request.user)
-    return render(request, 'mainApp/profile.html', {'form': form, 'user_profile': user_profile})
+    context = {
+        'form': form,
+        'user_profile' : user_profile,
+        'initials': initials 
+    }
+    return render(request, 'mainApp/profile.html', context)
+
+def profile_image(request):
+    profile = UserProfile.objects.get(user=request.user)
+    if request.method == "POST":
+        if request.POST["action"] == "remove":
+            profile.image.delete(save=False) 
+            profile.image = None
+            profile.save()
+            return redirect("mainApp:profile")
+        elif "action" in request.POST and request.POST["action"] == "upload":
+            form = ProfileImageForm(request.POST, request.FILES, instance=profile)
+            if form.is_valid():
+                form.save()
+                return redirect("mainApp:profile")
+        else:
+            form = ProfileImageForm(instance=profile)
+    else:
+        form = ProfileImageForm(instance=user_profile)
+
+    initials = get_user_initials(request.user)
+    user_profile = UserProfile.objects.get(user=request.user)
+    context = {
+        'form': form,
+        'user_profile' : user_profile,
+        'initials': initials 
+    }
+    return render(request, 'mainApp/profile.html', context)
 
 
 def edit_social_links(request):

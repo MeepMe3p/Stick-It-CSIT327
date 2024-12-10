@@ -73,11 +73,6 @@ function profileClickDropwdownFunction() {
     dropdownMenu.classList.toggle('show');
 }
 
-brd_options.onclick = function() {
-    const boardDropdown = document.getElementById('board-mod-options');
-    boardDropdown.classList.toggle('show');
-}
-
 window.addEventListener('click', function (event) {
     const userIcon = document.getElementById('user-icon');
     const dropdownMenu = document.getElementById('dropdown-menu');
@@ -114,23 +109,16 @@ function closeModal() {
     }, 300);
 }
 
-// 'No Access Permission' Popup
-function openPermissionModal() {
-    document.getElementById('permissionModal').style.display = 'flex'; 
-}
+// open_settings.onclick = function() {}
 
-function closePermissionModal() {
-    document.getElementById('permissionModal').style.display = 'none'; 
-}
-
-open_settings.onclick = function() {
+function openSettingsModal() {
     const overlay = document.querySelector('.as-m-overlay');
     overlay.classList.remove('disappear');
     overlay.classList.add('appear');
     overlay.style.display = 'flex';
 }
 
-close_settings.onclick = function() {
+function closeSettingsModal() {
     const overlay = document.querySelector('.as-m-overlay');
     overlay.classList.remove('appear');
     overlay.classList.add('disappear');
@@ -139,11 +127,20 @@ close_settings.onclick = function() {
     }, 300);
 }
 
-window.onclick = function(event) {
-    const modal = document.getElementById('permissionModal');
-    if (event.target === modal) {
-        closePermissionModal();
-    }
+function openEditProfPicModal() {
+    const ppModal = document.querySelector('.profile-pic-form-mod');
+    ppModal.classList.remove('disappear');
+    ppModal.classList.add('appear');
+    ppModal.style.display = 'block';
+}
+
+function closeEditProfPicModal() {
+    const ppModal = document.querySelector('.profile-pic-form-mod');
+    ppModal.classList.remove('appear');
+    ppModal.classList.add('disappear');
+    setTimeout(() => {
+        ppModal.style.display = 'none';
+    }, 300);
 }
 
 // Create Board Modal Section
@@ -262,6 +259,11 @@ social_links_inputs.forEach(input => {
 });
 
 
+brd_options.onclick = function() {
+    const boardDropdown = document.getElementById('board-mod-options');
+    boardDropdown.classList.toggle('show');
+}
+
 //Filter boards in Home Page by Board Type
 function handleBoardTypeChange(selectElement) {
     const selectedValue = selectElement.value;
@@ -303,6 +305,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const modalTitle = modal.querySelector(".board-title");
     const modalDescription = modal.querySelector(".board-description");
     const modalCategory = modal.querySelector(".category-button");
+    const modalCreatorInitials = modal.querySelector(".avatar")
     const modalCreator = modal.querySelector(".creator-name");
     const viewBoard = modal.querySelector('.view-board-link');
     // const modalOtherUsers = modal.querySelector(".other-users");
@@ -310,20 +313,31 @@ document.addEventListener("DOMContentLoaded", function () {
     boardPreviews.forEach(preview => {
         preview.addEventListener("click", () => {
             const boardId = preview.dataset.boardId;
+            const image = preview.dataset.image;
             const boardName = preview.dataset.boardName;
             const description = preview.dataset.description;
             const category = preview.dataset.category;
             const creator = preview.dataset.creator;
+            const firstname = preview.dataset.firstName;
+            const lastname = preview.dataset.lastName;
             // const otherUsers = preview.dataset.otherUsers;
 
             modal.classList.remove("disappear");
             modal.style.display = "flex";
+            if (image) {
+                modalCreatorInitials.style.backgroundImage = `url(${image})`;
+                modalCreatorInitials.style.backgroundSize = "cover";
+                modalCreatorInitials.style.backgroundPosition = "center";
+                modalCreatorInitials.textContent = "";
+            } else {
+                modalCreatorInitials.textContent = (firstname.charAt(0) + lastname.charAt(0)); 
+                modalCreatorInitials.style.backgroundImage = ""; // Remove any background image
+            }
 
             modalTitle.textContent = boardName;
             modalDescription.textContent = description;
             modalCategory.textContent = category;
             modalCreator.textContent = `Created by ${creator}`;
-            // modalOtherUsers.textContent = `${otherUsers} other users on board`;
             viewBoard.href = `/board/board_view/${boardId}/`;
             
             modal.classList.add("appear");
@@ -339,3 +353,4 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 300);
     });
 });
+

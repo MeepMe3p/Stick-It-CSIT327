@@ -1,0 +1,49 @@
+/* Notification Icon */
+#notification-icon {
+    position: relative;
+    cursor: pointer;
+}
+/* Notification Popup */
+.notification-popup {
+    display: none;
+    position: absolute;
+    top: 40px;
+    right: 0;
+    width: 300px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    z-index: 1000;
+}
+/* Notification Popup Styling */
+.notification-popup h3 {
+    margin-top: 0;
+    font-size: 18px;
+}
+.notification-popup ul {
+    list-style-type: none;
+    padding: 0;
+}
+.notification-popup ul li {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+.notification-popup ul li:last-child {
+    border-bottom: none;
+}
+
+.close-notif {
+    cursor: pointer;
+    color: #333;
+    font-size: 18px; 
+    margin-left: auto; 
+    padding: 5px; 
+    transition: color 0.3s ease, transform 0.3s ease; 
+}
+
+.close-notif:hover {
+    color: #4e5c85; /* Change color on hover */
+    transform: scale(3.5); /* Increase size without affecting layout */
+}

@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login,logout,authenticate
 from django import forms
@@ -112,7 +113,7 @@ class StickItUserCreationForm(UserCreationForm):
         last_name = self.cleaned_data['last_name']
         password = self.cleaned_data['password2']
 
-        username = f"{user.first_name} {user.last_name}"
+        username = f"{user.first_name}_{user.last_name}"
         if(commit):
             print("Saving user to database")
             user = User.objects.create_user(username=username, email=email, first_name=first_name, last_name=last_name)

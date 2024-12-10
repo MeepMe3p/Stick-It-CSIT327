@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 {% load static %}
-
+{% load custom_filters %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STICKIT Board</title>
     <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
 </head>
 <body>
     <div class="toolbar">
@@ -15,13 +16,40 @@
             <button class="back-button"><a href="{% url 'mainApp:home' %}" style="color: black; text-decoration: none;">Back to files</a></button>
         </div>
         <div class="right-controls">
-            <div class="circle-indicators">
-                <div class="circle active"></div>
-                <div class="circle"></div>
-                <div class="circle"></div>
-                <span class="plus-circle">{{ board.user_count }}</span>
+            <div class="circle-indicators" style="padding: {% if count == 1 %}0 0{% else %}0 12px{% endif %};">
+                {% if board.user_count >= 5 %}
+                    {% if board.users.userprofile.image %} 
+                    <div class="circle" style="background-image: url({{ board_user.userprofile.image.url }}); background-size: cover; background-position: center;"></div>
+                    <div class="circle" style="background-image: url({{ board_user.userprofile.image.url }}); background-size: cover; background-position: center;"></div>
+                    <div class="circle" style="background-image: url({{ board_user.userprofile.image.url }}); background-size: cover; background-position: center;"></div>
+                    {% else %} 
+                    <div class="circle">{{ initials }}</div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    {% endif %}
+                    {% if board.user_count > 2 %}
+                    <span class="plus-circle">{{ board.user_count }}+</span>
+                    {% else %}
+                    <span class="plus-circle">{{ board.user_count }}</span>
+                    {% endif %}
+                {% else %}
+                    {% for board_user in board.users.all %}
+                        {% if board_user != board.creator %}
+                            {% if board_user.userprofile.image %} 
+                            <div class="circle" style="background-image: url({{ board_user.userprofile.image.url }}); background-size: cover; background-position: center;"></div>
+                            {% else %} 
+                            <div class="circle">{{ board_user|user_initials }}</div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
             </div>
-            <div class="profile-btn">{{ initials }}</div>
+            {% if board.creator.userprofile.image %} 
+            <div class="profile-btn" style="background-image: url({{ board.creator.userprofile.image.url }}); background-size: cover; background-position: center;">
+            </div>
+            {% else %} 
+            <div class="profile-btn">{{ board.creator|user_initials }}</div>
+            {% endif %}
             {% if user not in board.users.all %}
             <a href="{% url 'board:join_board' board.id %}" class="share-btn join-btn" style="text-decoration: none;">Join Board</a>
             <!-- <button >Join</button> -->
@@ -32,26 +60,14 @@
     </div>
 
     <div class="board-container">
-        <div class="note blue-note"></div>
-        <div class="note pink-note"></div>
+        <!-- <div class="note blue-note"></div>
+        <div class="note pink-note"></div> -->
     </div>
 
     <div class="side-toolbar">
         <div class="edit-note-controls">
             <button class="tool-btn create-note">
                 <img src="/media/sticky-note.png" alt="Create-note">
-            </button>
-            <button class="tool-btn text-icon">
-                <img src="/media/text.png" alt="Text">
-            </button>
-            <button class="tool-btn arrow-di">
-                <img src="/media/arrow_di.png" alt="Arrow">
-            </button>
-            <button class="tool-btn undo-icon">
-                <img src="/media/circular-arrow.png" alt="Undo">
-            </button>
-            <button class="tool-btn redo-icon">
-                <img src="/media/circular-arrow.png" alt="Redo">
             </button>
         </div>
         <div class="zoom-controls">
@@ -61,6 +77,80 @@
         </div>
     </div>
 
+    <div class="general-users-mod" id="general-users-mod">
+        <div class="board-users-lbl"><span>Board Users</span></div>
+        <div class="board-users-dropdown">
+            {% for board_user in board.users.all %}
+                {% if board_user != board.creator %}
+                    <div class="board-users-dropdown-item" 
+                        {% if board_user.userprofile.image %}
+                        data-image="{{ board_user.userprofile.image.url }}"
+                        {% else %}
+                        data-first-name="{{ board_user.first_name }}"
+                        data-last-name="{{ board_user.last_name }}"
+                        {% endif %}
+                        data-user-name="{{ board_user.username }}"
+                        data-email="{{ board_user.email }}" 
+                        data-description="{{ board_user.userprofile.description }}" 
+                        data-facebook="{{ board_user.userprofile.facebook_link }}" 
+                        data-linkedin="{{ board_user.userprofile.linkedin_link }}"
+                        data-twitter="{{ board_user.userprofile.twitter_link }}">
+                        {% if board_user.userprofile.image %} 
+                        <div class="user-list-icon" style="background-image: url({{ board_user.userprofile.image.url }}); background-size: cover; background-position: center;"></div>
+                        {% else %} 
+                        <div class="user-list-icon">{{ board_user|user_initials }}</div>
+                        {% endif %}
+                        <div class="user-list-name">
+                            <span>{{ board_user.username }}</span>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %} 
+        </div>
+    </div>
+
+    <div class="general-users-mod admin-users-mod" id="admin-users-mod">
+        <div class="board-users-lbl">Board Users</div>
+        <div class="board-users-dropdown">
+            {% for board_user in board.users.all %}
+                {% if board_user != board.creator %}
+                    <div class="board-users-dropdown-item">
+                        {% if board_user.userprofile.image %} 
+                        <div class="user-list-icon" style="background-image: url({{ user_profile.image.url }}); background-size: cover; background-position: center;"></div>
+                        {% else %} 
+                        <div class="user-list-icon">{{ board_user|user_initials }}</div>
+                        {% endif %}
+                        <div class="user-list-name">
+                            <span>{{ board_user.username }}</span>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %} 
+        </div>
+    </div>
+
+    <div class="profile-modal-overlay">
+        <div class="profile-card-modal">
+            <div class="close-icon">
+                <img id="close-user-profile" src="/media/white-close-btn.svg" alt="x-symbol" width="18" height="18">
+            </div>
+            <div class="image">
+                <div class="board-user-profile"></div>
+            </div>
+            <div class="data dt1">
+                <h2 class="board-user-name">Olivia Gomez</h2>
+                <span class="board-user-email">olivia.gomez@gmail.com</span>
+            </div>
+            <div class="data dt2">
+                <span class="board-user-description"><em>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vel venenatis dolor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</em></span>
+            </div>
+            <div class="row socials">
+                <a href="" class="board-user-facebook"><div><img src="/media/facebook.svg" alt="" width="30" height="30"></div></a>
+                <a href="" class="board-user-linkedin"><div><img src="/media/linkedin.svg" alt="" width="35" height="35"></i></div></a>
+                <a href="" class="board-user-twitter"><div><img src="/media/twitter.svg" alt="" width="25" height="25"></i></div></a>
+            </div>
+        </div> 
+    </div>
     <script src="{% static 'scripts.js' %}"></script>
 </body>
 </html>

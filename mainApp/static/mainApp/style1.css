@@ -1,9 +1,27 @@
 /* Font Awesome Icons */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
 
+@keyframes appear {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes disappear {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
 .profile-section {
     width: 100%;
-    height: 100%;
+    /* height: 50%; */
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -23,7 +41,7 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.main-profile-card {
+.main-profile-card{
     margin-bottom: 20px;
 }
 
@@ -45,7 +63,9 @@
 .profile-circle {
     width: 170px;
     height: 170px;
-    border: 2px solid #333;
+    /* background-size: cover;
+    background-position: center; */
+    border: 4px solid #333;
     border-radius: 50%;
     position: relative;
     margin: 0 auto;
@@ -57,7 +77,7 @@
 
 .profile-circle .edit-icon {
     position: absolute;
-    bottom: 10px;
+    bottom: 2px;
     right: 5px;
     font-size: 1em;
     color: #333;
@@ -65,6 +85,7 @@
     border-radius: 50%;
     padding: 12px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
 }
 
 .profile-image h2 {
@@ -256,4 +277,55 @@
     font-size: 10px;
     color: #74818b;
     margin-top: 10px;
+}
+
+.profile-pic-form-mod {
+    display: none;
+    position: absolute;
+    top: 47%;
+    right: 55%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 100;
+    background-color: white;
+    padding-block: 20px;
+    padding-inline: 50px;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    height: 20%; 
+}
+
+.remove-pp-btn, .upload-pp-btn {
+    margin-top: 15px;
+    font-size: 12px;
+    padding: 5px 15px;
+    border-radius: 5px;
+    border: 1px solid #b8b6b6;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.upload-pp-btn {
+    padding: 5px 25px;
+    background: linear-gradient(90deg, #e3e2e0, #9b9bae);
+    margin-left: 5px;
+}
+
+.profile-circle span {
+    font-size: 4em;
+} 
+ 
+.pp-modal-close {
+    margin-left: 260px;
+    cursor: pointer;
+}
+
+.profile-pic-form-mod.appear {
+    display: block;
+    animation: appear 0.2s forwards;
+}
+
+.profile-pic-form-mod.disappear {
+    display: block;
+    animation: disappear 0.2s forwards;
 }

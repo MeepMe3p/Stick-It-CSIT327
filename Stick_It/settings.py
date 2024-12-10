@@ -32,6 +32,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'django_bootstrap5',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,10 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    'note',
-    'authentication',
-    'mainApp',
-    'board',
+    'note.apps.WebsiteConfig',
+    'authentication.apps.AuthenticationConfig',
+    'mainApp.apps.MainappConfig',
+    'board.apps.BoardConfig',
+
     # 'bootstrap5',
 ]
 
@@ -82,26 +86,19 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Stick_It.wsgi.application'
-
+ASGI_APPLICATION = 'Stick_It.asgi.application'
+CHANNEL_LAYERS = {
+    "default": {"BACKEND": "channels.layers.InMemoryChannelLayer"},
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'Stick-It-Database',
-#         'USER': 'root',
-#         'PASSWORD': 'elijahgwapo',
-#         # 'PASSWORD': get_decrypted_password(),
-#         'HOST' : 'localhost',
-#         'PORT' : '3306'        
-#     }
-# }
 DATABASES = {
     "default": {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Stick-It-Database',
+
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "Stick-It-Database",
         'USER': 'root',
         'PASSWORD': 'mysqlroot00',
         # 'PASSWORD': get_decrypted_password(),
@@ -171,5 +168,3 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media' 
 
 LOGIN_REDIRECT_URL = 'home'
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

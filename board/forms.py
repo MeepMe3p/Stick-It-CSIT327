@@ -6,6 +6,14 @@ class TableCreationForm(forms.ModelForm):
     class Meta:
         model = Board
         fields = ["board_name","description","category","board_type","board_theme","visibility"]
+    def __init__(self, *args, **kwargs):
+        is_update = kwargs.pop('is_update', False)
+        super(TableCreationForm, self).__init__(*args, **kwargs)
+            
+        if is_update:
+            self.fields.pop('board_type')
+
+
     
 
     

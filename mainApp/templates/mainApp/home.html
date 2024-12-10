@@ -1,10 +1,15 @@
 {% extends 'mainApp/base.html' %}
 {% block content %}
+{%load static%}
 <section class="search-section"> 
     <h1>What do you want to work on?</h1>
     <div class="search-bar">
-        <i class="uil uil-search-alt search-icon"></i>
-        <input type="text" placeholder="Search your board" />
+        <form method="POST" action="{% url 'mainApp:home' %}">
+            {% csrf_token %}
+            <i class="uil uil-search-alt search-icon"></i>
+            <input type="text" name="q" placeholder="Search your board" value="{{ query|default:'' }}" />
+            <button type="submit" class="search-button" style="display: none;">Search</button>
+        </form>
     </div>
     <div class="board-categories category-filter">
         <div class="category-icon">
@@ -39,13 +44,19 @@
 <section class="board-list home-boards main-board-list"> 
     {% for board in boards %}
         {% if board.visibility == 'public' %}
-        <div class="board-preview" style="background-color: {{ board.board_theme }};"
-            data-board-id="{{ board.id }}" 
-            data-board-name="{{ board.board_name }}"
-            data-description="{{ board.description }}" 
-            data-category="{{ board.category.category_name }}" 
-            data-creator="{{ board.creator.username }}" 
-            data-board-type="{{ board.board_type }}">
+        <div onclick="openJoinModal({{board.id}});" class="board-preview" style="background-color: {{ board.board_theme }};"
+                data-board-id="{{ board.id }}" 
+                data-board-name="{{ board.board_name }}"
+                data-description="{{ board.description }}" 
+                data-category="{{ board.category.category_name }}" 
+                data-creator="{{ board.creator.username }}" 
+                {% if board.creator.userprofile.image %}
+                data-image="{{ board.creator.userprofile.image.url }}"
+                {% else %}
+                data-first-name="{{ board.creator.first_name }}"
+                data-last-name="{{ board.creator.last_name }}"
+                {% endif %}
+                data-board-type="{{ board.board_type }}">
             <div class="board-header">
                 <h2>{{ board.board_name }}</h2>
                 <!-- <img class="ellipsis" src="/media/option.svg" alt="vertical-dots" width="12" height="12"> -->
@@ -76,17 +87,24 @@
     {% for board in boards %}
         {% if board.board_type == 'simple' and board.visibility == 'public' %}
         <div class="board-preview" style="background-color: {{ board.board_theme }};"
-            data-board-id="{{ board.id }}" 
-            data-board-name="{{ board.board_name }}"
-            data-description="{{ board.description }}" 
-            data-category="{{ board.category.category_name }}" 
-            data-creator="{{ board.creator.username }}" 
-            data-board-type="{{ board.board_type }}">
+                data-board-id="{{ board.id }}" 
+                data-board-name="{{ board.board_name }}"
+                data-description="{{ board.description }}" 
+                data-category="{{ board.category.category_name }}" 
+                data-creator="{{ board.creator.username }}" 
+                {% if board.creator.userprofile.image %}
+                data-image="{{ board.creator.userprofile.image.url }}"
+                {% else %}
+                data-first-name="{{ board.creator.first_name }}"
+                data-last-name="{{ board.creator.last_name }}"
+                {% endif %}
+                data-board-type="{{ board.board_type }}">
             <div class="board-header">
                 <h2>{{ board.board_name }}</h2>
                 <!-- <img class="ellipsis" src="/media/option.svg" alt="vertical-dots" width="12" height="12"> -->
                 <!-- <div class="ellipsis">...</div> -->
             </div>
+            
             <div class="board-content">
                 <p class="creator">Created by {{ board.creator.username }}</p>
                 <p class="updated-time">Last updated {{ board.timestamp }}</p>
@@ -117,6 +135,12 @@
             data-description="{{ board.description }}" 
             data-category="{{ board.category.category_name }}" 
             data-creator="{{ board.creator.username }}" 
+            {% if board.creator.userprofile.image %}
+            data-image="{{ board.creator.userprofile.image.url }}"
+            {% else %}
+            data-first-name="{{ board.creator.first_name }}"
+            data-last-name="{{ board.creator.last_name }}"
+            {% endif %}
             data-board-type="{{ board.board_type }}">
             <div class="board-header">
                 <h2>{{ board.board_name }}</h2>
@@ -139,8 +163,8 @@
             </div>
         </div>
         {% endif %}
-    {% endfor %}
-</section>
+        {% endfor %}
+    </section>
 
 <div class="modal-overlay board-modal glass">
     <div class="modal-content board-content-mod">
@@ -155,17 +179,16 @@
                     <span class="category-button">Category</span>
                 </div>
                 <div class="creator-info">
-                    <div class="avatar">EN</div>
+                    <div class="avatar"><span></span></div>
                     <p class="creator-name">Created by Elijah Nigel</p>
                 </div>    
-                <p class="other-users">2 other users on board</p>
                 <div class="modal-actions">
                     <!-- <button class="join-board">Join</button> -->
                     <a href="" class="view-board-link"><button class="view-board">View Board</button></a>
                     <button class="more-options"><img src="/media/option.svg" alt="three-dots-horizontal" width="20" height="20"></button>
                     <div id="board-mod-options" class="board-mod-options">
                         <div class="dr-options">Share</div>
-                        <div class="dr-options">Request Collaboration</div>
+                        <div class="dr-options" onclick = 'openJoinRequestModal()'>Request Collaboration</div>
                         <div class="dr-options">Report Board</div>
                     </div>
                 </div>
@@ -177,4 +200,19 @@
     </div> 
 </div>
   
+    <!-- Trigger/Open The Modal --> 
+    <div id="myPopupModal" class="modal" style = "z-index: 1100;">
+    
+      <div class="modal-content">
+        <!-- <span class="close">&times;</span>  -->
+        <p>Do you like to join this board?</p>
+        <button id = "joinButton" >Yes</button>
+        <button id = "notJoinBtn">No</button>
+      </div>
+    </div>
+
+
+<script src="{% static 'mainApp/js/popUpModal.js' %}"></script>
+<script>
+</script>
 {% endblock %}
