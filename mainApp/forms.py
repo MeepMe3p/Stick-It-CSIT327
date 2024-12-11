@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 from authentication.models import UserProfile
+from django.contrib.auth.forms import PasswordChangeForm
+from django.core.exceptions import ValidationError
 
 class ProfileEditForm(forms.ModelForm):
     first_name = forms.CharField(max_length=30, required=False)
@@ -68,3 +70,40 @@ class ProfileImageForm(forms.ModelForm):
         if commit:
             profile.save()
         return profile
+
+class ChangePasswordForm(forms.Form):
+    old_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'edit-password-input'}),
+        label="Old Password",
+        required=True
+    )
+    new_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'edit-password-input'}),
+        label="New Password",
+        required=True
+    )
+    confirm_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'edit-password-input'}),
+        label="Confirm Password",
+        required=True
+    )
+
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+
+    def clean_old_password(self):
+        old_password = self.cleaned_data.get("old_password")
+        if not self.user.check_password(old_password):
+            raise ValidationError("The old password is incorrect.")
+        return old_password
+
+    def clean(self):
+        cleaned_data = super().clean()
+        new_password = cleaned_data.get("new_password")
+        confirm_password = cleaned_data.get("confirm_password")
+
+        if new_password != confirm_password:
+            raise ValidationError("New password and confirm password do not match.")
+
+        return cleaned_data

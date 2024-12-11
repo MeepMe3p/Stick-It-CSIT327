@@ -99,8 +99,12 @@ DATABASES = {
     "default": {
 
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "mydatabase",
-
+        "NAME": "Stick-It-Database",
+        'USER': 'root',
+        'PASSWORD': 'mysqlroot00',
+        # 'PASSWORD': get_decrypted_password(),
+        'HOST' : 'localhost',
+        'PORT' : '3307'
     }
 }
 

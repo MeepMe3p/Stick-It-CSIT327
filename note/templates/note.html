@@ -70,7 +70,7 @@
             <a href="{% url 'board:join_board' board.id %}" class="share-btn join-btn" style="text-decoration: none;">Join Board</a>
             <!-- <button >Join</button> -->
             {% else %}
-            <button class="share-btn">Share</button>
+            <div class="share-btn" style="cursor: none;">{{ board.board_name }}</div>
             {% endif %}
         </div>
     </div>

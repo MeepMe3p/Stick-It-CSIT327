@@ -191,25 +191,27 @@ a {
 
 .board-filter {
     width: 95%;
+    height: 40px;
     display: flex;
     gap: 12px;
     margin-bottom: 15px;
     justify-content: left;
+    /* background-color: #ccc; */
 }
   
 .filter-item {
-    width: 125px;
+    /* width: 250px; */
     /* height: 75px; */
     display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: 6px 12px;
-    border-radius: 8px;
+    border-radius: 5px;
     font-size: 11px;
     font-weight: 500;
-    background-color: #f1f1f1;
+    background-color: #ffffff;
     color: #2c2c2c;
-    border: 1px solid rgb(132, 132, 151);
+    border: 1px solid rgb(186, 186, 194);
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -220,7 +222,7 @@ a {
 }
   
 .filter-item.hp2-dropdown {
-    width: 200px;
+    width: 280px;
     background-color: #e4e0db;
     border-color: #d2d2d2;
     font-weight: 600;

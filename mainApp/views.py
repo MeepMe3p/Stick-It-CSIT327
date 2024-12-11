@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from board.models import Board, ProjectBoard, SimpleBoard,Notification
+from board.models import Board, ProjectBoard, SimpleBoard, Notification
+from django.contrib.auth import logout
 from django.db.models import Q
 from django.contrib.auth import logout, get_user_model
 from django.shortcuts import redirect
@@ -9,6 +10,9 @@ from board.models import Category
 from authentication.models import UserProfile
 from .forms import ProfileEditForm
 from django.contrib.auth.models import User
+from django.contrib.auth import update_session_auth_hash
+from django.contrib import messages
+from .forms import ChangePasswordForm
 from .forms import ProfileEditForm, SocialLinksEditForm, ProfileImageForm
 
 
@@ -84,7 +88,7 @@ def my_space(request):
 def profile(request):
     initials = get_user_initials(request.user)
     user = request.user
-    boards = Board.objects.filter(creator=user)
+    boards = Board.objects.filter(creator=user, is_active=True)
     User = get_user_model()
     users = User.objects.all()
 
@@ -109,7 +113,7 @@ def profile(request):
 def boards(request):
     initials = get_user_initials(request.user)
     user = request.user
-    boards = Board.objects.filter(creator=user)
+    boards = Board.objects.filter(creator=user, is_active=True)
     User = get_user_model()
     users = User.objects.all()
     user_profile = UserProfile.objects.get(user=user)
@@ -161,7 +165,7 @@ def boards(request):
 def collaborated_boards(request):
     initials = get_user_initials(request.user)
     user = request.user
-    boards = Board.objects.filter(collaborators = user)
+    boards = Board.objects.filter(collaborators = user, is_active=True)
     User = get_user_model()
     users = User.objects.all()
 
@@ -249,3 +253,54 @@ def edit_social_links(request):
     else:
         form = SocialLinksEditForm(instance=profile)
     return render(request, 'mainApp/profile.html', {'form': form})
+
+@login_required
+def edit_password(request):
+    if request.method == "POST":
+        form = ChangePasswordForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            new_password = form.cleaned_data.get("new_password")
+            request.user.set_password(new_password)
+            request.user.save()
+            update_session_auth_hash(request, request.user) 
+            messages.success(request, "Your password has been successfully updated.")
+            return redirect("mainApp:editPassword")
+    else:
+        form = ChangePasswordForm(user=request.user)
+
+    categories = Category.objects.all()
+    boards = Board.objects.filter(is_active=True)
+    notifs = Notification.objects.all().filter(user_receiver = request.user)
+    # users = User.objects.all().exclude(id = request.user.id).exclude(is_staff=True)
+    users = User.objects.all()
+    print(request.user.last_name)
+    initials = get_user_initials(request.user)
+    user_profile = UserProfile.objects.get(user = request.user)
+    context = {
+        'user_profile': user_profile,
+        'initials': initials, 
+        'categories': categories,
+        'boards': boards,
+        'users' : users,
+        'users' : users,
+        'notifications':notifs,
+    }
+    return render(request, 'mainApp/home.html', context)
+
+
+@login_required
+def delete_account(request):
+    if request.method == "POST":
+        user = request.user
+        user.is_active = False
+        user.save()
+
+        user_boards = Board.objects.filter(creator=user)  
+        user_boards.update(is_active=False)  
+
+        logout(request)
+        messages.success(request, "Your account and all associated boards have been successfully deactivated.")
+        return redirect("authentication:login") 
+    else:
+        messages.error(request, "Invalid request.")
+        return redirect("mainApp:profile")

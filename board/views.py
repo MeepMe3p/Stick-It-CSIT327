@@ -140,7 +140,7 @@ def render_board(request):
 #     })
 
 def all_boards(request):
-    boards = Board.objects.all()
+    boards = Board.objects.filter(is_active=True)
     categories = Category.objects.all()
     return render(request, 'board/board_home.html', {'boards': boards, 'categories': categories})
 
@@ -161,16 +161,10 @@ def all_boards(request):
 #         'selected_category': category,
 #     })
 
-def all_boards(request):
-    boards = Board.objects.all()
-    categories = Category.objects.all()
-    return render(request, 'board/board_home.html', {'boards': boards, 'categories': categories})
-
-
 # ej added
 @login_required(login_url='authentication:login')
 def filter_owner(request):
-    boards = Board.objects.filter(users = request.user)
+    boards = Board.objects.filter(users = request.user, is_Active=True)
     categories = Category.objects.all()  
     notifs = Notification.objects.all()
     initials = get_user_initials(request.user)
@@ -225,12 +219,12 @@ def filter_boards_by_category(request, category_id,template_name='mainApp/home.h
     # all_categories = Category.objects.all()
     category = get_object_or_404(Category, pk=category_id)
     if template_name == 'mainApp/home.html':
-        boards = Board.objects.filter(category=category)
+        boards = Board.objects.filter(category=category, is_active=True).exclude(users = request.user)
         categories = Category.objects.all()
         count = boards.count()
     else:
-        boards = Board.objects.filter(creator=user, category=category)
-        categories = Category.objects.filter(board__creator=user).distinct()
+        boards = Board.objects.filter(creator=user, category=category, is_active=True)
+        categories = Category.objects.filter(board__creator=user).distinct().exclude(users = request.user)
         count = boards.count()
     initials = get_user_initials(request.user)
     notifs = Notification.objects.all()
@@ -456,3 +450,26 @@ def update_progress(request,pk):
         projectB.save()
 
     return redirect('note:note',board= board.board_name)
+
+
+# def save_screenshot(request):
+#     if request.method == "POST":
+#         data = json.loads(request.body)  # Parse JSON data
+#         screenshot_data = data.get("screenshot")
+
+#         if not screenshot_data:
+#             return JsonResponse({"error": "No screenshot data provided."}, status=400)
+
+#         # Process screenshot data
+#         format, imgstr = screenshot_data.split(';base64,') 
+#         ext = format.split('/')[-1]
+#         image = ContentFile(base64.b64decode(imgstr), name=f'screenshot.{ext}')
+
+#         board_id = data.get("board_id")
+#         board = Board.objects.get(id=board_id)
+#         board.screenshot = image
+#         board.save()
+
+#         return redirect('mainApp:home')
+
+#     return JsonResponse({"error": "Invalid request method."}, status=400)

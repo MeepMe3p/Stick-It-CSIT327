@@ -12,6 +12,8 @@ urlpatterns = [
      path('profile/edit_profile', views.edit_profile, name='edit_profile'),
      path('profile/user_profile_image', views.profile_image, name='edit_profile_image'),
      path('profile/edit_social_links', views.edit_social_links, name='edit_social_links'),
+     path('edit-password/', views.edit_password, name='editPassword'),
+     path('account/', views.delete_account, name='deleteAccount'),
      # path('logout/', views.logoutPage , name = "logout"),
      path('board/', include('board.urls', namespace='board')),
 ]

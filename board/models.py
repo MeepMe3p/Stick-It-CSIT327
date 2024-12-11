@@ -29,6 +29,7 @@ class Category(models.Model):
 
 
 class Board(models.Model):
+    screenshot = models.ImageField(null=True, blank=True, upload_to='screenshots')
     board_name = models.CharField(max_length=30, unique=True)
     description = models.TextField(max_length=500)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -53,6 +54,8 @@ class Board(models.Model):
     )
     visibility = models.CharField(max_length=7, choices=VISIBILITY_CHOICES, default='public')
 
+    is_active = models.BooleanField(default=True, blank=True)
+    is_reported = models.BooleanField(default=False, blank=True)
     date_created = models.DateField(auto_now_add=True)
     timestamp = models.DateTimeField(auto_now=True)
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_boards') 

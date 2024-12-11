@@ -13,9 +13,7 @@
     <link rel="stylesheet" href="{% static 'mainApp/css/popUpModal.css' %}">
     <link rel="stylesheet" href="{% static 'board/css/notifs.css' %}">
     <link rel="stylesheet" href="{% static 'board/css/joinBoard.css' %}">
-
-
-    <!-- <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" /> -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
 </head>
 <body>
     <header>
@@ -165,14 +163,23 @@
                     <div class="dropdown-container">
                         <div class="dropdown" onclick="toggleDropdown()">Add people to send the link to</div>
                         <div class="dropdown-content" id="dropdown-content">
-                            {% for user in users %}
-                                <div class="dropdown-item" onclick="selectUser('{{ user.email }}')">
-                                    <div class="user-list-icon">{{ user.first_name|slice:":1" }}{{ user.last_name|slice:":1" }}</div>
+                            {% for db_user in users %}
+                                {% if db_user != user %}
+                                <div class="dropdown-item" onclick="selectUser('{{ db_user.email }}')">
+                                    {% if db_user.userprofile.image %} 
+                                    <div class="user-icon" style="background-image: url({{ db_user.userprofile.image.url }}); background-size: cover; background-position: center;">
+                                    </div>
+                                    {% else %} 
+                                    <div class="user-icon">
+                                        <span class="user-initials">{{ db_user.first_name|slice:":1" }}{{ db_user.last_name|slice:":1" }}</span>
+                                    </div>
+                                    {% endif %}
                                     <div class="user-list-name-and-email">
-                                        <span>{{ user.username }}</span>
-                                        <span>{{ user.email }}</span>
+                                        <span>{{ db_user.username }}</span>
+                                        <span>{{ db_user.email }}</span>
                                     </div>
                                 </div>
+                                {% endif %}
                             {% endfor %}
                         </div>
                     </div>
@@ -238,15 +245,16 @@
                 <h1>Account Settings</h1>
                 <img class="close-btn" src="/media/close-btn.svg" alt="x-symbol" width="30" height="30" id="close-settings-btn" onclick="closeSettingsModal()">
             </div>
-            <form action="">
+            <form method="POST" action="{% url 'mainApp:editPassword' %}" >
+                {% csrf_token %}
                 <div class="mod-change-pass">
                     <span><strong>Change Password</strong></span>
                     <label for="old_password">Old Password</label>
-                    <input type="password" name="old_password" class="profile-input">
-                    <label for="old_password">New Password</label>
-                    <input type="password" name="new_password" class="profile-input">
-                    <label for="old_password">Confirm Password</label>
-                    <input type="password" name="confirm_password" class="profile-input">
+                    <input type="password" name="old_password" class="profile-input edit-password-input">
+                    <label for="new_password">New Password</label>
+                    <input type="password" name="new_password" class="profile-input edit-password-input">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" name="confirm_password" class="profile-input edit-password-input">
                 </div>  
                 <button type="submit" id="p3-update-btn" class="change-pass-btn">Save Password</button>
             </form>
@@ -254,11 +262,15 @@
             <div class="mod-delete-acc">
                 <span><strong>Delete Account</strong></span>
                 <p>
-                    You will receive an email to confirm your decision.
-                    <br/>
                     Please note, that all boards you have created will be permanently erased.
                 </p>
-                <a href="">Delete my account</a>
+                <form method="POST" action="{% url 'mainApp:deleteAccount' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="delete-acc-btn" onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.')">
+                        Delete my account
+                    </button>
+                </form>
+                <!-- <a href="{% url 'mainApp:deleteAccount' %}" class="delete-acc-btn">Delete my account</a> -->
             </div>
         </div>
     </div>
